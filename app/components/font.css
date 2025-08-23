@@ -1,0 +1,60 @@
+@font-face {
+  font-family: "IRANYekanXFaNum-Black";
+  src: url("/font/IRANYekanXFaNum-Black.ttf") format("truetype");
+}
+@font-face {
+  font-family: "IRANYekanXFaNum-Bold";
+  src: url("/font/IRANYekanXFaNum-Bold.ttf") format("truetype");
+}
+@font-face {
+  font-family: "IRANYekanXFaNum-DemiBold";
+  src: url("/font/IRANYekanXFaNum-DemiBold.ttf") format("truetype");
+}
+@font-face {
+  font-family: "IRANYekanXFaNum-ExtraBlack";
+  src: url("/font/IRANYekanXFaNum-ExtraBlack.ttf") format("truetype");
+}
+@font-face {
+  font-family: "IRANYekanXFaNum-ExtraBold";
+  src: url("/font/IRANYekanXFaNum-ExtraBold.ttf") format("truetype");
+}
+@font-face {
+  font-family: "IRANYekanXFaNum-Heavy";
+  src: url("/font/IRANYekanXFaNum-Heavy.ttf") format("truetype");
+}
+@font-face {
+  font-family: "IRANYekanXFaNum-Light";
+  src: url("/font/IRANYekanXFaNum-Light.ttf") format("truetype");
+}
+@font-face {
+  font-family: "IRANYekanXFaNum-Medium";
+  src: url("/font/IRANYekanXFaNum-Medium.ttf") format("truetype");
+}
+@font-face {
+  font-family: "IRANYekanXFaNum-Regular";
+  src: url("/font/IRANYekanXFaNum-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "IRANYekanXFaNum-Thin";
+  src: url("/font/IRANYekanXFaNum-Thin.ttf") format("truetype");
+}
+@font-face {
+  font-family: "IRANYekanXFaNum-UltraLight";
+  src: url("/font/IRANYekanXFaNum-UltraLight.ttf") format("truetype");
+}
+
+.font-yekanDemiBold {
+  font-family: "IRANYekanXFaNum-DemiBold", sans-serif;
+}
+
+.font-yekanRegular {
+  font-family: "IRANYekanXFaNum-Regular", sans-serif;
+}
+
+.font-yekanBold {
+  font-family: "IRANYekanXFaNum-Bold", sans-serif;
+}
+
+.font-yekanExtraBold {
+  font-family: "IRANYekanXFaNum-ExtraBold", sans-serif;
+}
