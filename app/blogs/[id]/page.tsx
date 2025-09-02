@@ -1,9 +1,43 @@
-import React from "react";
+"use client";
 
-function page() {
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import axios from "axios";
+
+export default function BlogDetailsPage() {
+  const { id } = useParams();
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!id) return;
+
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(`/api/blog/${id}`);
+        setData(res.data);
+      } catch (err) {
+        console.error("Error fetching blog details:", err);
+        setData(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [id]);
+
+  if (loading) {
+    return <p className="text-center text-lg py-10">در حال بارگذاری...</p>;
+  }
+
+  if (!data) {
+    return <p className="text-center text-lg py-10">خبر مورد نظر یافت نشد.</p>;
+  }
+
   return (
     <div className="w-full max-w-[1440px] mx-auto px-4 md:px-[40px] lg:px-0">
-      <div className="w-full max-w-[1280px] flex flex-col gap-[48px] justify-center items-center pr-0  mx-auto">
+      <div className="w-full max-w-[1280px] flex flex-col gap-[48px] justify-center items-center mx-auto">
         {/* مسیر عنوان */}
         <div className="w-full flex flex-wrap gap-[4px] justify-center items-center">
           <span className="text-[14px] text-[#1C2024] font-yekanDemiBold">
@@ -15,7 +49,7 @@ function page() {
             className="w-[16px] h-[16px] object-contain"
           />
           <span className="text-[14px] text-[#1C2024] font-yekanDemiBold">
-            تحلیل بازار خودروهای برقی در سال 2024
+            {data.title}
           </span>
         </div>
 
@@ -24,8 +58,8 @@ function page() {
           {/* تصویر */}
           <div className="w-full lg:w-[642px] h-auto">
             <img
-              src="/car-blog.svg"
-              alt="car"
+              src={data.image || "/car-blog.svg"}
+              alt={data.title}
               className="w-full h-full object-contain"
             />
           </div>
@@ -33,7 +67,7 @@ function page() {
           {/* متن‌ها */}
           <div className="w-full lg:w-[591px] flex flex-col gap-[40px]">
             <h1 className="text-[24px] md:text-[28px] text-[#1C2024] font-yekanBold leading-[1.4]">
-              تحلیل بازار خودروهای برقی در سال 2024
+              {data.title}
             </h1>
 
             {/* تاریخ */}
@@ -50,46 +84,25 @@ function page() {
                   />
                 </div>
                 <span className="text-[14px] text-[#1C2024] font-yekanDemiBold">
-                  20 اردیبهشت 1404
+                  {data.date || "بدون تاریخ"}
                 </span>
               </div>
             </div>
 
             {/* متن کوتاه */}
             <p className="text-[14px] text-[#1C2024] font-yekanRegular leading-[2]">
-              لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
-              استفاده از طراحان گرافیک است...
+              {data.short_description || "بدون توضیح"}
             </p>
-
-            {/* ادامه مطلب */}
-            <div className="flex flex-row gap-[4px] items-center cursor-pointer">
-              <span className="text-[14px] text-[#006FB4] font-yekanDemiBold">
-                ادامه مطلب
-              </span>
-              <img
-                src="/Arrow-leftB.svg"
-                alt="arrow"
-                className="w-[20px] h-[20px] object-contain"
-              />
-            </div>
           </div>
         </div>
 
         {/* بخش متن بلند و تصویر وسطی */}
         <div className="w-full flex flex-col gap-[40px]">
           <p className="text-[14px] text-[#1C2024] font-yekanRegular leading-[2]">
-            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ...
-          </p>
-
-          <div className="w-full h-[200px] sm:h-[286px] bg-[#D9D9D9] rounded-[32px]" />
-
-          <p className="text-[14px] text-[#1C2024] font-yekanRegular leading-[2]">
-            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ...
+            {data.content || "محتوای کامل خبر در دسترس نیست."}
           </p>
         </div>
       </div>
     </div>
   );
 }
-
-export default page;

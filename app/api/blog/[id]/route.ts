@@ -1,0 +1,32 @@
+import { NextResponse } from "next/server";
+import axios from "axios";
+
+export async function GET(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const { id } = params;
+
+    const res = await axios.get(
+      `http://isaco.liara.run/api/blog/posts/${id}/`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return NextResponse.json(res.data, { status: 200 });
+  } catch (error: any) {
+    console.error("Error fetching blog post details:", error.message);
+
+    return NextResponse.json(
+      {
+        error: "Failed to fetch blog post details",
+        details: error.response?.data || error.message,
+      },
+      { status: error.response?.status || 500 }
+    );
+  }
+}
