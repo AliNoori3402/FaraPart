@@ -38,7 +38,6 @@ export default function BlogDetailsPage() {
   return (
     <div className="w-full max-w-[1440px] mx-auto px-4 md:px-[40px] lg:px-0">
       <div className="w-full max-w-[1280px] flex flex-col gap-[48px] justify-center items-center mx-auto">
-        {/* مسیر عنوان */}
         <div className="w-full flex flex-wrap gap-[4px] justify-center items-center">
           <span className="text-[14px] text-[#1C2024] font-yekanDemiBold">
             اخبار و مقالات
@@ -53,9 +52,7 @@ export default function BlogDetailsPage() {
           </span>
         </div>
 
-        {/* بخش تصویر و توضیحات */}
         <div className="flex flex-col lg:flex-row gap-[40px] lg:gap-[65px] w-full">
-          {/* تصویر */}
           <div className="w-full lg:w-[642px] h-auto">
             <img
               src={data.image || "/car-blog.svg"}
@@ -64,13 +61,11 @@ export default function BlogDetailsPage() {
             />
           </div>
 
-          {/* متن‌ها */}
           <div className="w-full lg:w-[591px] flex flex-col gap-[40px]">
             <h1 className="text-[24px] md:text-[28px] text-[#1C2024] font-yekanBold leading-[1.4]">
               {data.title}
             </h1>
 
-            {/* تاریخ */}
             <div className="flex flex-col gap-[12px]">
               <span className="text-[14px] text-[#8B8D98] font-yekanDemiBold">
                 تاریخ
@@ -89,14 +84,12 @@ export default function BlogDetailsPage() {
               </div>
             </div>
 
-            {/* متن کوتاه */}
             <p className="text-[14px] text-[#1C2024] font-yekanRegular leading-[2]">
               {data.short_description || "بدون توضیح"}
             </p>
           </div>
         </div>
 
-        {/* بخش متن بلند و تصویر وسطی */}
         <div className="w-full flex flex-col gap-[40px]">
           <p className="text-[14px] text-[#1C2024] font-yekanRegular leading-[2]">
             {data.content || "محتوای کامل خبر در دسترس نیست."}
