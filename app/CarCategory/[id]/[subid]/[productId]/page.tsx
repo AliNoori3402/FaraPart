@@ -2,9 +2,10 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import ProductTabs from "../../../../components/TabDetails";
-import TextDetails from "../../../../components/TextDetails";
+
 import ProductImages from "../../../../components/DeatilPartImage";
+import TextDetails from "../../../../components/TextDetails";
+import ProductTabs from "../../../../components/TabDetails";
 
 type ProductDetail = {
   id: number;
@@ -208,8 +209,6 @@ const ProductDetailPage: React.FC = () => {
       </div>
 
       <TextDetails />
-
-      <ProductTabs />
     </div>
   );
 };

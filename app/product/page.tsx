@@ -7,6 +7,9 @@ import AllProductList from "../components/Allproduct";
 
 export default function Page() {
   const [filteredProducts, setFilteredProducts] = useState<any[] | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<number | undefined>(
+    2
+  );
   const [filteredTotalCount, setFilteredTotalCount] = useState<number | null>(
     null
   );
@@ -42,7 +45,13 @@ export default function Page() {
             جستجوی دقیق
           </div>
 
-          <ProductSlider />
+          {/* اسلایدر محصولات */}
+          <ProductSlider
+            onCategoryClick={(categoryId) => {
+              setSelectedCategory(categoryId);
+              resetPage();
+            }}
+          />
 
           <div className="w-full flex flex-col lg:flex-row gap-10">
             <div className="w-full lg:w-[30%]">
@@ -50,6 +59,7 @@ export default function Page() {
                 onFilter={handleFilter}
                 currentPage={currentPage}
                 resetPage={resetPage}
+                categoryId={selectedCategory} // اضافه شد
               />
             </div>
 

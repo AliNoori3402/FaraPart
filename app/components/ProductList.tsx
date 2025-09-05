@@ -18,6 +18,8 @@ type ProductListProps = {
   currentPage?: number;
   onPageChange?: (page: number) => void;
   selectedBrands?: number[];
+  selectedCars?: number[];
+  selectedCategories?: number[]; // ← اضافه شد
   selectedProductType?: string;
 };
 

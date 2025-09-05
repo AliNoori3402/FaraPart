@@ -1,16 +1,16 @@
-// app/api/filter-parts/route.ts
+// app/api/products/filter-parts-by-car/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const brandId = searchParams.get("brand_id"); // پارامتر جدید
+  const carId = searchParams.get("car_id"); // پارامتر جدید
   const pageNumber = searchParams.get("pagenumber") || 1; // شماره صفحه
   const pageSize = searchParams.get("pagesize") || 10; // تعداد در هر صفحه
 
-  if (!brandId) {
+  if (!carId) {
     return NextResponse.json(
-      { error: "پارامتر brand_id الزامی است" },
+      { error: "پارامتر car_id الزامی است" },
       { status: 400 }
     );
   }
@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
       "http://isaco.liara.run/api/products/filter-parts/",
       {
         params: {
-          brand_id: brandId,
+          car_id: carId,
           pagenumber: pageNumber,
           pagesize: pageSize,
         },

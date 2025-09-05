@@ -5,84 +5,221 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import axios from "axios";
 
-type Brand = { id: number; name: string };
+type Car = {
+  id: number;
+  code: string;
+  name: string;
+};
+
+type Brand = {
+  id: number;
+  name: string;
+  display_name: string;
+  cars: Car[];
+};
+
 type ProductType = "spare" | "consumable";
 
-type FilterProductPageProps = {
-  onFilter: (brands: number[], productType: string) => void;
+type Category = {
+  id: number;
+  name: string;
+};
+
+type FilterProductCarProps = {
+  onFilterChange: (
+    brands: number[],
+    cars: number[],
+    productType: ProductType | "",
+    categories: number[]
+  ) => void;
   currentPage: number;
   resetPage: () => void;
-  initialSelectedBrands?: number[];
-  initialSelectedProductType?: string;
+  categoryId?: number;
 };
 
 export default function FilterProductCar({
-  onFilter,
+  onFilterChange,
   currentPage,
   resetPage,
-  initialSelectedBrands = [],
-  initialSelectedProductType = "",
-}: FilterProductPageProps) {
+  categoryId,
+}: FilterProductCarProps) {
   const [isOpen, setIsOpen] = useState(false);
 
+  const [categories, setCategories] = useState<Category[]>([]);
   const [brands, setBrands] = useState<Brand[]>([]);
-  const [selectedBrands, setSelectedBrands] = useState<number[]>(
-    initialSelectedBrands
-  );
-  const [loadingBrands, setLoadingBrands] = useState(false);
+  const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
+  const [selectedBrands, setSelectedBrands] = useState<number[]>([]);
+  const [selectedCars, setSelectedCars] = useState<number[]>([]);
+  const [selectedProductType, setSelectedProductType] = useState<
+    ProductType | ""
+  >("");
+
+  const [loading, setLoading] = useState({
+    categories: true,
+    brands: true,
+    cars: false,
+    productType: false,
+  });
+
+  // وضعیت اکاردیون‌ها
+  const [accordion, setAccordion] = useState({
+    category: false,
+    brand: false,
+    car: false,
+    productType: false,
+  });
 
   const productTypes: ProductType[] = ["spare", "consumable"];
-  const [selectedProductType, setSelectedProductType] = useState<string>(
-    initialSelectedProductType
-  );
-  const [loadingType, setLoadingType] = useState(false);
 
-  const [brandAccordionOpen, setBrandAccordionOpen] = useState(false);
-  const [typeAccordionOpen, setTypeAccordionOpen] = useState(false);
+  // fetch categories
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        setLoading((prev) => ({ ...prev, categories: true }));
+        const res = await fetch("/api/categorylist");
+        if (!res.ok) throw new Error("Failed to fetch");
+        const data: Category[] = await res.json();
+        setCategories(data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading((prev) => ({ ...prev, categories: false }));
+      }
+    };
+    fetchCategories();
+  }, []);
 
+  // fetch brands
   useEffect(() => {
     const fetchBrands = async () => {
       try {
-        setLoadingBrands(true);
+        setLoading((prev) => ({ ...prev, brands: true }));
         const res = await axios.get("/api/brand");
         setBrands(res.data);
-      } catch (error) {
-        console.error("خطا در دریافت برندها");
+      } catch (err) {
+        console.error(err);
       } finally {
-        setLoadingBrands(false);
+        setLoading((prev) => ({ ...prev, brands: false }));
       }
     };
     fetchBrands();
   }, []);
 
-  // وقتی فیلترها از بالا تغییر کرد، باید state داخلی هم آپدیت بشه (مثلا اگر صفحه برگشت یا از بیرون کنترل شد)
+  // تغییرات فیلترها را به Page بفرست
   useEffect(() => {
-    setSelectedBrands(initialSelectedBrands);
-  }, [initialSelectedBrands]);
-
-  useEffect(() => {
-    setSelectedProductType(initialSelectedProductType);
-  }, [initialSelectedProductType]);
-
-  // وقتی فیلترها تغییر کرد، به بالا بفرست
-  useEffect(() => {
-    onFilter(selectedBrands, selectedProductType);
-    resetPage();
-  }, [selectedBrands, selectedProductType]);
-
-  const toggleBrand = (id: number) => {
-    setSelectedBrands((prev) =>
-      prev.includes(id) ? prev.filter((b) => b !== id) : [...prev, id]
+    onFilterChange(
+      selectedBrands,
+      selectedCars,
+      selectedProductType,
+      selectedCategories
     );
+  }, [
+    selectedBrands,
+    selectedCars,
+    selectedProductType,
+    selectedCategories,
+    onFilterChange,
+  ]);
+
+  const toggleItem = (
+    id: number,
+    stateArray: number[],
+    setter: (val: number[]) => void
+  ) => {
+    setter(
+      stateArray.includes(id)
+        ? stateArray.filter((i) => i !== id)
+        : [...stateArray, id]
+    );
+    resetPage();
   };
 
-  const handleSelectProductType = (type: ProductType) => {
+  const handleProductType = (type: ProductType) => {
     setSelectedProductType((prev) => (prev === type ? "" : type));
+    resetPage();
   };
+
+  const toggleAccordion = (key: keyof typeof accordion) => {
+    setAccordion((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  const renderAccordion = <
+    T extends { id: number; name?: string; display_name?: string; cars?: Car[] }
+  >(
+    title: string,
+    items: T[],
+    stateArray: number[],
+    onChange: (id: number) => void,
+    loadingKey: keyof typeof loading,
+    nameKey: keyof T
+  ) => (
+    <div className="w-full">
+      <div
+        className="flex justify-between items-center cursor-pointer"
+        onClick={() =>
+          toggleAccordion(title.toLowerCase() as keyof typeof accordion)
+        }
+      >
+        <div className="flex items-center gap-2 pr-1">
+          <Image src="/car.svg" alt={title} width={20} height={20} />
+          <span className="text-[14px] font-yekanDemiBold text-[#000]">
+            {title}
+          </span>
+        </div>
+        <Image
+          src="/Arrow-downG.svg"
+          alt="toggle"
+          width={16}
+          height={16}
+          className={`transition-transform duration-300 ${
+            accordion[title.toLowerCase() as keyof typeof accordion]
+              ? "rotate-180"
+              : ""
+          }`}
+        />
+      </div>
+
+      <AnimatePresence>
+        {accordion[title.toLowerCase() as keyof typeof accordion] && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="overflow-hidden mt-2"
+          >
+            <div className="flex flex-col gap-2 bg-white border border-gray-200 rounded-[12px] max-h-[200px] overflow-auto p-2 shadow">
+              {loading[loadingKey] ? (
+                <div className="text-center py-4 text-gray-500">
+                  در حال بارگذاری...
+                </div>
+              ) : (
+                items.map((item) => {
+                  const label = item.name || item.display_name || "";
+                  return (
+                    <label
+                      key={item.id}
+                      className="flex items-center gap-2 py-1 cursor-pointer text-sm select-none"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={stateArray.includes(item.id)}
+                        onChange={() => onChange(item.id)}
+                      />
+                      {label}
+                    </label>
+                  );
+                })
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
 
   return (
     <>
-      {/* دکمه باز کردن فیلتر موبایل */}
+      {/* دکمه موبایل */}
       <div className="md:hidden w-full flex justify-start px-4 mb-4">
         <button
           onClick={() => setIsOpen(true)}
@@ -99,71 +236,44 @@ export default function FilterProductCar({
           فیلترها
         </div>
 
-        {/* برند */}
-        <div className="w-full">
-          <div
-            className="flex justify-between items-center cursor-pointer"
-            onClick={() => setBrandAccordionOpen((prev) => !prev)}
-          >
-            <div className="flex items-center gap-2 pr-1">
-              <Image src="/car.svg" alt="برند" width={20} height={20} />
-              <span className="text-[14px] font-yekanDemiBold text-[#000]">
-                برند خودرو
-              </span>
-            </div>
-            <Image
-              src="/Arrow-downG.svg"
-              alt="toggle"
-              width={16}
-              height={16}
-              className={`transition-transform duration-300 ${
-                brandAccordionOpen ? "rotate-180" : ""
-              }`}
-            />
-          </div>
+        {/* دسته‌بندی */}
+        {renderAccordion(
+          "Category",
+          categories,
+          selectedCategories,
+          (id) => toggleItem(id, selectedCategories, setSelectedCategories),
+          "categories",
+          "name"
+        )}
 
-          <AnimatePresence>
-            {brandAccordionOpen && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                className="overflow-hidden mt-2"
-              >
-                <div className="flex flex-col gap-2 bg-white border border-gray-200 rounded-[12px] max-h-[200px] overflow-auto p-2 shadow">
-                  {loadingBrands ? (
-                    <div className="text-center py-4 text-gray-500">
-                      در حال بارگذاری برندها...
-                    </div>
-                  ) : (
-                    brands.map((brand) => (
-                      <label
-                        key={brand.id}
-                        className="flex items-center gap-2 py-1 cursor-pointer text-sm select-none"
-                      >
-                        <input
-                          type="checkbox"
-                          checked={selectedBrands.includes(brand.id)}
-                          onChange={() => toggleBrand(brand.id)}
-                        />
-                        {brand.name}
-                      </label>
-                    ))
-                  )}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+        {/* برند */}
+        {renderAccordion(
+          "Brand",
+          brands,
+          selectedBrands,
+          (id) => toggleItem(id, selectedBrands, setSelectedBrands),
+          "brands",
+          "display_name"
+        )}
+
+        {/* خودرو */}
+        {renderAccordion(
+          "Car",
+          brands.flatMap((b) => b.cars || []),
+          selectedCars,
+          (id) => toggleItem(id, selectedCars, setSelectedCars),
+          "cars",
+          "name"
+        )}
 
         {/* نوع کالا */}
         <div className="w-full">
           <div
             className="flex justify-between items-center cursor-pointer"
-            onClick={() => setTypeAccordionOpen((prev) => !prev)}
+            onClick={() => toggleAccordion("productType")}
           >
             <div className="flex items-center gap-2 pr-1">
-              <Image src="/part.svg" alt="نوع کالا" width={20} height={20} />
+              <Image src="/car.svg" alt="نوع کالا" width={20} height={20} />
               <span className="text-[14px] font-yekanDemiBold text-[#000]">
                 نوع کالا
               </span>
@@ -174,20 +284,20 @@ export default function FilterProductCar({
               width={16}
               height={16}
               className={`transition-transform duration-300 ${
-                typeAccordionOpen ? "rotate-180" : ""
+                accordion.productType ? "rotate-180" : ""
               }`}
             />
           </div>
 
           <AnimatePresence>
-            {typeAccordionOpen && (
+            {accordion.productType && (
               <motion.div
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: "auto", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
                 className="overflow-hidden mt-2"
               >
-                <div className="flex flex-col gap-2 bg-white border border-gray-200 rounded-[12px] max-h-[150px] overflow-auto p-2 shadow">
+                <div className="flex flex-col gap-2 bg-white border border-gray-200 rounded-[12px] max-h-[200px] overflow-auto p-2 shadow">
                   {productTypes.map((type) => (
                     <label
                       key={type}
@@ -196,8 +306,9 @@ export default function FilterProductCar({
                       <input
                         type="radio"
                         name="productType"
+                        value={type}
                         checked={selectedProductType === type}
-                        onChange={() => handleSelectProductType(type)}
+                        onChange={() => handleProductType(type)}
                       />
                       {type === "spare" ? "قطعات یدکی" : "مصرفی"}
                     </label>
@@ -208,73 +319,6 @@ export default function FilterProductCar({
           </AnimatePresence>
         </div>
       </div>
-
-      {/* فیلتر موبایل - اسلاید از راست */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ type: "tween" }}
-            className="fixed top-0 left-0 w-full h-full z-50 bg-white p-6 overflow-auto"
-          >
-            <button
-              onClick={() => setIsOpen(false)}
-              className="mb-4 px-3 py-1 border rounded bg-[#F0F0F3]"
-            >
-              بستن
-            </button>
-
-            <div className="text-[20px] text-[#000000] font-yekanDemiBold mb-6">
-              فیلترها
-            </div>
-
-            {/* برند */}
-            <div className="mb-6">
-              <div className="mb-2 font-semibold text-lg">برند خودرو</div>
-              {loadingBrands ? (
-                <div className="text-center py-4 text-gray-500">
-                  در حال بارگذاری برندها...
-                </div>
-              ) : (
-                brands.map((brand) => (
-                  <label
-                    key={brand.id}
-                    className="flex items-center gap-2 py-1 cursor-pointer text-sm select-none"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={selectedBrands.includes(brand.id)}
-                      onChange={() => toggleBrand(brand.id)}
-                    />
-                    {brand.name}
-                  </label>
-                ))
-              )}
-            </div>
-
-            {/* نوع کالا */}
-            <div>
-              <div className="mb-2 font-semibold text-lg">نوع کالا</div>
-              {productTypes.map((type) => (
-                <label
-                  key={type}
-                  className="flex items-center gap-2 py-1 cursor-pointer text-sm select-none"
-                >
-                  <input
-                    type="radio"
-                    name="productType"
-                    checked={selectedProductType === type}
-                    onChange={() => handleSelectProductType(type)}
-                  />
-                  {type === "spare" ? "قطعات یدکی" : "مصرفی"}
-                </label>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </>
   );
 }

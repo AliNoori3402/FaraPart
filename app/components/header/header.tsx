@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import "../font.css";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Header() {
   const [brands, setBrands] = useState<any[]>([]);
@@ -319,9 +320,12 @@ export default function Header() {
               </svg>
               <div className="text-[16px] font-yekanRegular">0</div>
             </div>
-            <button className="w-[115px] h-[42px] rounded-[16px] text-[14px] text-white font-yekanRegular bg-[#004D7A]">
-              ثبت نام / ورود
-            </button>
+
+            <Link href={"/login-rigister"}>
+              <button className="w-[115px] h-[42px] rounded-[16px] text-[14px] text-white font-yekanRegular bg-[#004D7A]">
+                ثبت نام / ورود
+              </button>
+            </Link>
           </div>
         </div>
         <div className="hidden lg:flex absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[323px] border border-[#E0E1E6] rounded-full h-[42px] px-4 items-center justify-center bg-white z-20">

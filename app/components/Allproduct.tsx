@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useRouter } from "next/navigation"; // اضافه شد
+import { useRouter } from "next/navigation";
 
 const PAGE_SIZE = 10;
 
@@ -18,7 +18,7 @@ type ProductListProps = {
   onPageChange?: (page: number) => void;
   products?: Product[];
   totalFilteredCount?: number;
-  onProductClick?: (id: number) => void; // اضافه شد
+  onProductClick?: (id: number) => void;
 };
 
 const AllProductList: React.FC<ProductListProps> = ({
@@ -27,7 +27,7 @@ const AllProductList: React.FC<ProductListProps> = ({
   products: filteredProducts,
   totalFilteredCount,
 }) => {
-  const router = useRouter(); // استفاده از useRouter
+  const router = useRouter();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -115,8 +115,8 @@ const AllProductList: React.FC<ProductListProps> = ({
             {products.map((product) => (
               <div
                 key={product.id}
-                onClick={() => router.push(`/product/${product.id}`)} // اضافه شد
-                className="w-full bg-[#FFFFFF] border border-[#E0E1E6] flex flex-col gap-4 justify-center items-center rounded-[24px] px-4 py-6 cursor-pointer" // cursor-pointer اضافه شد
+                onClick={() => router.push(`/product/${product.id}`)}
+                className="w-full bg-[#FFFFFF] border border-[#E0E1E6] flex flex-col gap-4 justify-center items-center rounded-[24px] px-4 py-6 cursor-pointer"
               >
                 <div className="w-full h-[180px] flex justify-center items-center">
                   <img

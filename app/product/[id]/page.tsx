@@ -2,10 +2,10 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+
+import axios from "axios";
 import ProductImages from "../../components/DeatilPartImage";
 import TextDetails from "../../components/TextDetails";
-import ProductTabs from "../../components/TabDetails";
-import axios from "axios";
 
 type ProductDetail = {
   id: number;
@@ -270,8 +270,6 @@ const ProductDetailPage: React.FC = () => {
       </div>
 
       <TextDetails />
-
-      <ProductTabs />
     </div>
   );
 };

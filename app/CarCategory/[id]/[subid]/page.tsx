@@ -1,15 +1,15 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { useParams } from "next/navigation";
 import ProductSlider from "../../../components/ProductSlider";
-
 import ProductList from "../../../components/ProductList";
 import FilterProductCar from "../../../components/FilterProductCar";
 
+type ProductType = "spare" | "consumable";
+
 function Page() {
   const params = useParams();
-
   const carIdParam = params.subid;
   const carId = Array.isArray(carIdParam) ? carIdParam[0] : carIdParam || "1";
 
@@ -19,25 +19,35 @@ function Page() {
     10
   );
 
-  // مدیریت فیلترها و صفحه
   const [selectedBrands, setSelectedBrands] = useState<number[]>([]);
-  const [selectedProductType, setSelectedProductType] = useState<string>("");
+  const [selectedCars, setSelectedCars] = useState<number[]>([]);
+  const [selectedProductType, setSelectedProductType] = useState<
+    ProductType | ""
+  >("");
+  const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
   const [currentPage, setCurrentPage] = useState(pageNumber);
+  const [selectedCategory, setSelectedCategory] = useState<number | undefined>(
+    2
+  );
 
-  // وقتی فیلترها تغییر کرد صفحه رو به 1 برگردون
   const resetPage = () => setCurrentPage(1);
 
-  // تابعی که از FilterProductPage فیلترها رو میگیره
-  const handleFilterChange = (brands: number[], productType: string) => {
+  const handleFilterChange = (
+    brands: number[],
+    cars: number[],
+    productType: ProductType | "",
+    categories: number[]
+  ) => {
     setSelectedBrands(brands);
+    setSelectedCars(cars);
     setSelectedProductType(productType);
+    setSelectedCategories(categories);
     resetPage();
   };
 
   return (
     <div className="w-full px-4 md:px-8 lg:px-0 max-w-[1440px] mx-auto">
       <div className="w-full flex flex-col justify-center items-center gap-6 md:gap-[58px] pt-8 pb-20 lg:pr-[80px]">
-        {/* نوار مسیر */}
         <div className="flex flex-wrap gap-1 justify-center items-center text-[14px] text-[#1C2024] font-yekanDemiBold">
           <span>لوازم یدکی</span>
           <img
@@ -58,17 +68,19 @@ function Page() {
           <div className="text-[16px] text-[#8B8D98] font-yekanBold">
             جستجوی دقیق
           </div>
-
-          <ProductSlider />
-
+          <ProductSlider
+            onCategoryClick={(categoryId) => {
+              setSelectedCategory(categoryId);
+              resetPage();
+            }}
+          />
           <div className="w-full flex flex-col lg:flex-row gap-10">
             <div className="w-full lg:w-[30%]">
               <FilterProductCar
-                onFilter={handleFilterChange}
+                onFilterChange={handleFilterChange}
                 currentPage={currentPage}
                 resetPage={resetPage}
-                initialSelectedBrands={selectedBrands}
-                initialSelectedProductType={selectedProductType}
+                categoryId={selectedCategory}
               />
             </div>
 
@@ -78,7 +90,9 @@ function Page() {
                 currentPage={currentPage}
                 onPageChange={setCurrentPage}
                 selectedBrands={selectedBrands}
+                selectedCars={selectedCars}
                 selectedProductType={selectedProductType}
+                selectedCategories={selectedCategories}
               />
             </div>
           </div>

@@ -5,44 +5,66 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import axios from "axios";
 
-type Brand = { id: number; name: string };
+type Car = {
+  id: number;
+  code: string;
+  name: string;
+};
+
+type Brand = {
+  id: number;
+  name: string;
+  display_name: string;
+  cars: Car[];
+};
+
 type ProductType = "spare" | "consumable";
 
 type Product = { id: number; name: string };
 
 type FilterProductPageProps = {
   onFilter: (products: Product[], totalCount: number) => void;
-  currentPage: number; // شماره صفحه از بیرون میاد
-  pageSize?: number; // اندازه صفحه (پیش‌فرض 12)
-  resetPage: () => void; // تابعی برای ریست کردن صفحه به 1
+  currentPage: number;
+  pageSize?: number;
+  resetPage: () => void;
+  categoryId?: number; // اضافه شد
 };
-
+type Category = {
+  id: number;
+  name: string;
+};
 export default function FilterProductPage({
   onFilter,
   currentPage,
   pageSize = 12,
   resetPage,
+  categoryId, // اضافه شد
 }: FilterProductPageProps) {
-  // موبایل: باز/بسته بودن فیلتر
   const [isOpen, setIsOpen] = useState(false);
-
-  // برندها و انتخاب شده‌ها
+  const [categories, setCategories] = useState<Category[]>([]);
+  // برندها و ماشین‌ها
   const [brands, setBrands] = useState<Brand[]>([]);
   const [selectedBrands, setSelectedBrands] = useState<number[]>([]);
+  const [selectedCars, setSelectedCars] = useState<number[]>([]);
   const [loadingBrands, setLoadingBrands] = useState(false);
+  const [loadingCars, setLoadingCars] = useState(false);
 
-  // نوع کالا و انتخاب شده
+  // اکاردیون‌ها
+  const [categoryAccordionOpen, setCategoryAccordionOpen] = useState(false);
+  const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
+  const [brandAccordionOpen, setBrandAccordionOpen] = useState(false);
+  const [carAccordionOpen, setCarAccordionOpen] = useState(false);
+
+  // نوع کالا
   const productTypes: ProductType[] = ["spare", "consumable"];
   const [selectedProductType, setSelectedProductType] = useState<
     ProductType | ""
   >("");
+  const [loading, setLoading] = useState(true);
+  const [typeAccordionOpen, setTypeAccordionOpen] = useState(false);
   const [loadingType, setLoadingType] = useState(false);
 
-  // آکاردئون (باز/بسته شدن بخش‌ها)
-  const [brandAccordionOpen, setBrandAccordionOpen] = useState(false);
-  const [typeAccordionOpen, setTypeAccordionOpen] = useState(false);
-
-  // گرفتن برندها فقط یکبار هنگام لود اولیه
+  // گرفتن برندها و ماشین‌ها فقط یکبار
   useEffect(() => {
     const fetchBrands = async () => {
       try {
@@ -57,14 +79,56 @@ export default function FilterProductPage({
     };
     fetchBrands();
   }, []);
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const res = await fetch("/api/categorylist");
+        if (!res.ok) throw new Error("Failed to fetch");
+        const data: Category[] = await res.json();
+        setCategories(data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    }
 
-  // گرفتن محصولات بر اساس فیلتر و صفحه‌بندی
+    fetchCategories();
+  }, []);
+  // تابع فیلتر محصولات
   const fetchFilteredProducts = async () => {
     try {
       let res;
 
-      // اگر نوع کالا انتخاب شده باشه، اولویت با فیلتر نوع کالا است
-      if (selectedProductType) {
+      // اگر prop categoryId داده شده باشه
+      if (categoryId) {
+        res = await axios.get("/api/CategoryFilter", {
+          params: {
+            category_id: categoryId,
+            pageNumber: currentPage,
+            pageSize,
+          },
+        });
+      }
+      // اگر کاربر دسته‌بندی‌ها رو انتخاب کرده
+      else if (selectedCategories.length > 0) {
+        res = await axios.get("/api/CategoryFilter", {
+          params: {
+            category_id: selectedCategories.join(","),
+            pageNumber: currentPage,
+            pageSize,
+          },
+        });
+      } else if (selectedCars.length > 0) {
+        setLoadingCars(true);
+        res = await axios.get("/api/CarFilter", {
+          params: {
+            car_id: selectedCars.join(","),
+            pagenumber: currentPage,
+            pagesize: pageSize,
+          },
+        });
+      } else if (selectedProductType) {
         setLoadingType(true);
         res = await axios.post("/api/filterSpare", {
           part_type: selectedProductType,
@@ -73,20 +137,16 @@ export default function FilterProductPage({
           pageNumber: currentPage,
           pageSize,
         });
-      }
-      // اگر فقط برند انتخاب شده باشه
-      else if (selectedBrands.length > 0) {
+      } else if (selectedBrands.length > 0) {
         setLoadingBrands(true);
         res = await axios.get("/api/BrandFilter", {
           params: {
-            category_id: selectedBrands.join(","),
+            brand_id: selectedBrands.join(","),
             pageNumber: currentPage,
             pageSize,
           },
         });
-      }
-      // اگر هیچ فیلتری انتخاب نشده باشه، کل محصولات
-      else {
+      } else {
         res = await axios.get("/api/products", {
           params: { pageNumber: currentPage, pageSize },
         });
@@ -98,33 +158,52 @@ export default function FilterProductPage({
       onFilter([], 0);
     } finally {
       setLoadingBrands(false);
+      setLoadingCars(false);
       setLoadingType(false);
     }
   };
 
-  // اجرا وقتی فیلتر یا صفحه تغییر کرد
   useEffect(() => {
     fetchFilteredProducts();
-  }, [selectedBrands, selectedProductType, currentPage]);
-
-  // انتخاب/حذف برندها و ریست صفحه
+  }, [
+    selectedBrands,
+    selectedCars,
+    selectedProductType,
+    currentPage,
+    categoryId,
+    selectedCategories,
+  ]);
+  const toggleCategory = (id: number) => {
+    setSelectedCategories((prev) =>
+      prev.includes(id) ? prev.filter((c) => c !== id) : [...prev, id]
+    );
+    resetPage();
+  };
+  // توگل برند
   const toggleBrand = (id: number) => {
     setSelectedBrands((prev) =>
       prev.includes(id) ? prev.filter((b) => b !== id) : [...prev, id]
     );
-    resetPage(); // صفحه برگرده به 1
+    resetPage();
   };
 
-  // انتخاب نوع کالا و ریست صفحه
+  // توگل ماشین
+  const toggleCar = (id: number) => {
+    setSelectedCars((prev) =>
+      prev.includes(id) ? prev.filter((c) => c !== id) : [...prev, id]
+    );
+    resetPage();
+  };
+
+  // انتخاب نوع کالا
   const handleSelectProductType = (type: ProductType) => {
-    // اگر دوباره روی همان نوع کلیک شد، آن را خالی کن (تغییر وضعیت)
     setSelectedProductType((prev) => (prev === type ? "" : type));
-    resetPage(); // صفحه برگرده به 1
+    resetPage();
   };
 
   return (
     <>
-      {/* دکمه باز کردن فیلتر موبایل */}
+      {/* دکمه موبایل */}
       <div className="md:hidden w-full flex justify-start px-4 mb-4">
         <button
           onClick={() => setIsOpen(true)}
@@ -140,7 +219,66 @@ export default function FilterProductPage({
         <div className="text-[20px] text-[#000000] font-yekanDemiBold">
           فیلترها
         </div>
+        <div className="w-full">
+          <div
+            className="flex justify-between items-center cursor-pointer"
+            onClick={() => setCategoryAccordionOpen((prev) => !prev)}
+          >
+            <div className="flex items-center gap-2 pr-1">
+              <Image
+                src="/category.svg"
+                alt="دسته‌بندی"
+                width={20}
+                height={20}
+              />
+              <span className="text-[14px] font-yekanDemiBold text-[#000]">
+                دسته‌بندی
+              </span>
+            </div>
+            <Image
+              src="/Arrow-downG.svg"
+              alt="toggle"
+              width={16}
+              height={16}
+              className={`transition-transform duration-300 ${
+                categoryAccordionOpen ? "rotate-180" : ""
+              }`}
+            />
+          </div>
 
+          <AnimatePresence>
+            {categoryAccordionOpen && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                className="overflow-hidden mt-2"
+              >
+                <div className="flex flex-col gap-2 bg-white border border-gray-200 rounded-[12px] max-h-[200px] overflow-auto p-2 shadow">
+                  {loading ? (
+                    <div className="text-center py-4 text-gray-500">
+                      در حال بارگذاری دسته‌بندی‌ها...
+                    </div>
+                  ) : (
+                    categories.map((category) => (
+                      <label
+                        key={category.id}
+                        className="flex items-center gap-2 py-1 cursor-pointer text-sm select-none"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={selectedCategories.includes(category.id)}
+                          onChange={() => toggleCategory(category.id)}
+                        />
+                        {category.name}
+                      </label>
+                    ))
+                  )}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
         {/* برند */}
         <div className="w-full">
           <div
@@ -188,9 +326,68 @@ export default function FilterProductPage({
                           checked={selectedBrands.includes(brand.id)}
                           onChange={() => toggleBrand(brand.id)}
                         />
-                        {brand.name}
+                        {brand.display_name}
                       </label>
                     ))
+                  )}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* ماشین */}
+        <div className="w-full">
+          <div
+            className="flex justify-between items-center cursor-pointer"
+            onClick={() => setCarAccordionOpen((prev) => !prev)}
+          >
+            <div className="flex items-center gap-2 pr-1">
+              <Image src="/car.svg" alt="ماشین" width={20} height={20} />
+              <span className="text-[14px] font-yekanDemiBold text-[#000]">
+                خودروها
+              </span>
+            </div>
+            <Image
+              src="/Arrow-downG.svg"
+              alt="toggle"
+              width={16}
+              height={16}
+              className={`transition-transform duration-300 ${
+                carAccordionOpen ? "rotate-180" : ""
+              }`}
+            />
+          </div>
+
+          <AnimatePresence>
+            {carAccordionOpen && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                className="overflow-hidden mt-2"
+              >
+                <div className="flex flex-col gap-2 bg-white border border-gray-200 rounded-[12px] max-h-[200px] overflow-auto p-2 shadow">
+                  {loadingCars ? (
+                    <div className="text-center py-4 text-gray-500">
+                      در حال بارگذاری خودروها...
+                    </div>
+                  ) : (
+                    brands
+                      .flatMap((brand) => brand.cars)
+                      .map((car) => (
+                        <label
+                          key={car.id}
+                          className="flex items-center gap-2 py-1 cursor-pointer text-sm select-none"
+                        >
+                          <input
+                            type="checkbox"
+                            checked={selectedCars.includes(car.id)}
+                            onChange={() => toggleCar(car.id)}
+                          />
+                          {car.name}
+                        </label>
+                      ))
                   )}
                 </div>
               </motion.div>
