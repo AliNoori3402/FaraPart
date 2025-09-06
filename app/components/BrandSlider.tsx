@@ -1,34 +1,32 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
+import axios from "axios";
 
 type Brand = {
-  name: string;
-  image: string;
+  brand_name_fa: string;
+  logo: string | null;
 };
 
-const brands: Brand[] = [
-  { name: "سایپا", image: "/car-logo.svg" },
-  { name: "کیا", image: "/car-logo.svg" },
-  { name: "هیوندای", image: "/car-logo.svg" },
-  { name: "تویوتا", image: "/car-logo.svg" },
-  { name: "بنز", image: "/car-logo.svg" },
-  { name: "بی‌ام‌و", image: "/car-logo.svg" },
-  { name: "سایپا", image: "/car-logo.svg" },
-  { name: "کیا", image: "/car-logo.svg" },
-  { name: "هوندا", image: "/car-logo.svg" },
-  { name: "بی‌ام‌و", image: "/car-logo.svg" },
-  { name: "سایپا", image: "/car-logo.svg" },
-  { name: "کیا", image: "/car-logo.svg" },
-  { name: "هوندا", image: "/car-logo.svg" },
-  { name: "بی‌ام‌و", image: "/car-logo.svg" },
-  { name: "سایپا", image: "/car-logo.svg" },
-  { name: "کیا", image: "/car-logo.svg" },
-  { name: "هوندا", image: "/car-logo.svg" },
-];
+interface CarBrandSliderProps {
+  onSelectBrand: (brand: string) => void;
+}
 
-export default function CarBrandSlider() {
+export default function CarBrandSlider({ onSelectBrand }: CarBrandSliderProps) {
   const sliderRef = useRef<HTMLDivElement>(null);
+  const [brands, setBrands] = useState<Brand[]>([]);
+
+  useEffect(() => {
+    const fetchBrands = async () => {
+      try {
+        const res = await axios.get("/api/investigate");
+        setBrands(res.data);
+      } catch (err) {
+        console.error("Error fetching brands:", err);
+      }
+    };
+    fetchBrands();
+  }, []);
 
   const scroll = (direction: "left" | "right") => {
     const container = sliderRef.current;
@@ -43,7 +41,6 @@ export default function CarBrandSlider() {
 
   return (
     <div className="w-full max-w-[1280px] flex flex-col gap-[32px] justify-center items-center bg-[#004D7A] rounded-[32px] overflow-hidden px-4 py-6">
-      {/* عنوان */}
       <div className="text-[14px] text-white font-yekanDemiBold">
         برند خودرو را انتخاب کنید
       </div>
@@ -56,23 +53,24 @@ export default function CarBrandSlider() {
         {brands.map((brand, index) => (
           <div
             key={index}
+            onClick={() => onSelectBrand(brand.brand_name_fa)}
             className="w-[99px] h-[138px] flex flex-col justify-center items-center gap-[24px] rounded-[24px] shrink-0 transition duration-300 hover:bg-[#FE7D11] cursor-pointer"
           >
             <div className="w-[59px] h-[64px]">
               <img
-                src={brand.image}
+                src={brand.logo ?? "/car-logo.svg"}
                 className="w-full h-full object-contain"
-                alt={brand.name}
+                alt={brand.brand_name_fa}
               />
             </div>
             <div className="h-[26px] text-[20px] text-white font-yekanDemiBold text-center">
-              {brand.name}
+              {brand.brand_name_fa}
             </div>
           </div>
         ))}
       </div>
 
-      {/* دکمه‌های اسکرول - فقط در md به بالا */}
+      {/* دکمه‌های اسکرول */}
       <div className="hidden md:flex flex-row gap-[12px] mt-2">
         <button
           onClick={() => scroll("right")}
@@ -81,7 +79,7 @@ export default function CarBrandSlider() {
           <img
             src="/Arrow-rightB.svg"
             alt="right"
-            className="w-[24px] h-[24px] object-contain"
+            className="w-[24px] h-[24px]"
           />
         </button>
         <button
@@ -91,7 +89,7 @@ export default function CarBrandSlider() {
           <img
             src="/Arrow-leftB.svg"
             alt="left"
-            className="w-[24px] h-[24px] object-contain"
+            className="w-[24px] h-[24px]"
           />
         </button>
       </div>
