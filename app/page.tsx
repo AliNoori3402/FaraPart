@@ -4,6 +4,7 @@ import AmazingSlider from "./components/RecSlider";
 import FilterProduct from "./components/FilterProduct";
 import BrandGrid from "./components/BrandGrid";
 import NewsSlider from "./components/BlogSlider";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -59,9 +60,11 @@ export default function Home() {
               <p className="text-[14px] sm:text-[16px] text-white font-yekanRegular leading-[24px]">
                 بررسی با جزئیات دقیق قطعات براساس برند و مدل خودرو ها
               </p>
-              <button className="w-[151px] h-[42px] text-[16px] text-white font-yekanDemiBold bg-gradient-to-r from-[#005E95] to-[#004D7A] rounded-[16px]">
-                بررسی قطعات خودرو
-              </button>
+              <Link href={"/investigate"}>
+                <button className="w-[151px] h-[42px] text-[16px] text-white font-yekanDemiBold bg-gradient-to-r from-[#005E95] to-[#004D7A] rounded-[16px]">
+                  بررسی قطعات خودرو
+                </button>
+              </Link>
             </div>
           </div>
 

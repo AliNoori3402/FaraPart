@@ -10,14 +10,10 @@ import Link from "next/link";
 export default function Header() {
   const [brands, setBrands] = useState<any[]>([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [hoveredBrand, setHoveredBrand] = useState<any | null>(null);
   const [showSearch, setShowSearch] = useState(false);
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
-  const [isCategoryOpen, setIsCategoryOpen] = useState(false);
-  const [expandedBrands, setExpandedBrands] = useState<{
-    [key: string]: boolean;
-  }>({});
   const router = useRouter();
+
   useEffect(() => {
     const getBrands = async () => {
       try {
@@ -30,19 +26,14 @@ export default function Header() {
     getBrands();
   }, []);
 
-  const toggleBrand = (brandId: string) => {
-    setExpandedBrands((prev) => ({
-      ...prev,
-      [brandId]: !prev[brandId],
-    }));
-  };
-
   return (
     <div className="h-[169px] flex flex-col items-center justify-center gap-4 font-yekanDemiBold py-4 relative">
       <div className="w-[152px] h-[44px] bg-[#D9D9D9]" />
       <div className="w-[323px] h-px bg-[#E8E8EC]" />
+
       <div className="w-full max-w-[1280px] px-4 flex flex-nowrap items-center justify-between gap-4 lg:gap-[135px] relative">
         <div className="w-[50px] lg:w-[350px] h-[42px] flex flex-nowrap items-center justify-center gap-[28px] min-w-max">
+          {/* Dropdown - فقط برندها */}
           <div className="relative flex flex-col items-start cursor-pointer">
             <div className="hidden md:flex items-center gap-1 relative">
               <div
@@ -66,55 +57,35 @@ export default function Header() {
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.3 }}
-                    className="absolute top-full mt-4 bg-white shadow-xl rounded-[16px] z-50 w-[820px] right-0 overflow-hidden"
+                    transition={{ duration: 0.25 }}
+                    className="absolute top-full mt-4 bg-white shadow-xl rounded-2xl z-50 min-w-[760px] max-w-[560px] w-fit right-0 overflow-hidden border border-gray-100"
                   >
-                    <div className="flex flex-row gap-6 w-full">
-                      <div className="w-1/2 flex flex-col gap-2 pr-2">
-                        {brands.map((brand) => (
-                          <div
-                            key={brand.id}
-                            onMouseEnter={() => setHoveredBrand(brand)}
-                            onClick={() =>
-                              router.push(`/CarCategory/${brand.id}`)
-                            }
-                            className="flex items-center gap-[10.5px] cursor-pointer hover:bg-gray-100 p-2 rounded"
-                          >
-                            <img
-                              src="/car-logo.svg"
-                              alt={brand.display_name}
-                              className="w-8 h-8 object-contain"
-                            />
-                            <span className="text-[16px]">
-                              {brand.display_name}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                      <div className="w-1/2 flex flex-col gap-2 border-r pr-4">
-                        {hoveredBrand?.cars?.length > 0 ? (
-                          hoveredBrand.cars.map((car: any) => (
-                            <div
-                              key={car.id}
-                              onClick={() =>
-                                router.push(`/CarCategory/${car.id}`)
-                              }
-                              className="text-[15px] px-2 py-1 rounded hover:bg-gray-100 cursor-pointer"
-                            >
-                              {car.name}
-                            </div>
-                          ))
-                        ) : (
-                          <div className="text-gray-400 text-sm">
-                            یک برند را انتخاب کنید
-                          </div>
-                        )}
-                      </div>
+                    <div className="flex flex-wrap gap-10 divide-gray-100">
+                      {brands.map((brand) => (
+                        <button
+                          key={brand.id}
+                          onClick={() =>
+                            router.push(`/CarCategory/${brand.id}`)
+                          }
+                          className="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 transition"
+                        >
+                          <img
+                            src="/car-logo.svg"
+                            alt={brand.display_name}
+                            className="w-7 h-7 object-contain shrink-0"
+                          />
+                          <span className="text-base text-gray-800">
+                            {brand.display_name}
+                          </span>
+                        </button>
+                      ))}
                     </div>
                   </motion.div>
                 )}
               </AnimatePresence>
             </div>
+
+            {/* منوی موبایل */}
             <div className="md:hidden flex items-center gap-2">
               <button
                 onClick={() => setIsBurgerOpen(true)}
@@ -152,93 +123,52 @@ export default function Header() {
                   >
                     &times;
                   </button>
-                  <button
-                    onClick={() => setIsCategoryOpen(!isCategoryOpen)}
-                    className="flex justify-between items-center w-full py-2 px-3 text-[18px] font-yekanDemiBold rounded cursor-pointer"
-                  >
-                    <span>دسته بندی</span>
-                    <motion.svg
-                      initial={false}
-                      animate={{ rotate: isCategoryOpen ? 90 : 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="w-5 h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M9 5l7 7-7 7"
-                      />
-                    </motion.svg>
-                  </button>
-                  <AnimatePresence>
-                    {isCategoryOpen && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="flex flex-col gap-1 overflow-auto"
+                  <div className="flex flex-col gap-2">
+                    {brands.map((brand) => (
+                      <button
+                        key={brand.id}
+                        onClick={() => router.push(`/CarCategory/${brand.id}`)}
+                        className="flex items-center gap-3 cursor-pointer hover:bg-gray-100 p-2 rounded w-full"
                       >
-                        {brands.map((brand) => (
-                          <div key={brand.id} className="flex flex-col">
-                            <button
-                              onClick={() => toggleBrand(brand.id)}
-                              className="flex items-center gap-3 cursor-pointer hover:bg-gray-100 p-2 rounded w-full"
-                            >
-                              <img
-                                src="/car-logo.svg"
-                                alt={brand.display_name}
-                                className="w-8 h-8 object-contain"
-                              />
-                              <span className="text-[18px]">
-                                {brand.display_name}
-                              </span>
-                            </button>
-                            <AnimatePresence>
-                              {expandedBrands[brand.id] && brand.cars && (
-                                <motion.div
-                                  initial={{ height: 0, opacity: 0 }}
-                                  animate={{ height: "auto", opacity: 1 }}
-                                  exit={{ height: 0, opacity: 0 }}
-                                  transition={{ duration: 0.3 }}
-                                  className="pl-10 flex flex-col gap-1 overflow-hidden"
-                                >
-                                  {brand.cars.map((car: any) => (
-                                    <div
-                                      key={car.id}
-                                      className="text-[16px] text-right px-2 py-1 hover:bg-gray-100 rounded cursor-pointer"
-                                    >
-                                      {car.name}
-                                    </div>
-                                  ))}
-                                </motion.div>
-                              )}
-                            </AnimatePresence>
-                          </div>
-                        ))}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                  <div className="text-[18px] font-yekanDemiBold cursor-pointer pr-2">
-                    سامانه خودرو
+                        <img
+                          src="/car-logo.svg"
+                          alt={brand.display_name}
+                          className="w-8 h-8 object-contain"
+                        />
+                        <span className="text-[18px]">
+                          {brand.display_name}
+                        </span>
+                      </button>
+                    ))}
                   </div>
+                  <Link href={"/product"}>
+                    <div className="text-[18px] font-yekanDemiBold cursor-pointer pr-2">
+                      محصولات
+                    </div>
+                  </Link>
+                  <Link href={"/blogs"}>
+                    <div className="text-[18px] font-yekanDemiBold cursor-pointer pr-2">
+                      اخبار ومقالات
+                    </div>
+                  </Link>
                   <div className="text-[18px] font-yekanDemiBold cursor-pointer pr-2">
-                    خرید آنلاین بیمه نامه
+                    اخبار ومقالات
                   </div>
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
-          <div className="text-[14px] text-[#1C2024] hidden md:flex">
-            سامانه خودرو
-          </div>
-          <div className="text-[14px] text-[#1C2024] hidden md:flex">
-            خرید آنلاین بیمه نامه
-          </div>
+
+          <Link href={"/product"}>
+            <div className="text-[14px] text-[#1C2024] hidden md:flex">
+              محصولات
+            </div>
+          </Link>
+          <Link href={"/blog"}>
+            <div className="text-[14px] text-[#1C2024] hidden md:flex">
+              اخبار ومقالات
+            </div>
+          </Link>
         </div>
         <div className="flex flex-nowrap items-center justify-end gap-3 relative min-w-max">
           <div className="lg:hidden">

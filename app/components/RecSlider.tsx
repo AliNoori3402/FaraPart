@@ -105,7 +105,7 @@ export default function AmazingSlider() {
   if (!offer) {
     return (
       <div className="w-full text-center py-10 text-lg font-yekanDemiBold">
-        موردی وجود ندارد
+        پیشنهادی وجود ندارد
       </div>
     );
   }

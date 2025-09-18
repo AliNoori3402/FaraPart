@@ -2,7 +2,7 @@ import React from "react";
 
 function TextDetails() {
   return (
-    <div className="w-full flex flex-wrap justify-center gap-y-[32px] gap-x-[32px]">
+    <div className="w-full flex flex-wrap justify-center gap-y-[32px] gap-x-[32px] mb-6">
       <div className="flex gap-[12px] w-[240px] h-[56px] items-center">
         <img src="/bus.svg" className="w-[56px] h-[56px] object-contain" />
         <div className="flex flex-col gap-[4px]">
