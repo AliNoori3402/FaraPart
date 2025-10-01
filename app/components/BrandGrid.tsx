@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Image from "next/image";
 
 interface Car {
   id: number;
@@ -134,7 +135,7 @@ export default function BrandGrid() {
                         height: "100%",
                       }}
                     >
-                      <img
+                      <Image
                         src="/car-logo.svg"
                         alt={brandName}
                         className="w-[40px] h-[40px]"
@@ -155,7 +156,7 @@ export default function BrandGrid() {
                     key={i}
                     className="w-[100px] min-w-[100px] h-[120px] bg-white rounded-[12px] shadow-md flex flex-col items-center justify-center"
                   >
-                    <img
+                    <Image
                       src="/car-logo.svg"
                       alt={brandName}
                       className="w-[40px] h-[40px]"

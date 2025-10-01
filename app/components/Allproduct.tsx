@@ -3,15 +3,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { Product } from "../product/page";
 
 const PAGE_SIZE = 10;
-
-type Product = {
-  id: number;
-  title: string;
-  price: string;
-  image: string;
-};
 
 type ProductListProps = {
   initialPage?: number;
@@ -20,6 +15,12 @@ type ProductListProps = {
   totalFilteredCount?: number;
   onProductClick?: (id: number) => void;
 };
+interface MappedProduct {
+  id: number;
+  name: string;
+  price: string;
+  image: string;
+}
 
 const AllProductList: React.FC<ProductListProps> = ({
   initialPage = 1,
@@ -45,16 +46,23 @@ const AllProductList: React.FC<ProductListProps> = ({
 
   useEffect(() => {
     if (filteredProducts !== undefined) {
-      const mapped = filteredProducts.map((item: any) => ({
+      const mapped: Product[] = products.map((item) => ({
         id: item.id,
-        title: item.title || item.name,
-        price: item.price ? Number(item.price).toLocaleString("fa-IR") : "0",
-        image:
-          item.image_urls && item.image_urls.length > 0
-            ? item.image_urls[0]
-            : "/Light.svg",
+        name: item.name,
+        price: item.price,
+        image_urls: item.image_urls || [],
+        internal_code: item.internal_code || "",
+        commercial_code: item.commercial_code || "",
+        description: item.description || "",
+        has_warranty: item.has_warranty || false,
+        warranty_name: item.warranty_name || null,
+        inventory: item.inventory || 0,
+        inventory_warning: item.inventory_warning || "",
+        part_type: item.part_type as "spare" | "consumable",
+        car_names: item.car_names || [],
+        turnover: item.turnover || null,
+        category: item.category || { name: "" }, // ← اینجا اضافه شد
       }));
-
       setProducts(mapped);
       setLoading(false);
       setError(null);
@@ -74,7 +82,7 @@ const AllProductList: React.FC<ProductListProps> = ({
 
           const apiProducts = res.data.results.map((item: any) => ({
             id: item.id,
-            title: item.name,
+            name: item.name,
             price: item.price.toLocaleString("fa-IR"),
             image:
               item.image_urls.length > 0 ? item.image_urls[0] : "/Light.svg",
@@ -119,15 +127,19 @@ const AllProductList: React.FC<ProductListProps> = ({
                 className="w-full bg-[#FFFFFF] border border-[#E0E1E6] flex flex-col gap-4 justify-center items-center rounded-[24px] px-4 py-6 cursor-pointer"
               >
                 <div className="w-full h-[180px] flex justify-center items-center">
-                  <img
-                    src={product.image}
+                  <Image
+                    src={
+                      product.image_urls && product.image_urls.length > 0
+                        ? product.image_urls[0]
+                        : "/Light.svg"
+                    }
                     className="w-[200px] h-full object-contain"
-                    alt={product.title}
+                    alt={product.name}
                   />
                 </div>
                 <div className="w-full flex flex-col gap-6">
                   <div className="text-[14px] text-[#1C2024] font-yekanDemiBold leading-[20px]">
-                    {product.title}
+                    {product.name}
                   </div>
                   <div className="flex flex-col gap-2">
                     <div className="flex flex-row gap-2 items-center">
@@ -142,7 +154,7 @@ const AllProductList: React.FC<ProductListProps> = ({
                       <span className="text-[14px] text-[#006FB4] font-yekanDemiBold">
                         مشاهده جزئیات و خرید
                       </span>
-                      <img
+                      <Image
                         src="/Arrow-leftB.svg"
                         className="w-5 h-5"
                         alt="arrow"

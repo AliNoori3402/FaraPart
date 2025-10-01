@@ -2,6 +2,7 @@
 
 import { useRef, useEffect, useState } from "react";
 import axios from "axios";
+import Image from "next/image";
 
 type Brand = {
   brand_name_fa: string;
@@ -57,8 +58,12 @@ export default function CarBrandSlider({ onSelectBrand }: CarBrandSliderProps) {
             className="w-[99px] h-[138px] flex flex-col justify-center items-center gap-[24px] rounded-[24px] shrink-0 transition duration-300 hover:bg-[#FE7D11] cursor-pointer"
           >
             <div className="w-[59px] h-[64px]">
-              <img
-                src={brand.logo ?? "/car-logo.svg"}
+              <Image
+                src={
+                  brand.logo
+                    ? `data:image/png;base64,${brand.logo}` // اضافه کردن MIME type
+                    : "/car-logo.svg"
+                }
                 className="w-full h-full object-contain"
                 alt={brand.brand_name_fa}
               />
@@ -76,7 +81,7 @@ export default function CarBrandSlider({ onSelectBrand }: CarBrandSliderProps) {
           onClick={() => scroll("right")}
           className="w-[48px] h-[48px] rounded-full bg-[#FCFCFD] flex justify-center items-center"
         >
-          <img
+          <Image
             src="/Arrow-rightB.svg"
             alt="right"
             className="w-[24px] h-[24px]"
@@ -86,7 +91,7 @@ export default function CarBrandSlider({ onSelectBrand }: CarBrandSliderProps) {
           onClick={() => scroll("left")}
           className="w-[48px] h-[48px] rounded-full bg-[#FCFCFD] flex justify-center items-center"
         >
-          <img
+          <Image
             src="/Arrow-leftB.svg"
             alt="left"
             className="w-[24px] h-[24px]"

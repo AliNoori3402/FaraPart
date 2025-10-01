@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 function cleanToken(token: string | null) {
   if (!token) return "";
@@ -270,7 +271,7 @@ export default function RegisterPage() {
               بازگشت
             </div>
             <div className="w-[20px] h-[20px]">
-              <img
+              <Image
                 src="/Arrow-leftB.svg"
                 alt="Arrow Icon"
                 className="w-full h-full object-contain"

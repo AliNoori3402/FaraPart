@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter, useParams } from "next/navigation";
+import Image from "next/image";
 
 const PAGE_SIZE = 10;
 
@@ -102,7 +103,7 @@ const ProductList: React.FC<ProductListProps> = ({
             className="w-full bg-[#FFFFFF] border border-[#E0E1E6] flex flex-col gap-4 justify-center items-center rounded-[24px] px-4 py-6 cursor-pointer"
           >
             <div className="w-full h-[180px] flex justify-center items-center">
-              <img
+              <Image
                 src={product.image}
                 className="w-[200px] h-full object-contain"
                 alt={product.title}
@@ -125,7 +126,11 @@ const ProductList: React.FC<ProductListProps> = ({
                   <span className="text-[14px] text-[#006FB4] font-yekanDemiBold">
                     مشاهده جزئیات و خرید
                   </span>
-                  <img src="/Arrow-leftB.svg" className="w-5 h-5" alt="arrow" />
+                  <Image
+                    src="/Arrow-leftB.svg"
+                    className="w-5 h-5"
+                    alt="arrow"
+                  />
                 </div>
               </div>
             </div>

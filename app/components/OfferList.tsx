@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import React from "react";
 
 type Offer = {
@@ -43,7 +44,7 @@ export default function OfferList({ offers }: { offers: Offer[] }) {
               <div className="w-[45px] h-[29px] rounded-full bg-[#D93629] text-white text-[16px] font-yekanRegular flex justify-center items-center absolute top-2 right-2 z-10">
                 20%-
               </div>
-              <img
+              <Image
                 src="/Light.svg"
                 alt={part.name}
                 className="w-full h-full object-contain"
@@ -56,7 +57,6 @@ export default function OfferList({ offers }: { offers: Offer[] }) {
               </div>
               <div className="flex flex-col gap-[8px]">
                 <div className="flex flex-row gap-[4px] items-center">
-                 
                   <p className="text-[16px] text-[#B9BBC6] font-yekanDemiBold line-through">
                     {(part.price * 1.1).toLocaleString()}
                   </p>
@@ -73,7 +73,11 @@ export default function OfferList({ offers }: { offers: Offer[] }) {
                   <div className="text-[14px] text-[#006FB4] font-yekanDemiBold">
                     مشاهده جزئیات و خرید
                   </div>
-                  <img src="/Arrow-leftB.svg" className="w-[20px] h-[20px]" />
+                  <Image
+                    src="/Arrow-leftB.svg"
+                    alt=""
+                    className="w-[20px] h-[20px]"
+                  />
                 </div>
               </div>
             </div>

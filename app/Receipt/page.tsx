@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 
 function page() {
@@ -10,7 +11,11 @@ function page() {
           </div>
           <div className="w-[187px] flex flex-col gap-[16px] justify-center items-center">
             <div className="w-[88px] h-[88px]">
-              <img src="/Accept.svg" className="w-full h-full object-contain" />
+              <Image
+                src="/Accept.svg"
+                alt=""
+                className="w-full h-full object-contain"
+              />
             </div>
             <div className="w-full h-[21px]  text-[16px] text-[#1D9C53] font-yekanDemiBold ">
               پرداخت با موفقیت انجام شد
@@ -80,7 +85,8 @@ function page() {
               بازگشت به صفحه اصلی
             </div>
             <div className="w-[20px] h-[20px] ">
-              <img
+              <Image
+                alt=""
                 src="/Arrow-leftB.svg"
                 className="w-full h-full object-contain"
               />

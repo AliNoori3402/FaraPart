@@ -1,41 +1,68 @@
 "use client";
 
-type Part = {
-  name: string;
-  image: string;
-};
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import axios from "axios";
+import Image from "next/image";
 
-const parts: Part[] = [
-  { name: "لنت", image: "/lent.svg" },
-  { name: "روغن موتور", image: "/lent.svg" },
-  { name: "فیلتر هوا", image: "/lent.svg" },
-  { name: "باتری", image: "/lent.svg" },
-  { name: "چراغ جلو", image: "/lent.svg" },
-  { name: "لنت", image: "/lent.svg" },
-  { name: "روغن موتور", image: "/lent.svg" },
-  { name: "فیلتر هوا", image: "/lent.svg" },
-  { name: "باتری", image: "/lent.svg" },
-  { name: "چراغ جلو", image: "/lent.svg" },
-  { name: "باتری", image: "/lent.svg" },
-  { name: "چراغ جلو", image: "/lent.svg" },
-];
+type Section = string;
 
 const PartsList = () => {
+  const params = useParams<{ id: string }>();
+  console.log(params);
+  const car_name = decodeURIComponent(params.id); // درست گرفتن car_name
+  console.log("Car Name:", car_name);
+
+  const [sections, setSections] = useState<Section[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!car_name) return;
+
+    const fetchSections = async () => {
+      setLoading(true);
+      try {
+        const res = await axios.get(
+          `/api/investigate/category/${encodeURIComponent(car_name)}`
+        );
+        setSections(res.data.sections);
+      } catch (error) {
+        console.error("خطا در دریافت سکشن‌ها:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSections();
+  }, [car_name]);
+
+  if (loading) {
+    return (
+      <div className="text-center text-gray-500">در حال دریافت داده...</div>
+    );
+  }
+
+  if (sections.length === 0) {
+    return (
+      <div className="text-center text-gray-500">هیچ دسته‌بندی‌ای پیدا نشد</div>
+    );
+  }
+
   return (
     <div className="w-full max-w-[1280px] mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[19px]">
-      {parts.map((part, index) => (
+      {sections.map((section, index) => (
         <div
           key={index}
           className="h-[295px] flex flex-col justify-center items-center border border-[#E0E1E6] rounded-[24px] hover:border-b-[4px] hover:border-b-[#005E95] transition-all duration-300"
         >
           <div className="w-[200px] h-[26px] text-[20px] text-[#1C2024] font-yekanDemiBold text-center">
-            {part.name}
+            {section}
           </div>
           <div className="w-[275px] h-[183px]">
-            <img
-              src={part.image}
+            <Image
+              src="/lent.svg"
               className="w-full h-full object-contain"
-              alt={part.name}
+              alt={section}
             />
           </div>
         </div>

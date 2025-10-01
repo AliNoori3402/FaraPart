@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import OfferList from "../components/OfferList";
+import Image from "next/image";
 
 async function getOffers() {
   try {
@@ -76,11 +77,11 @@ export default function Page() {
           <div className="text-[14px] text-[#1C2024] font-yekanDemiBold">
             لوازم یدکی
           </div>
-          <img src="/Arrow-leftG.svg" className="w-[16px] h-[16px]" />
+          <Image src="/Arrow-leftG.svg" alt="" className="w-[16px] h-[16px]" />
           <div className="text-[14px] text-[#1C2024] font-yekanDemiBold">
             لوازم یدکی کیا
           </div>
-          <img src="/Arrow-leftG.svg" className="w-[16px] h-[16px]" />
+          <Image src="/Arrow-leftG.svg" alt="" className="w-[16px] h-[16px]" />
           <div className="text-[14px] text-[#1C2024] font-yekanDemiBold">
             لوازم یدکی سراتو
           </div>

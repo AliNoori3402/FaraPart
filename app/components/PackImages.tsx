@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 
 const images = ["/Light.svg", "/Light.svg", "/Light.svg", "/Light.svg"];
@@ -12,7 +13,7 @@ export default function PackImages() {
       <div className="w-full max-w-[622px] flex flex-col gap-[16px] mx-auto">
         {/* تصویر بزرگ */}
         <div className="w-full max-w-[586px] h-[300px] md:h-[432px] rounded-[40px] bg-[#FCFCFD] border border-[#E0E1E6] flex items-center justify-center mx-auto">
-          <img
+          <Image
             src={images[selectedIndex]}
             className="w-[200px] h-[160px] md:w-[290px] md:h-[234px] object-contain"
             alt="selected"
@@ -31,7 +32,7 @@ export default function PackImages() {
                   : "border-[#E0E1E6]"
               }`}
             >
-              <img
+              <Image
                 src={img}
                 className="w-[70px] h-[55px] md:w-[90px] md:h-[73px] object-contain"
                 alt={`img-${index}`}

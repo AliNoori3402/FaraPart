@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import axios from "axios";
+import Image from "next/image";
 
 interface Part {
   id: number;
@@ -148,7 +149,7 @@ export default function AmazingSlider() {
               className="w-[145px] h-[212px] bg-white rounded-[20px] flex-shrink-0 flex flex-col items-center justify-center gap-4"
             >
               <div className="relative w-[136px] h-[109px]">
-                <img
+                <Image
                   src={p.image_urls[0] || "/no-image.svg"}
                   className="w-full h-full object-contain"
                   alt={p.name}
@@ -183,7 +184,7 @@ export default function AmazingSlider() {
               className="w-[236px] h-[344px] bg-white rounded-[20px] flex-shrink-0 flex flex-col items-center justify-center gap-4"
             >
               <div className="relative w-[221px] h-[178px]">
-                <img
+                <Image
                   src={p.image_urls[0] || "/no-image.svg"}
                   className="w-full h-full object-contain"
                   alt={p.name}
@@ -216,7 +217,7 @@ export default function AmazingSlider() {
               index === 0 ? "bg-[#d9d9d980] cursor-not-allowed" : "bg-white"
             }`}
           >
-            <img src="/Arrow-rightB.svg" className="w-5 h-5" />
+            <Image src="/Arrow-rightB.svg" alt="" className="w-5 h-5" />
           </button>
           <button
             onClick={nextSlide}
@@ -227,7 +228,7 @@ export default function AmazingSlider() {
                 : "bg-[#004D7A]"
             }`}
           >
-            <img src="/Arrow-leftW.svg" className="w-5 h-5" />
+            <Image src="/Arrow-leftW.svg" alt="" className="w-5 h-5" />
           </button>
         </div>
       </div>

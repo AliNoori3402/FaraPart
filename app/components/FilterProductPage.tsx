@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import axios from "axios";
+import { Product } from "../product/page";
 
 type Car = {
   id: number;
@@ -19,8 +20,6 @@ type Brand = {
 };
 
 type ProductType = "spare" | "consumable";
-
-type Product = { id: number; name: string };
 
 type FilterProductPageProps = {
   onFilter: (products: Product[], totalCount: number) => void;

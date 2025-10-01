@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Image from "next/image";
 
 interface Part {
   id: number;
@@ -102,13 +103,17 @@ function Page() {
             >
               <div className="w-full sm:w-[123px] h-[99px] flex justify-center items-center">
                 {item.part.image_urls.length > 0 ? (
-                  <img
+                  <Image
                     src={item.part.image_urls[0]}
                     className="h-full object-contain"
                     alt={item.part.name}
                   />
                 ) : (
-                  <img src="/Light.svg" className="h-full object-contain" />
+                  <Image
+                    src="/Light.svg"
+                    alt=""
+                    className="h-full object-contain"
+                  />
                 )}
               </div>
 
@@ -131,20 +136,20 @@ function Page() {
                 <div className="flex flex-wrap justify-between gap-4">
                   <div className="flex items-center gap-4">
                     <button className="w-12 h-12 rounded-[20px] bg-[#006FB4] flex justify-center items-center">
-                      <img src="/Add.svg" className="w-6 h-6" />
+                      <Image src="/Add.svg" alt="" className="w-6 h-6" />
                     </button>
                     <span className="text-[20px] font-yekanDemiBold">
                       {item.quantity}
                     </span>
                     <button className="w-12 h-12 rounded-[20px] bg-[#FCFCFD] border border-[#E0E1E6] flex justify-center items-center">
-                      <img src="/negative.svg" className="w-6 h-6" />
+                      <Image src="/negative.svg" alt="" className="w-6 h-6" />
                     </button>
                   </div>
                   <button
                     onClick={() => handleDelete(item.id)}
                     className="w-12 h-12 rounded-[20px] bg-[#FCFCFD] border border-[#E0E1E6] flex justify-center items-center"
                   >
-                    <img src="/trash.svg" className="w-6 h-6" />
+                    <Image src="/trash.svg" alt="" className="w-6 h-6" />
                   </button>
                 </div>
               </div>
@@ -189,7 +194,7 @@ function Page() {
             </div>
 
             <div className="flex items-center gap-2">
-              <img src="/discount-tag.svg" className="w-5 h-5" />
+              <Image src="/discount-tag.svg" alt="" className="w-5 h-5" />
               <span className="text-[14px] text-[#D93629] font-yekanRegular">
                 کد تخفیف دارید؟
               </span>

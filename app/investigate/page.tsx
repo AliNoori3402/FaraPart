@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import CarBrandSlider from "../components/BrandSlider";
 import InvestigateCar from "../components/InvestigateCar";
+import Image from "next/image";
 
 function Page() {
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
@@ -18,7 +19,7 @@ function Page() {
           {selectedBrand && (
             <>
               <div className="w-[16px] h-[16px]">
-                <img
+                <Image
                   src="/Arrow-leftG.svg"
                   className="w-full h-full object-contain"
                   alt="arrow"
@@ -35,7 +36,9 @@ function Page() {
         <CarBrandSlider onSelectBrand={setSelectedBrand} />
 
         {/* بررسی تخصصی خودرو */}
-        <InvestigateCar brand={selectedBrand} />
+        {selectedBrand && (
+          <InvestigateCar brand={selectedBrand} id={selectedBrand} />
+        )}
       </div>
     </div>
   );

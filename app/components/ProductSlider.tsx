@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { useRef, useEffect, useState } from "react";
 
 type Category = {
@@ -62,7 +63,7 @@ export default function ProductSlider({ onCategoryClick }: ProductSliderProps) {
             whileHover={{ scale: 1.05 }}
           >
             <div className="w-[120px] sm:w-[140px] h-[100px]">
-              <img
+              <Image
                 src={defaultImage}
                 alt={category.name}
                 className="w-full h-full object-contain"
@@ -80,7 +81,7 @@ export default function ProductSlider({ onCategoryClick }: ProductSliderProps) {
           onClick={() => scroll("right")}
           className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#004D7A] flex justify-center items-center"
         >
-          <img
+          <Image
             src="/Arrow-rightW.svg"
             alt="right"
             className="w-5 h-5 object-contain"
@@ -90,7 +91,7 @@ export default function ProductSlider({ onCategoryClick }: ProductSliderProps) {
           onClick={() => scroll("left")}
           className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#FCFCFD] border border-[#008BDF] flex justify-center items-center"
         >
-          <img
+          <Image
             src="/Arrow-leftB.svg"
             alt="left"
             className="w-5 h-5 object-contain"

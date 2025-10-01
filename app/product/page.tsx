@@ -1,12 +1,53 @@
+// app/product/[id]/page.tsx
 "use client";
 
 import React, { useState } from "react";
 import ProductSlider from "../components/ProductSlider";
 import FilterProductPage from "../components/FilterProductPage";
 import AllProductList from "../components/Allproduct";
+import Image from "next/image";
+// types/product.ts
+export interface Product {
+  id: number;
+  name: string;
+  internal_code: string;
+  commercial_code: string;
+  price: number;
+  description: string;
+  image_urls: string[];
+  part_type: string;
+  car_names: string[];
+  category: {
+    name: string;
+  };
+  turnover: number | null;
+  inventory: number;
+  inventory_warning: string;
+  has_warranty: boolean;
+  warranty_name: string | null;
+}
+
+// -------------------
+// تایپ پروپ‌ها
+// -------------------
+interface FilterProductPageProps {
+  onFilter: (products: Product[], totalCount: number) => void;
+  currentPage: number;
+  resetPage: () => void;
+  categoryId?: number;
+}
+
+interface AllProductListProps {
+  products?: Product[];
+  totalFilteredCount?: number;
+  initialPage: number;
+  onPageChange: (page: number) => void;
+}
 
 export default function Page() {
-  const [filteredProducts, setFilteredProducts] = useState<any[] | null>(null);
+  const [filteredProducts, setFilteredProducts] = useState<Product[] | null>(
+    null
+  );
   const [selectedCategory, setSelectedCategory] = useState<number | undefined>(
     2
   );
@@ -15,7 +56,7 @@ export default function Page() {
   );
   const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const handleFilter = (products: any[], totalCount: number) => {
+  const handleFilter = (products: Product[], totalCount: number) => {
     setFilteredProducts(products);
     setFilteredTotalCount(totalCount);
   };
@@ -34,9 +75,9 @@ export default function Page() {
         {/* نوار مسیر */}
         <div className="flex flex-wrap gap-1 justify-center items-center text-[14px] text-[#1C2024] font-yekanDemiBold">
           <span>لوازم یدکی</span>
-          <img src="/Arrow-leftG.svg" className="w-4 h-4" alt="arrow" />
+          <Image src="/Arrow-leftG.svg" className="w-4 h-4" alt="arrow" />
           <span>لوازم یدکی کیا</span>
-          <img src="/Arrow-leftG.svg" className="w-4 h-4" alt="arrow" />
+          <Image src="/Arrow-leftG.svg" className="w-4 h-4" alt="arrow" />
           <span>لوازم یدکی سراتو</span>
         </div>
 
@@ -47,7 +88,7 @@ export default function Page() {
 
           {/* اسلایدر محصولات */}
           <ProductSlider
-            onCategoryClick={(categoryId) => {
+            onCategoryClick={(categoryId: number) => {
               setSelectedCategory(categoryId);
               resetPage();
             }}
@@ -59,7 +100,7 @@ export default function Page() {
                 onFilter={handleFilter}
                 currentPage={currentPage}
                 resetPage={resetPage}
-                categoryId={selectedCategory} // اضافه شد
+                categoryId={selectedCategory}
               />
             </div>
 

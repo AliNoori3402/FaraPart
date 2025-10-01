@@ -1,10 +1,15 @@
+import Image from "next/image";
 import React from "react";
 
 function TextDetails() {
   return (
     <div className="w-full flex flex-wrap justify-center gap-y-[32px] gap-x-[32px] mb-6">
       <div className="flex gap-[12px] w-[240px] h-[56px] items-center">
-        <img src="/bus.svg" className="w-[56px] h-[56px] object-contain" />
+        <Image
+          src="/bus.svg"
+          alt=""
+          className="w-[56px] h-[56px] object-contain"
+        />
         <div className="flex flex-col gap-[4px]">
           <div className="text-[16px] font-yekanDemiBold text-[#006FB4]">
             ارسال سریع
@@ -15,7 +20,11 @@ function TextDetails() {
         </div>
       </div>
       <div className="flex gap-[12px] w-[240px] h-[56px] items-center">
-        <img src="/medal.svg" className="w-[56px] h-[56px] object-contain" />
+        <Image
+          src="/medal.svg"
+          alt=""
+          className="w-[56px] h-[56px] object-contain"
+        />
         <div className="flex flex-col gap-[4px]">
           <div className="text-[16px] font-yekanDemiBold text-[#D93629]">
             اصالت کالا
@@ -26,7 +35,11 @@ function TextDetails() {
         </div>
       </div>
       <div className="flex gap-[12px] w-[240px] h-[56px] items-center">
-        <img src="/backup.svg" className="w-[56px] h-[56px] object-contain" />
+        <Image
+          src="/backup.svg"
+          alt=""
+          className="w-[56px] h-[56px] object-contain"
+        />
         <div className="flex flex-col gap-[4px]">
           <div className="text-[16px] font-yekanDemiBold text-[#EF6207]">
             پشتیبانی عالی
@@ -37,7 +50,11 @@ function TextDetails() {
         </div>
       </div>
       <div className="flex gap-[12px] w-[240px] h-[56px] items-center">
-        <img src="/clock.svg" className="w-[56px] h-[56px] object-contain" />
+        <Image
+          src="/clock.svg"
+          alt=""
+          className="w-[56px] h-[56px] object-contain"
+        />
         <div className="flex flex-col gap-[4px]">
           <div className="text-[16px] font-yekanDemiBold text-[#1B7A43]">
             ضمانت بازگشت وجه

@@ -2,6 +2,7 @@
 
 import { useRef, useEffect, useState } from "react";
 import axios from "axios";
+import Image from "next/image";
 
 interface BlogPost {
   id: number;
@@ -88,7 +89,7 @@ export default function NewsSlider() {
               style={{ scrollSnapAlign: "start" }}
             >
               <div className="w-full h-[257px] rounded-[16px] overflow-hidden">
-                <img
+                <Image
                   src={post.image || "/car-blog.svg"}
                   alt={post.title}
                   className="w-full h-full object-cover"
@@ -103,7 +104,7 @@ export default function NewsSlider() {
                 </div>
                 <div className="flex justify-between items-center">
                   <div className="flex gap-[8px] items-center">
-                    <img
+                    <Image
                       src="/calender.svg"
                       alt="calendar"
                       className="w-[24px] h-[24px]"
@@ -116,7 +117,7 @@ export default function NewsSlider() {
                     <span className="text-[14px] text-[#006FB4] font-yekanDemiBold">
                       بیشتر بخوانید
                     </span>
-                    <img
+                    <Image
                       src="/Arrow-leftB.svg"
                       alt="arrow"
                       className="w-[20px] h-[20px]"
@@ -136,7 +137,7 @@ export default function NewsSlider() {
             onClick={scrollRight}
             className="w-[48px] h-[48px] rounded-[24px] bg-[#FCFCFD] border border-[#008BDF] flex justify-center items-center"
           >
-            <img
+            <Image
               src="/Arrow-rightB.svg"
               alt="Arrow Left"
               className="w-[24px] h-[24px]"
@@ -146,7 +147,7 @@ export default function NewsSlider() {
             onClick={scrollLeft}
             className="w-[48px] h-[48px] rounded-[24px] bg-[#004D7A] flex justify-center items-center"
           >
-            <img
+            <Image
               src="/Arrow-leftW.svg"
               alt="Arrow Right"
               className="w-[24px] h-[24px]"

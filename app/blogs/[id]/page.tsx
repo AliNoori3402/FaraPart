@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import axios from "axios";
+import Image from "next/image";
 
 export default function BlogDetailsPage() {
   const { id } = useParams();
@@ -42,7 +43,7 @@ export default function BlogDetailsPage() {
           <span className="text-[14px] text-[#1C2024] font-yekanDemiBold">
             اخبار و مقالات
           </span>
-          <img
+          <Image
             src="/Arrow-leftG.svg"
             alt="arrow"
             className="w-[16px] h-[16px] object-contain"
@@ -54,7 +55,7 @@ export default function BlogDetailsPage() {
 
         <div className="flex flex-col lg:flex-row gap-[40px] lg:gap-[65px] w-full">
           <div className="w-full lg:w-[642px] h-auto">
-            <img
+            <Image
               src={data.image || "/car-blog.svg"}
               alt={data.title}
               className="w-full h-full object-contain"
@@ -72,7 +73,7 @@ export default function BlogDetailsPage() {
               </span>
               <div className="flex flex-row gap-[12px] items-center">
                 <div className="w-[48px] h-[48px] rounded-full bg-[#E8E8EC] flex items-center justify-center">
-                  <img
+                  <Image
                     src="/calender.svg"
                     alt="calendar"
                     className="w-[28px] h-[28px] object-contain"

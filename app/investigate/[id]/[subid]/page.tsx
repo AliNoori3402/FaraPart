@@ -1,5 +1,6 @@
 import React from "react";
 import ProductImages from "../../../components/DeatilPartImage";
+import Image from "next/image";
 
 function page() {
   return (
@@ -11,7 +12,7 @@ function page() {
           <div className="text-[14px] text-[#1C2024] font-yekanDemiBold">
             بررسی تخصصی
           </div>
-          <img
+          <Image
             src="/Arrow-leftG.svg"
             alt="arrow"
             className="w-[16px] h-[16px]"
@@ -19,7 +20,7 @@ function page() {
           <div className="text-[14px] text-[#1C2024] font-yekanDemiBold">
             بررسی تخصصی کیا
           </div>
-          <img
+          <Image
             src="/Arrow-leftG.svg"
             alt="arrow"
             className="w-[16px] h-[16px]"
@@ -27,7 +28,7 @@ function page() {
           <div className="text-[14px] text-[#1C2024] font-yekanDemiBold">
             بررسی تخصصی سراتو
           </div>
-          <img
+          <Image
             src="/Arrow-leftG.svg"
             alt="arrow"
             className="w-[16px] h-[16px]"
@@ -39,7 +40,7 @@ function page() {
 
         {/* عکس + متن */}
         <div className="w-full max-w-[1200px] flex flex-col lg:flex-row gap-[40px]">
-          <ProductImages />
+          {/* <ProductImages /> */}
           <div className="w-full lg:w-[591px] flex flex-col gap-[24px]">
             <div className="text-[28px] text-[#1C2024] font-yekanBold">
               کلاچ
@@ -111,7 +112,7 @@ function page() {
                 <span className="text-[#006FB4] text-[14px] font-yekanDemiBold">
                   صفحه خرید
                 </span>
-                <img
+                <Image
                   src="/Arrow-leftB.svg"
                   className="w-[20px] h-[20px]"
                   alt="arrow"

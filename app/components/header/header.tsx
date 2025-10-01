@@ -6,6 +6,7 @@ import "../font.css";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Header() {
   const [brands, setBrands] = useState<any[]>([]);
@@ -69,7 +70,7 @@ export default function Header() {
                           }
                           className="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 transition"
                         >
-                          <img
+                          <Image
                             src="/car-logo.svg"
                             alt={brand.display_name}
                             className="w-7 h-7 object-contain shrink-0"
@@ -130,7 +131,7 @@ export default function Header() {
                         onClick={() => router.push(`/CarCategory/${brand.id}`)}
                         className="flex items-center gap-3 cursor-pointer hover:bg-gray-100 p-2 rounded w-full"
                       >
-                        <img
+                        <Image
                           src="/car-logo.svg"
                           alt={brand.display_name}
                           className="w-8 h-8 object-contain"

@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
+import Image from "next/image";
 
 interface Brand {
   id: number;
@@ -33,7 +34,7 @@ const BrandCards: React.FC = () => {
             </div>
 
             <div className="w-full h-[100px]">
-              <img
+              <Image
                 src="/category.svg"
                 alt={brand.name}
                 className="w-full h-full object-contain"

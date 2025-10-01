@@ -1,27 +1,31 @@
 "use client";
 
 import React from "react";
+
+import { useParams } from "next/navigation";
 import PartsList from "../../components/PartList";
+import Image from "next/image";
 
 export default function Page() {
+  const params = useParams<{ id: string }>();
+  const car_name = params.id ? decodeURIComponent(params.id) : "";
+
   return (
     <div className="w-full flex justify-center px-4">
       <div className="w-full max-w-[1280px] flex flex-col items-center gap-[40px]">
         {/* مسیر ناوبری (Breadcrumb) */}
         <div className="flex flex-wrap gap-[4px] justify-center items-center text-[14px] text-[#1C2024] font-yekanDemiBold">
           <span>بررسی تخصصی</span>
-          <img
-            src="/Arrow-leftG.svg"
-            alt="arrow"
-            className="w-[16px] h-[16px]"
-          />
-          <span>بررسی تخصصی کیا</span>
-          <img
-            src="/Arrow-leftG.svg"
-            alt="arrow"
-            className="w-[16px] h-[16px]"
-          />
-          <span>بررسی تخصصی سراتو</span>
+          {car_name && (
+            <>
+              <Image
+                src="/Arrow-leftG.svg"
+                alt="arrow"
+                className="w-[16px] h-[16px]"
+              />
+              <span>بررسی تخصصی {car_name}</span>
+            </>
+          )}
         </div>
 
         {/* تیتر و لیست قطعات */}
@@ -30,9 +34,11 @@ export default function Page() {
             <span className="text-[28px] text-[#1C2024] font-yekanBold">
               قطعات
             </span>
-            <span className="text-[28px] text-[#FCFCFD] font-yekanBold bg-[#005E95] rounded-full px-6 py-3">
-              سراتو
-            </span>
+            {car_name && (
+              <span className="text-[28px] text-[#FCFCFD] font-yekanBold bg-[#005E95] rounded-full px-6 py-3">
+                {car_name}
+              </span>
+            )}
           </div>
           <PartsList />
         </div>

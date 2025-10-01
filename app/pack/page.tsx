@@ -5,6 +5,7 @@ import React from "react";
 import PackImages from "../components/PackImages";
 import PackDetails from "../components/PackDetails";
 import TextDetails from "../components/TextDetails";
+import Image from "next/image";
 
 function Page() {
   return (
@@ -15,7 +16,7 @@ function Page() {
           <div className="text-[14px] text-[#1C2024] font-yekanDemiBold">
             لوازم یدکی
           </div>
-          <img
+          <Image
             src="/Arrow-leftG.svg"
             alt="arrow"
             className="w-[16px] h-[16px]"
@@ -23,7 +24,7 @@ function Page() {
           <div className="text-[14px] text-[#1C2024] font-yekanDemiBold">
             لوازم یدکی کیا
           </div>
-          <img
+          <Image
             src="/Arrow-leftG.svg"
             alt="arrow"
             className="w-[16px] h-[16px]"
@@ -31,7 +32,7 @@ function Page() {
           <div className="text-[14px] text-[#1C2024] font-yekanDemiBold">
             لوازم یدکی سراتو
           </div>
-          <img
+          <Image
             src="/Arrow-leftG.svg"
             alt="arrow"
             className="w-[16px] h-[16px]"
@@ -85,18 +86,30 @@ function Page() {
                 <div className="flex flex-col sm:flex-row gap-[16px] items-center">
                   <div className="flex flex-row gap-[16px] justify-center items-center">
                     <div className="w-[48px] h-[48px] rounded-[20px] bg-[#006FB4] flex justify-center items-center">
-                      <img src="/Add.svg" className="w-[24px] h-[24px]" />
+                      <Image
+                        src="/Add.svg"
+                        alt=""
+                        className="w-[24px] h-[24px]"
+                      />
                     </div>
                     <div className="text-[20px] text-[#000000] font-yekanDemiBold">
                       1
                     </div>
                     <div className="w-[48px] h-[48px] rounded-[20px] bg-[#FCFCFD] border border-[#E0E1E6] flex justify-center items-center">
-                      <img src="/negative.svg" className="w-[24px] h-[24px]" />
+                      <Image
+                        src="/negative.svg"
+                        alt=""
+                        className="w-[24px] h-[24px]"
+                      />
                     </div>
                   </div>
 
                   <div className="w-full sm:w-[450px] h-[48px] rounded-[16px] flex justify-center items-center bg-[#004D7A] gap-[8px]">
-                    <img src="/addbasket.svg" className="w-[24px] h-[24px]" />
+                    <Image
+                      src="/addbasket.svg"
+                      alt=""
+                      className="w-[24px] h-[24px]"
+                    />
                     <div className="text-[14px] text-[#FCFCFD] font-yekanRegular">
                       خرید تکی
                     </div>

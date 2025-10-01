@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface Car {
   car_name_fa: string;
@@ -11,11 +12,14 @@ interface Car {
 
 interface Props {
   brand: string | null;
+  id: string; // لیست دسته‌بندی / برند
 }
 
-const InvestigateCar: React.FC<Props> = ({ brand }) => {
+const InvestigateCar: React.FC<Props> = ({ brand, id }) => {
   const [cars, setCars] = useState<Car[]>([]);
   const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
 
   useEffect(() => {
     if (!brand) return;
@@ -42,20 +46,18 @@ const InvestigateCar: React.FC<Props> = ({ brand }) => {
     );
   }
 
-  if (loading) {
-    return <div className="text-center py-10">در حال بارگذاری...</div>;
-  }
-
   return (
     <div className="w-full max-w-[1280px] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[19px] mx-auto mb-[40px] px-4">
       {cars.map((car, index) => (
         <div
           key={index}
+          onClick={() =>
+            router.push(`/investigate/${encodeURIComponent(car.car_name_fa)}`)
+          }
           className="relative w-full h-[295px] flex flex-col gap-[50px] 
             border border-[#E0E1E6] rounded-[24px] overflow-hidden 
-            hover:border-b-[4px] hover:border-b-[#005E95] transition-all duration-300"
+            hover:border-b-[4px] hover:border-b-[#005E95] transition-all duration-300 cursor-pointer"
         >
-          {/* عنوان */}
           <div className="flex flex-col gap-[8px]">
             <div className="mt-[24px] w-full flex flex-row justify-between items-center px-[24px]">
               <div className="text-[20px] text-[#000000] font-yekanDemiBold">
@@ -70,7 +72,6 @@ const InvestigateCar: React.FC<Props> = ({ brand }) => {
             </div>
           </div>
 
-          {/* لوگو */}
           <div className="w-full h-[190px] px-[24px] flex items-center justify-center">
             {car.brand_logo_base64 ? (
               <img

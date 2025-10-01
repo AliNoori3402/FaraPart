@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import Image from "next/image";
 
 interface Car {
   id: number;
@@ -54,7 +55,7 @@ const BrandCarsPage: React.FC = () => {
             لوازم یدکی
           </div>
           <div className="w-[16px] h-[16px]">
-            <img
+            <Image
               src="/Arrow-leftG.svg"
               className="w-full h-full object-contain"
               alt="arrow"
@@ -97,7 +98,7 @@ const BrandCarsPage: React.FC = () => {
 
               {/* تصویر */}
               <div className="w-full h-[190px] px-[24px]">
-                <img
+                <Image
                   src="/category.svg"
                   alt={car.name}
                   className="w-full h-full object-contain"

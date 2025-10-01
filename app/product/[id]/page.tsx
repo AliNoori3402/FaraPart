@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import axios from "axios";
 import ProductImages from "../../components/DeatilPartImage";
 import TextDetails from "../../components/TextDetails";
+import Image from "next/image";
 
 type ProductDetail = {
   id: number;
@@ -20,7 +21,7 @@ type ProductDetail = {
   category: {
     name: string;
   };
-  turnover: any;
+
   inventory: number;
   inventory_warning: string;
   has_warranty: boolean;
@@ -105,7 +106,7 @@ const ProductDetailPage: React.FC = () => {
           <div className="text-[14px] text-[#1C2024] font-yekanDemiBold">
             لوازم یدکی
           </div>
-          <img
+          <Image
             src="/Arrow-leftG.svg"
             alt="arrow"
             className="w-[16px] h-[16px]"
@@ -113,7 +114,7 @@ const ProductDetailPage: React.FC = () => {
           <div className="text-[14px] text-[#1C2024] font-yekanDemiBold">
             {product.category.name}
           </div>
-          <img
+          <Image
             src="/Arrow-leftG.svg"
             alt="arrow"
             className="w-[16px] h-[16px]"
@@ -121,7 +122,7 @@ const ProductDetailPage: React.FC = () => {
           <div className="text-[14px] text-[#1C2024] font-yekanDemiBold">
             {product.car_names.join(", ")}
           </div>
-          <img
+          <Image
             src="/Arrow-leftG.svg"
             alt="arrow"
             className="w-[16px] h-[16px]"
@@ -218,7 +219,7 @@ const ProductDetailPage: React.FC = () => {
                   className="w-[48px] h-[48px] rounded-[20px] bg-[#006FB4] flex justify-center items-center"
                   aria-label="افزایش تعداد"
                 >
-                  <img src="/Add.svg" className="w-[24px] h-[24px]" alt="+" />
+                  <Image src="/Add.svg" className="w-[24px] h-[24px]" alt="+" />
                 </button>
                 <div className="text-[20px] text-[#000000] font-yekanDemiBold">
                   {quantity}
@@ -228,7 +229,7 @@ const ProductDetailPage: React.FC = () => {
                   className="w-[48px] h-[48px] rounded-[20px] bg-[#FCFCFD] border border-[#E0E1E6] flex justify-center items-center"
                   aria-label="کاهش تعداد"
                 >
-                  <img
+                  <Image
                     src="/negative.svg"
                     className="w-[24px] h-[24px]"
                     alt="-"
@@ -241,7 +242,7 @@ const ProductDetailPage: React.FC = () => {
                   onClick={() => addToCart(1)}
                   className="flex-1 min-w-[140px] h-[48px] rounded-[16px] flex justify-center items-center gap-[12px] bg-[#004D7A]"
                 >
-                  <img
+                  <Image
                     src="/addbasket.svg"
                     className="w-[24px] h-[24px]"
                     alt="خرید تکی"
@@ -254,7 +255,7 @@ const ProductDetailPage: React.FC = () => {
                   onClick={() => addToCart(quantity)}
                   className="flex-1 min-w-[140px] h-[48px] rounded-[16px] flex justify-center items-center gap-[12px] bg-[#FCFCFD] border border-[#006FB4]"
                 >
-                  <img
+                  <Image
                     src="/addbasketB.svg"
                     className="w-[24px] h-[24px]"
                     alt="خرید عمده"

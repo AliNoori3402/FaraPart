@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 function Page() {
   const router = useRouter();
@@ -37,6 +38,7 @@ function Page() {
         console.log(res);
       }
     } catch (err) {
+      console.log(err);
       setError("خطا در ارسال کد تایید. لطفاً دوباره تلاش کنید.");
     } finally {
       setLoading(false);
@@ -65,7 +67,7 @@ function Page() {
           <div className="w-[377px] h-[104px] flex flex-col gap-[8px]">
             <div className="w-[100px] h-[20px] flex flex-row gap-[8px]">
               <div className="w-[20px] h-[20px]">
-                <img
+                <Image
                   src="/phone.svg"
                   className="w-full h-full object-contain"
                   alt="phone icon"
@@ -86,7 +88,7 @@ function Page() {
 
             <div className="w-[136px] h-[20px] flex flex-row gap-[8px]">
               <div className="w-[20px] h-[20px]">
-                <img
+                <Image
                   src="/info.svg"
                   className="w-full h-full object-contain"
                   alt="info icon"
@@ -125,7 +127,7 @@ function Page() {
               بازگشت به صفحه اصلی
             </div>
             <div className="w-[20px] h-[20px]">
-              <img
+              <Image
                 src="/Arrow-leftB.svg"
                 alt="Arrow Icon"
                 className="w-full h-full object-contain"

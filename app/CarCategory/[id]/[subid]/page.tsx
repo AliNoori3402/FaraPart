@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import ProductSlider from "../../../components/ProductSlider";
 import ProductList from "../../../components/ProductList";
 import FilterProductCar from "../../../components/FilterProductCar";
+import Image from "next/image";
 
 type ProductType = "spare" | "consumable";
 
@@ -50,13 +51,13 @@ function Page() {
       <div className="w-full flex flex-col justify-center items-center gap-6 md:gap-[58px] pt-8 pb-20 lg:pr-[80px]">
         <div className="flex flex-wrap gap-1 justify-center items-center text-[14px] text-[#1C2024] font-yekanDemiBold">
           <span>لوازم یدکی</span>
-          <img
+          <Image
             src="/Arrow-leftG.svg"
             className="w-4 h-4 object-contain"
             alt="arrow"
           />
           <span>لوازم یدکی کیا</span>
-          <img
+          <Image
             src="/Arrow-leftG.svg"
             className="w-4 h-4 object-contain"
             alt="arrow"

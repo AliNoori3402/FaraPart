@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import React from "react";
 
 export default function Footer() {
@@ -60,9 +61,9 @@ export default function Footer() {
                 شبکه‌های اجتماعی
               </h3>
               <div className="flex gap-4">
-                <img src="/tel.svg" alt="تلگرام" />
-                <img src="/whats.svg" alt="واتساپ" />
-                <img src="/insta.svg" alt="اینستاگرام" />
+                <Image src="/tel.svg" alt="تلگرام" />
+                <Image src="/whats.svg" alt="واتساپ" />
+                <Image src="/insta.svg" alt="اینستاگرام" />
               </div>
             </div>
             <div className="w-[158px] h-[108px] bg-[#D9D9D9]" />

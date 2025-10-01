@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 
 type ProductImagesProps = {
@@ -22,7 +23,7 @@ export default function ProductImages({ images }: ProductImagesProps) {
       <div className="w-[622px] flex md:flex-row sm:flex-row flex-col gap-[16px]">
         {/* تصویر بزرگ */}
         <div className="w-[361px] md:w-[466px] sm:w-[466px] h-[432px] rounded-[40px] bg-[#FCFCFD] border border-[#E0E1E6] flex items-center justify-center">
-          <img
+          <Image
             src={images[selectedIndex]}
             className="w-[290px] h-[234px] object-contain"
             alt="selected"
@@ -41,7 +42,7 @@ export default function ProductImages({ images }: ProductImagesProps) {
                   : "border-[#E0E1E6]"
               }`}
             >
-              <img
+              <Image
                 src={img}
                 className="w-[90px] h-[73px] object-contain"
                 alt={`img-${index}`}
