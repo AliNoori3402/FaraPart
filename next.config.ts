@@ -1,14 +1,16 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   eslint: {
-    // بیلد با ارور ESLint قطع نشه
+    // خطاهای ESLint (مثل img یا unused vars) بیلد رو متوقف نمی‌کنه
     ignoreDuringBuilds: true,
   },
   typescript: {
-    // بیلد با ارور TypeScript قطع نشه
+    // خطاهای TypeScript (مثل any یا ارور تایپ) بیلد رو متوقف نمی‌کنه
     ignoreBuildErrors: true,
+  },
+  images: {
+    domains: ["localhost", "isaco.liara.run"], // اگر تصاویر از API یا دامنه دیگه لود می‌شن
   },
 };
 
-export default nextConfig;
+module.exports = nextConfig;
