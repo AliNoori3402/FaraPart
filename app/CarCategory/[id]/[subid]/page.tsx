@@ -52,12 +52,16 @@ function Page() {
         <div className="flex flex-wrap gap-1 justify-center items-center text-[14px] text-[#1C2024] font-yekanDemiBold">
           <span>لوازم یدکی</span>
           <Image
+            width={16}
+            height={16}
             src="/Arrow-leftG.svg"
             className="w-4 h-4 object-contain"
             alt="arrow"
           />
           <span>لوازم یدکی کیا</span>
           <Image
+            width={16}
+            height={16}
             src="/Arrow-leftG.svg"
             className="w-4 h-4 object-contain"
             alt="arrow"

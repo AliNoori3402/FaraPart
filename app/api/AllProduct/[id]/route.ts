@@ -1,13 +1,19 @@
+// app/api/AllProduct/[id]/route.ts
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(
-  request: NextRequest,
-  context: { params: { id: string } }
-) {
-  const { id } = context.params;
+export async function GET(request: NextRequest, context: any) {
+  // اگر params یک Promise باشه باید await کنیم
+  const params = await (context?.params ?? {});
+  const id = params?.id;
+
+  if (!id) {
+    return NextResponse.json({ error: "Missing id" }, { status: 400 });
+  }
 
   try {
-    const res = await fetch(`http://isaco.liara.run/api/products/part/${id}/`);
+    const res = await fetch(`http://isaco.liara.run/api/products/part/${id}/`, {
+      cache: "no-store",
+    });
 
     if (!res.ok) {
       return NextResponse.json(
@@ -19,7 +25,7 @@ export async function GET(
     const data = await res.json();
     return NextResponse.json(data);
   } catch (error) {
-    console.log(error);
+    console.error("API Error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

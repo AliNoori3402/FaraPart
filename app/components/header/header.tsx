@@ -71,6 +71,8 @@ export default function Header() {
                           className="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 transition"
                         >
                           <Image
+                            width={28}
+                            height={28}
                             src="/car-logo.svg"
                             alt={brand.display_name}
                             className="w-7 h-7 object-contain shrink-0"
@@ -132,6 +134,8 @@ export default function Header() {
                         className="flex items-center gap-3 cursor-pointer hover:bg-gray-100 p-2 rounded w-full"
                       >
                         <Image
+                          width={32}
+                          height={32}
                           src="/car-logo.svg"
                           alt={brand.display_name}
                           className="w-8 h-8 object-contain"

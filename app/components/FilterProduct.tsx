@@ -40,7 +40,7 @@ function FilterBox({ icon, title }: { icon: string; title: string }) {
     <div className="w-[238px] h-[76px] flex flex-col gap-[8px]">
       <div className="flex flex-row gap-[8px] pr-[5px] items-center">
         <div className="w-[20px] h-[20px]">
-          <Image src={icon} alt={title} />
+          <Image width={20} height={20} src={icon} alt={title} />
         </div>
         <div className="text-[14px] text-[#000000] font-yekanDemiBold">
           {title}
@@ -51,7 +51,7 @@ function FilterBox({ icon, title }: { icon: string; title: string }) {
           انتخاب کنید
         </div>
         <div className="w-[16px] h-[16px]">
-          <Image src="/Arrow-downG.svg" alt="dropdown" />
+          <Image width={16} height={16} src="/Arrow-downG.svg" alt="dropdown" />
         </div>
       </div>
     </div>

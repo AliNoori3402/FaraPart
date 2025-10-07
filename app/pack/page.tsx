@@ -17,6 +17,8 @@ function Page() {
             لوازم یدکی
           </div>
           <Image
+            width={16}
+            height={16}
             src="/Arrow-leftG.svg"
             alt="arrow"
             className="w-[16px] h-[16px]"
@@ -25,6 +27,8 @@ function Page() {
             لوازم یدکی کیا
           </div>
           <Image
+            width={16}
+            height={16}
             src="/Arrow-leftG.svg"
             alt="arrow"
             className="w-[16px] h-[16px]"
@@ -33,6 +37,8 @@ function Page() {
             لوازم یدکی سراتو
           </div>
           <Image
+            width={16}
+            height={16}
             src="/Arrow-leftG.svg"
             alt="arrow"
             className="w-[16px] h-[16px]"
@@ -87,6 +93,8 @@ function Page() {
                   <div className="flex flex-row gap-[16px] justify-center items-center">
                     <div className="w-[48px] h-[48px] rounded-[20px] bg-[#006FB4] flex justify-center items-center">
                       <Image
+                        width={24}
+                        height={24}
                         src="/Add.svg"
                         alt=""
                         className="w-[24px] h-[24px]"
@@ -97,6 +105,8 @@ function Page() {
                     </div>
                     <div className="w-[48px] h-[48px] rounded-[20px] bg-[#FCFCFD] border border-[#E0E1E6] flex justify-center items-center">
                       <Image
+                        width={24}
+                        height={24}
                         src="/negative.svg"
                         alt=""
                         className="w-[24px] h-[24px]"
@@ -106,6 +116,8 @@ function Page() {
 
                   <div className="w-full sm:w-[450px] h-[48px] rounded-[16px] flex justify-center items-center bg-[#004D7A] gap-[8px]">
                     <Image
+                      width={24}
+                      height={24}
                       src="/addbasket.svg"
                       alt=""
                       className="w-[24px] h-[24px]"

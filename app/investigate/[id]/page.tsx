@@ -19,6 +19,8 @@ export default function Page() {
           {car_name && (
             <>
               <Image
+                width={16}
+                height={16}
                 src="/Arrow-leftG.svg"
                 alt="arrow"
                 className="w-[16px] h-[16px]"

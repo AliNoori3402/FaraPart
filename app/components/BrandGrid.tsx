@@ -139,8 +139,10 @@ export default function BrandGrid() {
                         src="/car-logo.svg"
                         alt={brandName}
                         className="w-[40px] h-[40px]"
+                        width={40}
+                        height={40}
                       />
-                      <span className="mt-2 text-[16px] font-yekanDemiBold text-[#1C2024]">
+                      <span className="mt-2 text-[16px] font-yekanDemiBold text-[#1C4024]">
                         {brandName}
                       </span>
                     </div>
@@ -160,6 +162,8 @@ export default function BrandGrid() {
                       src="/car-logo.svg"
                       alt={brandName}
                       className="w-[40px] h-[40px]"
+                      width={40}
+                      height={40}
                     />
                     <span className="mt-2 text-[14px] text-[#1C2024] font-yekanDemiBold text-center">
                       {brandName}

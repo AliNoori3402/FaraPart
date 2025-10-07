@@ -77,11 +77,23 @@ export default function Page() {
           <div className="text-[14px] text-[#1C2024] font-yekanDemiBold">
             لوازم یدکی
           </div>
-          <Image src="/Arrow-leftG.svg" alt="" className="w-[16px] h-[16px]" />
+          <Image
+            src="/Arrow-leftG.svg"
+            width={16}
+            height={16}
+            alt=""
+            className="w-[16px] h-[16px]"
+          />
           <div className="text-[14px] text-[#1C2024] font-yekanDemiBold">
             لوازم یدکی کیا
           </div>
-          <Image src="/Arrow-leftG.svg" alt="" className="w-[16px] h-[16px]" />
+          <Image
+            src="/Arrow-leftG.svg"
+            width={16}
+            height={16}
+            alt=""
+            className="w-[16px] h-[16px]"
+          />
           <div className="text-[14px] text-[#1C2024] font-yekanDemiBold">
             لوازم یدکی سراتو
           </div>

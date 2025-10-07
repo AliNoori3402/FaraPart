@@ -1,11 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
 
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(req: NextRequest, context: any) {
   try {
+    const params = await (context?.params ?? {});
+    const id = params?.id;
+
+    if (!id) {
+      return NextResponse.json({ error: "Missing id" }, { status: 400 });
+    }
+
     const token = req.headers.get("authorization");
     if (!token) {
       return NextResponse.json(
@@ -14,7 +18,6 @@ export async function DELETE(
       );
     }
 
-    const { id } = params;
     const url = `http://isaco.liara.run/cart/delete/${id}/`;
 
     const response = await axios.delete(url, {

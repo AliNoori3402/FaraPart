@@ -59,6 +59,8 @@ export default function CarBrandSlider({ onSelectBrand }: CarBrandSliderProps) {
           >
             <div className="w-[59px] h-[64px]">
               <Image
+                width={59}
+                height={64}
                 src={
                   brand.logo
                     ? `data:image/png;base64,${brand.logo}` // اضافه کردن MIME type
@@ -82,6 +84,8 @@ export default function CarBrandSlider({ onSelectBrand }: CarBrandSliderProps) {
           className="w-[48px] h-[48px] rounded-full bg-[#FCFCFD] flex justify-center items-center"
         >
           <Image
+            width={24}
+            height={24}
             src="/Arrow-rightB.svg"
             alt="right"
             className="w-[24px] h-[24px]"
@@ -92,6 +96,8 @@ export default function CarBrandSlider({ onSelectBrand }: CarBrandSliderProps) {
           className="w-[48px] h-[48px] rounded-full bg-[#FCFCFD] flex justify-center items-center"
         >
           <Image
+            width={24}
+            height={24}
             src="/Arrow-leftB.svg"
             alt="left"
             className="w-[24px] h-[24px]"

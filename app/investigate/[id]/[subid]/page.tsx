@@ -13,6 +13,8 @@ function page() {
             بررسی تخصصی
           </div>
           <Image
+            width={16}
+            height={16}
             src="/Arrow-leftG.svg"
             alt="arrow"
             className="w-[16px] h-[16px]"
@@ -21,6 +23,8 @@ function page() {
             بررسی تخصصی کیا
           </div>
           <Image
+            width={16}
+            height={16}
             src="/Arrow-leftG.svg"
             alt="arrow"
             className="w-[16px] h-[16px]"
@@ -29,6 +33,8 @@ function page() {
             بررسی تخصصی سراتو
           </div>
           <Image
+            width={16}
+            height={16}
             src="/Arrow-leftG.svg"
             alt="arrow"
             className="w-[16px] h-[16px]"
@@ -113,6 +119,8 @@ function page() {
                   صفحه خرید
                 </span>
                 <Image
+                  width={20}
+                  height={20}
                   src="/Arrow-leftB.svg"
                   className="w-[20px] h-[20px]"
                   alt="arrow"

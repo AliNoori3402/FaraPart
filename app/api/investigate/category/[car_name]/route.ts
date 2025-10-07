@@ -1,13 +1,10 @@
 // app/api/products/[car_name]/route.ts
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { car_name: string } }
-) {
+export async function GET(req: NextRequest, context: any) {
   try {
     // decode تا کاراکترهای فارسی درست بشن
-    const car_name = decodeURIComponent(params.car_name);
+    const car_name = decodeURIComponent(context.params.car_name);
 
     // بعد encode تا برای API امن بشه
     const response = await fetch(

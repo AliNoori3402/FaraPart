@@ -104,12 +104,16 @@ function Page() {
               <div className="w-full sm:w-[123px] h-[99px] flex justify-center items-center">
                 {item.part.image_urls.length > 0 ? (
                   <Image
+                    width={123}
+                    height={99}
                     src={item.part.image_urls[0]}
                     className="h-full object-contain"
                     alt={item.part.name}
                   />
                 ) : (
                   <Image
+                    width={123}
+                    height={99}
                     src="/Light.svg"
                     alt=""
                     className="h-full object-contain"
@@ -136,20 +140,38 @@ function Page() {
                 <div className="flex flex-wrap justify-between gap-4">
                   <div className="flex items-center gap-4">
                     <button className="w-12 h-12 rounded-[20px] bg-[#006FB4] flex justify-center items-center">
-                      <Image src="/Add.svg" alt="" className="w-6 h-6" />
+                      <Image
+                        src="/Add.svg"
+                        alt=""
+                        width={24}
+                        height={24}
+                        className="w-6 h-6"
+                      />
                     </button>
                     <span className="text-[20px] font-yekanDemiBold">
                       {item.quantity}
                     </span>
                     <button className="w-12 h-12 rounded-[20px] bg-[#FCFCFD] border border-[#E0E1E6] flex justify-center items-center">
-                      <Image src="/negative.svg" alt="" className="w-6 h-6" />
+                      <Image
+                        src="/negative.svg"
+                        width={24}
+                        height={24}
+                        alt=""
+                        className="w-6 h-6"
+                      />
                     </button>
                   </div>
                   <button
                     onClick={() => handleDelete(item.id)}
                     className="w-12 h-12 rounded-[20px] bg-[#FCFCFD] border border-[#E0E1E6] flex justify-center items-center"
                   >
-                    <Image src="/trash.svg" alt="" className="w-6 h-6" />
+                    <Image
+                      src="/trash.svg"
+                      alt=""
+                      width={24}
+                      height={24}
+                      className="w-6 h-6"
+                    />
                   </button>
                 </div>
               </div>
@@ -194,7 +216,13 @@ function Page() {
             </div>
 
             <div className="flex items-center gap-2">
-              <Image src="/discount-tag.svg" alt="" className="w-5 h-5" />
+              <Image
+                src="/discount-tag.svg"
+                alt=""
+                width={20}
+                height={20}
+                className="w-5 h-5"
+              />
               <span className="text-[14px] text-[#D93629] font-yekanRegular">
                 کد تخفیف دارید؟
               </span>

@@ -45,6 +45,7 @@ export default function OfferList({ offers }: { offers: Offer[] }) {
                 20%-
               </div>
               <Image
+                fill
                 src="/Light.svg"
                 alt={part.name}
                 className="w-full h-full object-contain"
@@ -74,6 +75,8 @@ export default function OfferList({ offers }: { offers: Offer[] }) {
                     مشاهده جزئیات و خرید
                   </div>
                   <Image
+                    width={20}
+                    height={20}
                     src="/Arrow-leftB.svg"
                     alt=""
                     className="w-[20px] h-[20px]"

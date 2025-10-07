@@ -61,9 +61,14 @@ export default function Footer() {
                 شبکه‌های اجتماعی
               </h3>
               <div className="flex gap-4">
-                <Image src="/tel.svg" alt="تلگرام" />
-                <Image src="/whats.svg" alt="واتساپ" />
-                <Image src="/insta.svg" alt="اینستاگرام" />
+                <Image src="/tel.svg" width={20} height={20} alt="تلگرام" />
+                <Image src="/whats.svg " width={20} height={20} alt="واتساپ" />
+                <Image
+                  src="/insta.svg"
+                  width={20}
+                  height={20}
+                  alt="اینستاگرام"
+                />
               </div>
             </div>
             <div className="w-[158px] h-[108px] bg-[#D9D9D9]" />

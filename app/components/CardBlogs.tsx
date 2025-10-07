@@ -11,8 +11,9 @@ type Props = {
 export default function CarCard({ title, description, date }: Props) {
   return (
     <div className="w-full max-w-[385px] flex flex-col gap-[20px]">
-      <div className="w-full h-[244px] md:h-[257px] rounded-[16px] overflow-hidden">
+      <div className="w-full relative h-[244px] md:h-[257px] rounded-[16px] overflow-hidden">
         <Image
+          fill
           src="/car-blog.svg"
           alt="Pro Logo"
           className="w-full h-full object-cover"
@@ -31,6 +32,8 @@ export default function CarCard({ title, description, date }: Props) {
         <div className="w-full flex flex-row justify-between items-center">
           <div className="flex flex-row gap-[8px] items-center">
             <Image
+              width={20}
+              height={20}
               src="/calender.svg"
               alt="calendar"
               className="w-[20px] h-[20px] object-contain"
@@ -45,6 +48,8 @@ export default function CarCard({ title, description, date }: Props) {
               بیشتر بخوانید
             </span>
             <Image
+              width={18}
+              height={18}
               src="/Arrow-leftB.svg"
               alt="arrow"
               className="w-[18px] h-[18px] object-contain"

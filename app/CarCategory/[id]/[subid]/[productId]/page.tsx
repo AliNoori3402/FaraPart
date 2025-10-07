@@ -5,7 +5,6 @@ import { useParams } from "next/navigation";
 
 import ProductImages from "../../../../components/DeatilPartImage";
 import TextDetails from "../../../../components/TextDetails";
-import ProductTabs from "../../../../components/TabDetails";
 
 type ProductDetail = {
   id: number;

@@ -21,6 +21,8 @@ function TextDetails() {
       </div>
       <div className="flex gap-[12px] w-[240px] h-[56px] items-center">
         <Image
+          width={56}
+          height={56}
           src="/medal.svg"
           alt=""
           className="w-[56px] h-[56px] object-contain"
@@ -36,6 +38,8 @@ function TextDetails() {
       </div>
       <div className="flex gap-[12px] w-[240px] h-[56px] items-center">
         <Image
+          width={56}
+          height={56}
           src="/backup.svg"
           alt=""
           className="w-[56px] h-[56px] object-contain"
@@ -51,6 +55,8 @@ function TextDetails() {
       </div>
       <div className="flex gap-[12px] w-[240px] h-[56px] items-center">
         <Image
+          width={56}
+          height={56}
           src="/clock.svg"
           alt=""
           className="w-[56px] h-[56px] object-contain"

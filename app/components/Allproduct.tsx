@@ -15,12 +15,6 @@ type ProductListProps = {
   totalFilteredCount?: number;
   onProductClick?: (id: number) => void;
 };
-interface MappedProduct {
-  id: number;
-  name: string;
-  price: string;
-  image: string;
-}
 
 const AllProductList: React.FC<ProductListProps> = ({
   initialPage = 1,
@@ -46,7 +40,7 @@ const AllProductList: React.FC<ProductListProps> = ({
 
   useEffect(() => {
     if (filteredProducts !== undefined) {
-      const mapped: Product[] = products.map((item) => ({
+      const mapped: Product[] = filteredProducts.map((item) => ({
         id: item.id,
         name: item.name,
         price: item.price,
@@ -61,8 +55,9 @@ const AllProductList: React.FC<ProductListProps> = ({
         part_type: item.part_type as "spare" | "consumable",
         car_names: item.car_names || [],
         turnover: item.turnover || null,
-        category: item.category || { name: "" }, // ← اینجا اضافه شد
+        category: item.category || { name: "" },
       }));
+
       setProducts(mapped);
       setLoading(false);
       setError(null);
@@ -133,6 +128,8 @@ const AllProductList: React.FC<ProductListProps> = ({
                         ? product.image_urls[0]
                         : "/Light.svg"
                     }
+                    width={200}
+                    height={180}
                     className="w-[200px] h-full object-contain"
                     alt={product.name}
                   />
@@ -155,6 +152,8 @@ const AllProductList: React.FC<ProductListProps> = ({
                         مشاهده جزئیات و خرید
                       </span>
                       <Image
+                        width={20}
+                        height={20}
                         src="/Arrow-leftB.svg"
                         className="w-5 h-5"
                         alt="arrow"

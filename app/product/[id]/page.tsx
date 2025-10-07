@@ -107,6 +107,8 @@ const ProductDetailPage: React.FC = () => {
             لوازم یدکی
           </div>
           <Image
+            width={16}
+            height={16}
             src="/Arrow-leftG.svg"
             alt="arrow"
             className="w-[16px] h-[16px]"
@@ -115,6 +117,8 @@ const ProductDetailPage: React.FC = () => {
             {product.category.name}
           </div>
           <Image
+            width={16}
+            height={16}
             src="/Arrow-leftG.svg"
             alt="arrow"
             className="w-[16px] h-[16px]"
@@ -123,6 +127,8 @@ const ProductDetailPage: React.FC = () => {
             {product.car_names.join(", ")}
           </div>
           <Image
+            width={16}
+            height={16}
             src="/Arrow-leftG.svg"
             alt="arrow"
             className="w-[16px] h-[16px]"
@@ -230,6 +236,8 @@ const ProductDetailPage: React.FC = () => {
                   aria-label="کاهش تعداد"
                 >
                   <Image
+                    width={24}
+                    height={24}
                     src="/negative.svg"
                     className="w-[24px] h-[24px]"
                     alt="-"
@@ -243,6 +251,8 @@ const ProductDetailPage: React.FC = () => {
                   className="flex-1 min-w-[140px] h-[48px] rounded-[16px] flex justify-center items-center gap-[12px] bg-[#004D7A]"
                 >
                   <Image
+                    width={24}
+                    height={24}
                     src="/addbasket.svg"
                     className="w-[24px] h-[24px]"
                     alt="خرید تکی"
@@ -256,6 +266,8 @@ const ProductDetailPage: React.FC = () => {
                   className="flex-1 min-w-[140px] h-[48px] rounded-[16px] flex justify-center items-center gap-[12px] bg-[#FCFCFD] border border-[#006FB4]"
                 >
                   <Image
+                    width={24}
+                    height={24}
                     src="/addbasketB.svg"
                     className="w-[24px] h-[24px]"
                     alt="خرید عمده"

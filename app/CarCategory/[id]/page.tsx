@@ -1,5 +1,5 @@
 import React from "react";
-import ProductCards from "../../components/CardCategory";
+
 import CarCards from "../../components/CarCard";
 
 const Page = () => {

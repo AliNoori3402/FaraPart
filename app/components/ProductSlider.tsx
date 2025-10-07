@@ -64,6 +64,8 @@ export default function ProductSlider({ onCategoryClick }: ProductSliderProps) {
           >
             <div className="w-[120px] sm:w-[140px] h-[100px]">
               <Image
+                width={140}
+                height={100}
                 src={defaultImage}
                 alt={category.name}
                 className="w-full h-full object-contain"
@@ -82,6 +84,8 @@ export default function ProductSlider({ onCategoryClick }: ProductSliderProps) {
           className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#004D7A] flex justify-center items-center"
         >
           <Image
+            width={20}
+            height={20}
             src="/Arrow-rightW.svg"
             alt="right"
             className="w-5 h-5 object-contain"
@@ -92,6 +96,8 @@ export default function ProductSlider({ onCategoryClick }: ProductSliderProps) {
           className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#FCFCFD] border border-[#008BDF] flex justify-center items-center"
         >
           <Image
+            width={20}
+            height={20}
             src="/Arrow-leftB.svg"
             alt="left"
             className="w-5 h-5 object-contain"

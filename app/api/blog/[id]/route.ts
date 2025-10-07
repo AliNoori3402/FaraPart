@@ -1,12 +1,17 @@
 import { NextResponse } from "next/server";
 import axios from "axios";
 
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: Request, context: any) {
   try {
-    const { id } = params;
+    const params = context?.params ?? {};
+    const id = params?.id;
+
+    if (!id) {
+      return NextResponse.json(
+        { error: "Missing id parameter" },
+        { status: 400 }
+      );
+    }
 
     const res = await axios.get(
       `http://isaco.liara.run/api/blog/posts/${id}/`,

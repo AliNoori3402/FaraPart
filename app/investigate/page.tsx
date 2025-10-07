@@ -20,6 +20,8 @@ function Page() {
             <>
               <div className="w-[16px] h-[16px]">
                 <Image
+                  width={16}
+                  height={16}
                   src="/Arrow-leftG.svg"
                   className="w-full h-full object-contain"
                   alt="arrow"

@@ -12,6 +12,8 @@ function page() {
           <div className="w-[187px] flex flex-col gap-[16px] justify-center items-center">
             <div className="w-[88px] h-[88px]">
               <Image
+                width={88}
+                height={88}
                 src="/Accept.svg"
                 alt=""
                 className="w-full h-full object-contain"
@@ -86,6 +88,8 @@ function page() {
             </div>
             <div className="w-[20px] h-[20px] ">
               <Image
+                width={20}
+                height={20}
                 alt=""
                 src="/Arrow-leftB.svg"
                 className="w-full h-full object-contain"

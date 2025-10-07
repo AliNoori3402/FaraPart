@@ -60,6 +60,8 @@ const PartsList = () => {
           </div>
           <div className="w-[275px] h-[183px]">
             <Image
+              width={275}
+              height={183}
               src="/lent.svg"
               className="w-full h-full object-contain"
               alt={section}

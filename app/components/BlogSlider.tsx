@@ -88,8 +88,9 @@ export default function NewsSlider() {
               className="flex-shrink-0 md:w-[385px] sm:w-[365px] w-[365px] flex flex-col gap-[20px]"
               style={{ scrollSnapAlign: "start" }}
             >
-              <div className="w-full h-[257px] rounded-[16px] overflow-hidden">
+              <div className="w-full relative h-[257px] rounded-[16px] overflow-hidden">
                 <Image
+                  fill
                   src={post.image || "/car-blog.svg"}
                   alt={post.title}
                   className="w-full h-full object-cover"
@@ -108,6 +109,8 @@ export default function NewsSlider() {
                       src="/calender.svg"
                       alt="calendar"
                       className="w-[24px] h-[24px]"
+                      width={24}
+                      height={24}
                     />
                     <span className="text-[14px] text-[#8B8D98] font-yekanDemiBold">
                       {new Date(post.created_at).toLocaleDateString("fa-IR")}
@@ -121,6 +124,8 @@ export default function NewsSlider() {
                       src="/Arrow-leftB.svg"
                       alt="arrow"
                       className="w-[20px] h-[20px]"
+                      width={20}
+                      height={20}
                     />
                   </div>
                 </div>
@@ -141,6 +146,8 @@ export default function NewsSlider() {
               src="/Arrow-rightB.svg"
               alt="Arrow Left"
               className="w-[24px] h-[24px]"
+              width={24}
+              height={24}
             />
           </button>
           <button
@@ -151,6 +158,8 @@ export default function NewsSlider() {
               src="/Arrow-leftW.svg"
               alt="Arrow Right"
               className="w-[24px] h-[24px]"
+              width={24}
+              height={24}
             />
           </button>
 

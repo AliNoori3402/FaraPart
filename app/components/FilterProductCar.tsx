@@ -44,7 +44,7 @@ export default function FilterProductCar({
   categoryId,
 }: FilterProductCarProps) {
   const [isOpen, setIsOpen] = useState(false);
-
+  console.log(isOpen);
   const [categories, setCategories] = useState<Category[]>([]);
   const [brands, setBrands] = useState<Brand[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
@@ -150,8 +150,7 @@ export default function FilterProductCar({
     items: T[],
     stateArray: number[],
     onChange: (id: number) => void,
-    loadingKey: keyof typeof loading,
-    nameKey: keyof T
+    loadingKey: keyof typeof loading
   ) => (
     <div className="w-full">
       <div
@@ -242,8 +241,7 @@ export default function FilterProductCar({
           categories,
           selectedCategories,
           (id) => toggleItem(id, selectedCategories, setSelectedCategories),
-          "categories",
-          "name"
+          "categories"
         )}
 
         {/* برند */}
@@ -252,8 +250,7 @@ export default function FilterProductCar({
           brands,
           selectedBrands,
           (id) => toggleItem(id, selectedBrands, setSelectedBrands),
-          "brands",
-          "display_name"
+          "brands"
         )}
 
         {/* خودرو */}
@@ -262,8 +259,7 @@ export default function FilterProductCar({
           brands.flatMap((b) => b.cars || []),
           selectedCars,
           (id) => toggleItem(id, selectedCars, setSelectedCars),
-          "cars",
-          "name"
+          "cars"
         )}
 
         {/* نوع کالا */}

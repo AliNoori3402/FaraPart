@@ -102,8 +102,9 @@ const ProductList: React.FC<ProductListProps> = ({
             }
             className="w-full bg-[#FFFFFF] border border-[#E0E1E6] flex flex-col gap-4 justify-center items-center rounded-[24px] px-4 py-6 cursor-pointer"
           >
-            <div className="w-full h-[180px] flex justify-center items-center">
+            <div className="w-full relative h-[180px] flex justify-center items-center">
               <Image
+                fill
                 src={product.image}
                 className="w-[200px] h-full object-contain"
                 alt={product.title}
@@ -127,6 +128,8 @@ const ProductList: React.FC<ProductListProps> = ({
                     مشاهده جزئیات و خرید
                   </span>
                   <Image
+                    width={20}
+                    height={20}
                     src="/Arrow-leftB.svg"
                     className="w-5 h-5"
                     alt="arrow"

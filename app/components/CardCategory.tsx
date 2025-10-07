@@ -33,8 +33,9 @@ const BrandCards: React.FC = () => {
               {brand.name}
             </div>
 
-            <div className="w-full h-[100px]">
+            <div className=" relative w-full h-[100px]">
               <Image
+                fill
                 src="/category.svg"
                 alt={brand.name}
                 className="w-full h-full object-contain"

@@ -272,6 +272,8 @@ export default function RegisterPage() {
             </div>
             <div className="w-[20px] h-[20px]">
               <Image
+                width={20}
+                height={20}
                 src="/Arrow-leftB.svg"
                 alt="Arrow Icon"
                 className="w-full h-full object-contain"

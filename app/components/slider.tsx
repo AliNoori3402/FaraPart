@@ -60,13 +60,25 @@ export default function Slider() {
             onClick={prevSlide}
             className="w-[48px] h-[48px] bg-[#FCFCFD] rounded-full flex items-center justify-center shadow-md"
           >
-            <Image src="/right.svg" alt="prev" className="w-6 h-6" />
+            <Image
+              src="/right.svg"
+              width={24}
+              height={24}
+              alt="prev"
+              className="w-6 h-6"
+            />
           </button>
           <button
             onClick={nextSlide}
             className="w-[48px] h-[48px] bg-[#FCFCFD] rounded-full flex items-center justify-center shadow-md"
           >
-            <Image src="/left.svg" alt="next" className="w-6 h-6" />
+            <Image
+              src="/left.svg"
+              alt="next"
+              width={24}
+              height={24}
+              className="w-6 h-6"
+            />
           </button>
         </div>
 

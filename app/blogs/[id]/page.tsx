@@ -44,6 +44,8 @@ export default function BlogDetailsPage() {
             اخبار و مقالات
           </span>
           <Image
+            width={16}
+            height={16}
             src="/Arrow-leftG.svg"
             alt="arrow"
             className="w-[16px] h-[16px] object-contain"
@@ -54,8 +56,9 @@ export default function BlogDetailsPage() {
         </div>
 
         <div className="flex flex-col lg:flex-row gap-[40px] lg:gap-[65px] w-full">
-          <div className="w-full lg:w-[642px] h-auto">
+          <div className=" relative w-full lg:w-[642px] h-auto">
             <Image
+              fill
               src={data.image || "/car-blog.svg"}
               alt={data.title}
               className="w-full h-full object-contain"
@@ -74,6 +77,8 @@ export default function BlogDetailsPage() {
               <div className="flex flex-row gap-[12px] items-center">
                 <div className="w-[48px] h-[48px] rounded-full bg-[#E8E8EC] flex items-center justify-center">
                   <Image
+                    width={28}
+                    height={28}
                     src="/calender.svg"
                     alt="calendar"
                     className="w-[28px] h-[28px] object-contain"

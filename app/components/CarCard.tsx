@@ -56,6 +56,8 @@ const BrandCarsPage: React.FC = () => {
           </div>
           <div className="w-[16px] h-[16px]">
             <Image
+              width={16}
+              height={16}
               src="/Arrow-leftG.svg"
               className="w-full h-full object-contain"
               alt="arrow"
@@ -97,8 +99,9 @@ const BrandCarsPage: React.FC = () => {
               </div>
 
               {/* تصویر */}
-              <div className="w-full h-[190px] px-[24px]">
+              <div className="w-full relative h-[190px] px-[24px]">
                 <Image
+                  fill
                   src="/category.svg"
                   alt={car.name}
                   className="w-full h-full object-contain"

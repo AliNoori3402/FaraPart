@@ -150,6 +150,8 @@ export default function AmazingSlider() {
             >
               <div className="relative w-[136px] h-[109px]">
                 <Image
+                  width={136}
+                  height={109}
                   src={p.image_urls[0] || "/no-image.svg"}
                   className="w-full h-full object-contain"
                   alt={p.name}
@@ -185,6 +187,8 @@ export default function AmazingSlider() {
             >
               <div className="relative w-[221px] h-[178px]">
                 <Image
+                  width={221}
+                  height={178}
                   src={p.image_urls[0] || "/no-image.svg"}
                   className="w-full h-full object-contain"
                   alt={p.name}
@@ -217,7 +221,13 @@ export default function AmazingSlider() {
               index === 0 ? "bg-[#d9d9d980] cursor-not-allowed" : "bg-white"
             }`}
           >
-            <Image src="/Arrow-rightB.svg" alt="" className="w-5 h-5" />
+            <Image
+              src="/Arrow-rightB.svg"
+              alt=""
+              width={20}
+              height={20}
+              className="w-5 h-5"
+            />
           </button>
           <button
             onClick={nextSlide}
@@ -228,7 +238,13 @@ export default function AmazingSlider() {
                 : "bg-[#004D7A]"
             }`}
           >
-            <Image src="/Arrow-leftW.svg" alt="" className="w-5 h-5" />
+            <Image
+              src="/Arrow-leftW.svg"
+              width={20}
+              height={20}
+              alt=""
+              className="w-5 h-5"
+            />
           </button>
         </div>
       </div>
