@@ -68,6 +68,8 @@ function Page() {
             <div className="w-[100px] h-[20px] flex flex-row gap-[8px]">
               <div className="w-[20px] h-[20px]">
                 <Image
+                  width={20}
+                  height={20}
                   src="/phone.svg"
                   className="w-full h-full object-contain"
                   alt="phone icon"
@@ -89,6 +91,8 @@ function Page() {
             <div className="w-[136px] h-[20px] flex flex-row gap-[8px]">
               <div className="w-[20px] h-[20px]">
                 <Image
+                  width={20}
+                  height={20}
                   src="/info.svg"
                   className="w-full h-full object-contain"
                   alt="info icon"
@@ -128,6 +132,8 @@ function Page() {
             </div>
             <div className="w-[20px] h-[20px]">
               <Image
+                width={20}
+                height={20}
                 src="/Arrow-leftB.svg"
                 alt="Arrow Icon"
                 className="w-full h-full object-contain"

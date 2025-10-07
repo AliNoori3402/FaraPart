@@ -62,7 +62,7 @@ export default function Footer() {
               </h3>
               <div className="flex gap-4">
                 <Image src="/tel.svg" width={20} height={20} alt="تلگرام" />
-                <Image src="/whats.svg " width={20} height={20} alt="واتساپ" />
+                <Image src="/whats.svg" width={20} height={20} alt="واتساپ" />
                 <Image
                   src="/insta.svg"
                   width={20}
