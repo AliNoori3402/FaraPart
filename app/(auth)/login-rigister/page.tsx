@@ -1,83 +1,45 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
-function VerifyCodePage() {
-  const [code, setCode] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [timer, setTimer] = useState(80);
-  const [resending, setResending] = useState(false);
-
+function Page() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const phoneNumber = searchParams.get("phone");
 
-  useEffect(() => {
-    if (timer <= 0) return;
-    const countdown = setInterval(() => {
-      setTimer((prev) => prev - 1);
-    }, 1000);
-    return () => clearInterval(countdown);
-  }, [timer]);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
 
   const handleSubmit = async () => {
-    if (!code || !phoneNumber) {
-      setError("کد یا شماره تلفن وارد نشده است.");
+    setError(null);
+    console.log("Sending POST request to /api/sendotp", phoneNumber);
+    setSuccess(false);
+
+    if (!/^09\d{9}$/.test(phoneNumber)) {
+      setError("لطفاً شماره تلفن معتبر وارد کنید. مثال: 09120000000");
       return;
     }
 
-    setLoading(true);
-    setError("");
-
     try {
-      const response = await axios.post("/api/verifycode", {
+      setLoading(true);
+      const res = await axios.post("/api/sendotp", {
         phone_number: phoneNumber,
-        code,
       });
 
-      const data = response.data;
-
-      if (response.status === 200 && data.status === "success") {
-        const { tokens, user_created, person_created, phone_number } = data;
-
-        // ✅ ذخیره توکن‌ها در localStorage
-        localStorage.setItem("accessToken", tokens.access);
-        localStorage.setItem("refreshToken", tokens.refresh);
-        localStorage.setItem("userId", tokens.user_id.toString());
-        localStorage.setItem("phoneNumber", phone_number);
-
-        // ✅ هدایت بر اساس وضعیت کاربر
-        if (!user_created || !person_created) {
-          router.push("/personal-information");
-        } else {
-          router.push("/");
-        }
+      if (res.status === 200) {
+        setSuccess(true);
+        // بعد از موفقیت، ریدایرکت به verify-code همراه شماره (اختیاری)
+        router.push(`/verify-code?phone=${encodeURIComponent(phoneNumber)}`);
       } else {
-        setError("کد وارد شده نادرست است.");
+        setError("خطا در ارسال کد تایید. لطفاً دوباره تلاش کنید.");
+        console.log(res);
       }
-    } catch (err: any) {
-      setError(err?.response?.data?.message || "خطا در ارتباط با سرور");
+    } catch (err) {
+      setError("خطا در ارسال کد تایید. لطفاً دوباره تلاش کنید.");
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleResendCode = async () => {
-    if (!phoneNumber) return;
-    try {
-      setResending(true);
-      await axios.post("/api/sendotp", {
-        phone_number: phoneNumber,
-      });
-      setTimer(80); // ریست تایمر
-      setError("");
-    } catch {
-      setError("خطا در ارسال مجدد کد.");
-    } finally {
-      setResending(false);
     }
   };
 
@@ -95,8 +57,8 @@ function VerifyCodePage() {
               ورود و ثبت نام
             </div>
             <div className="w-[307px] h-[36px] text-[14px] text-center text-[#8B8D98] font-yekanDemiBold">
-              کد تایید ارسال شده به شماره{" "}
-              <span className="text-[#008BDF]">{phoneNumber}</span> را وارد کنید
+              برای ورود یا ثبت نام شماره همراه خود را وارد کنید تا به شماره شما
+              کد تایید ارسال شود
             </div>
           </div>
 
@@ -104,49 +66,35 @@ function VerifyCodePage() {
             <div className="w-[100px] h-[20px] flex flex-row gap-[8px]">
               <div className="w-[20px] h-[20px]">
                 <img
-                  src="/code.svg"
+                  src="/phone.svg"
                   className="w-full h-full object-contain"
-                  alt="کد تایید"
+                  alt="phone icon"
                 />
               </div>
               <div className="w-[72px] h-[18px] text-[14px] text-[#1C2024] font-yekanDemiBold">
-                کد تایید
+                شماره همراه
               </div>
             </div>
 
             <input
               type="text"
-              placeholder="کد تایید خود را وارد کنید"
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
+              placeholder="شماره همراه خود را وارد کنید"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
               className="flex-grow w-[377px] h-[48px] bg-[#E8E8EC] rounded-[20px] text-right px-2 placeholder:text-[#80838D] outline-none font-yekanDemiBold"
             />
 
-            {error && (
-              <div className="text-red-500 text-sm text-center mt-2">
-                {error}
+            <div className="w-[136px] h-[20px] flex flex-row gap-[8px]">
+              <div className="w-[20px] h-[20px]">
+                <img
+                  src="/info.svg"
+                  className="w-full h-full object-contain"
+                  alt="info icon"
+                />
               </div>
-            )}
-
-            <div className="w-[159px] h-[21px] text-[14px] text-[#80838D] font-yekanDemiBold text-center">
-              {timer > 0 ? (
-                <>
-                  ارسال مجدد کد بعد از{" "}
-                  <span className="text-[#008BDF]">
-                    {`0${Math.floor(timer / 60)}:${(timer % 60)
-                      .toString()
-                      .padStart(2, "0")}`}
-                  </span>
-                </>
-              ) : (
-                <button
-                  onClick={handleResendCode}
-                  disabled={resending}
-                  className="text-[#006FB4] underline font-yekanDemiBold"
-                >
-                  {resending ? "در حال ارسال..." : "ارسال مجدد کد تایید"}
-                </button>
-              )}
+              <div className="w-[108px] h-[18px] text-[14px] text-[#80838D] font-yekanDemiBold">
+                مثال: 09120000000
+              </div>
             </div>
           </div>
         </div>
@@ -155,17 +103,26 @@ function VerifyCodePage() {
           <button
             onClick={handleSubmit}
             disabled={loading}
-            className="w-[377px] h-[48px] rounded-[16px] bg-gradient-to-r from-[#008BDF] to-[#006FB4] text-[14px] text-[#FCFCFD] font-yekanRegular"
+            className="w-[377px] h-[48px] rounded-[16px] bg-gradient-to-r from-[#008BDF] to-[#006FB4] text-[14px] text-[#FCFCFD] font-yekanRegular disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? "در حال بررسی..." : "تایید کد"}
+            {loading ? "در حال ارسال..." : "ارسال کد تایید"}
           </button>
 
-          <div
-            className="w-[129px] h-[20px] flex flex-row gap-[4px] cursor-pointer"
-            onClick={() => router.push("/")}
-          >
-            <div className="w-[105px] h-[18px] text-[14px] text-[#006FB4] font-yekanDemiBold">
-              تغییر شماره همراه
+          {error && (
+            <div className="w-full text-center text-red-600 font-yekanDemiBold">
+              {error}
+            </div>
+          )}
+
+          {success && (
+            <div className="w-full text-center text-green-600 font-yekanDemiBold">
+              کد تایید با موفقیت ارسال شد.
+            </div>
+          )}
+
+          <div className="w-[160px] h-[20px] flex flex-row gap-[4px] cursor-pointer">
+            <div className="w-[136px] h-[18px] text-[14px] text-[#006FB4] font-yekanDemiBold">
+              بازگشت به صفحه اصلی
             </div>
             <div className="w-[20px] h-[20px]">
               <img
@@ -181,4 +138,4 @@ function VerifyCodePage() {
   );
 }
 
-export default VerifyCodePage;
+export default Page;
