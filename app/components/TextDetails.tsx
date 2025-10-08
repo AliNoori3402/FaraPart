@@ -6,6 +6,8 @@ function TextDetails() {
     <div className="w-full flex flex-wrap justify-center gap-y-[32px] gap-x-[32px] mb-6">
       <div className="flex gap-[12px] w-[240px] h-[56px] items-center">
         <Image
+          width={56}
+          height={56}
           src="/bus.svg"
           alt=""
           className="w-[56px] h-[56px] object-contain"

@@ -225,7 +225,13 @@ const ProductDetailPage: React.FC = () => {
                   className="w-[48px] h-[48px] rounded-[20px] bg-[#006FB4] flex justify-center items-center"
                   aria-label="افزایش تعداد"
                 >
-                  <Image src="/Add.svg" className="w-[24px] h-[24px]" alt="+" />
+                  <Image
+                    src="/Add.svg"
+                    width={24}
+                    height={24}
+                    className="w-[24px] h-[24px]"
+                    alt="+"
+                  />
                 </button>
                 <div className="text-[20px] text-[#000000] font-yekanDemiBold">
                   {quantity}

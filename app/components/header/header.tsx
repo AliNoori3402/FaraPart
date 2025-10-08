@@ -156,9 +156,6 @@ export default function Header() {
                       اخبار ومقالات
                     </div>
                   </Link>
-                  <div className="text-[18px] font-yekanDemiBold cursor-pointer pr-2">
-                    اخبار ومقالات
-                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -169,7 +166,7 @@ export default function Header() {
               محصولات
             </div>
           </Link>
-          <Link href={"/blog"}>
+          <Link href={"/blogs"}>
             <div className="text-[14px] text-[#1C2024] hidden md:flex">
               اخبار ومقالات
             </div>

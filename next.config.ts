@@ -1,16 +1,44 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  eslint: {
-    // خطاهای ESLint (مثل img یا unused vars) بیلد رو متوقف نمی‌کنه
-    ignoreDuringBuilds: true,
-  },
+  // ✅ فعال کردن حالت strict برای بهینه‌تر شدن عملکرد
+  reactStrictMode: true,
+
+  // ✅ فعال‌سازی TypeScript build-time check
   typescript: {
-    // خطاهای TypeScript (مثل any یا ارور تایپ) بیلد رو متوقف نمی‌کنه
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
   },
+
+  // ✅ پشتیبانی از تصاویر remote (مثلاً از isaco.ir)
   images: {
-    domains: ["localhost", "isaco.liara.run"], // اگر تصاویر از API یا دامنه دیگه لود می‌شن
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "isaco.ir",
+        pathname: "/**", // شامل تمام مسیرهای زیر این دامنه
+      },
+      {
+        protocol: "https",
+        hostname: "cdn.isaco.ir", // اگر دامنه CDN جدا داری
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "media.isaco.ir", // در صورت داشتن دامنه دیگر
+        pathname: "/**",
+      },
+    ],
+    // ✅ در صورت نیاز می‌تونی سایزهای پیش‌فرض رو محدود یا افزایش بدی
+    deviceSizes: [360, 640, 768, 1024, 1280, 1536],
+    imageSizes: [16, 32, 48, 64, 96],
+    formats: ["image/avif", "image/webp"],
   },
+
+  // ✅ تنظیمات سازگاری با SSR
+  experimental: {
+    serverActions: true,
+  },
+
+  // ✅ Tailwind و PostCSS به طور خودکار توسط Next پشتیبانی می‌شن
 };
 
 module.exports = nextConfig;
