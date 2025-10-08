@@ -79,10 +79,7 @@ function VerifyCodeClient() {
   };
 
   return (
-    <div className="w-full h-screen flex justify-center items-start overflow-hidden">
-      {/* 👇 همین UI که نوشتی اینجا میاد */}
-      {/* ... کل کدت همونه فقط اسم کامپوننت تغییر کرده */}
-    </div>
+    <div className="w-full h-screen flex justify-center items-start overflow-hidden"></div>
   );
 }
 

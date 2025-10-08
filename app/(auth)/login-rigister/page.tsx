@@ -1,47 +1,83 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
+import { useRouter, useSearchParams } from "next/navigation";
 
-function Page() {
-  const router = useRouter();
-
-  const [phoneNumber, setPhoneNumber] = useState("");
+function VerifyCodePage() {
+  const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
+  const [timer, setTimer] = useState(80);
+  const [resending, setResending] = useState(false);
+
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const phoneNumber = searchParams.get("phone");
+
+  useEffect(() => {
+    if (timer <= 0) return;
+    const countdown = setInterval(() => {
+      setTimer((prev) => prev - 1);
+    }, 1000);
+    return () => clearInterval(countdown);
+  }, [timer]);
 
   const handleSubmit = async () => {
-    setError(null);
-    console.log("Sending POST request to /api/sendotp", phoneNumber);
-    setSuccess(false);
-
-    if (!/^09\d{9}$/.test(phoneNumber)) {
-      setError("لطفاً شماره تلفن معتبر وارد کنید. مثال: 09120000000");
+    if (!code || !phoneNumber) {
+      setError("کد یا شماره تلفن وارد نشده است.");
       return;
     }
 
+    setLoading(true);
+    setError("");
+
     try {
-      setLoading(true);
-      const res = await axios.post("/api/sendotp", {
+      const response = await axios.post("/api/verifycode", {
         phone_number: phoneNumber,
+        code,
       });
 
-      if (res.status === 200) {
-        setSuccess(true);
-        // بعد از موفقیت، ریدایرکت به verify-code همراه شماره (اختیاری)
-        router.push(`/verify-code?phone=${encodeURIComponent(phoneNumber)}`);
+      const data = response.data;
+
+      if (response.status === 200 && data.status === "success") {
+        const { tokens, user_created, person_created, phone_number } = data;
+
+        // ✅ ذخیره توکن‌ها در localStorage
+        localStorage.setItem("accessToken", tokens.access);
+        localStorage.setItem("refreshToken", tokens.refresh);
+        localStorage.setItem("userId", tokens.user_id.toString());
+        localStorage.setItem("phoneNumber", phone_number);
+
+        // ✅ هدایت بر اساس وضعیت کاربر
+        if (!user_created || !person_created) {
+          router.push("/personal-information");
+        } else {
+          router.push("/");
+        }
       } else {
-        setError("خطا در ارسال کد تایید. لطفاً دوباره تلاش کنید.");
-        console.log(res);
+        setError("کد وارد شده نادرست است.");
       }
-    } catch (err) {
-      console.log(err);
-      setError("خطا در ارسال کد تایید. لطفاً دوباره تلاش کنید.");
+    } catch (err: any) {
+      setError(err?.response?.data?.message || "خطا در ارتباط با سرور");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleResendCode = async () => {
+    if (!phoneNumber) return;
+    try {
+      setResending(true);
+      await axios.post("/api/sendotp", {
+        phone_number: phoneNumber,
+      });
+      setTimer(80); // ریست تایمر
+      setError("");
+    } catch {
+      setError("خطا در ارسال مجدد کد.");
+    } finally {
+      setResending(false);
     }
   };
 
@@ -59,48 +95,58 @@ function Page() {
               ورود و ثبت نام
             </div>
             <div className="w-[307px] h-[36px] text-[14px] text-center text-[#8B8D98] font-yekanDemiBold">
-              برای ورود یا ثبت نام شماره همراه خود را وارد کنید تا به شماره شما
-              کد تایید ارسال شود
+              کد تایید ارسال شده به شماره{" "}
+              <span className="text-[#008BDF]">{phoneNumber}</span> را وارد کنید
             </div>
           </div>
 
           <div className="w-[377px] h-[104px] flex flex-col gap-[8px]">
             <div className="w-[100px] h-[20px] flex flex-row gap-[8px]">
               <div className="w-[20px] h-[20px]">
-                <Image
-                  width={20}
-                  height={20}
-                  src="/phone.svg"
+                <img
+                  src="/code.svg"
                   className="w-full h-full object-contain"
-                  alt="phone icon"
+                  alt="کد تایید"
                 />
               </div>
               <div className="w-[72px] h-[18px] text-[14px] text-[#1C2024] font-yekanDemiBold">
-                شماره همراه
+                کد تایید
               </div>
             </div>
 
             <input
               type="text"
-              placeholder="شماره همراه خود را وارد کنید"
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
+              placeholder="کد تایید خود را وارد کنید"
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
               className="flex-grow w-[377px] h-[48px] bg-[#E8E8EC] rounded-[20px] text-right px-2 placeholder:text-[#80838D] outline-none font-yekanDemiBold"
             />
 
-            <div className="w-[136px] h-[20px] flex flex-row gap-[8px]">
-              <div className="w-[20px] h-[20px]">
-                <Image
-                  width={20}
-                  height={20}
-                  src="/info.svg"
-                  className="w-full h-full object-contain"
-                  alt="info icon"
-                />
+            {error && (
+              <div className="text-red-500 text-sm text-center mt-2">
+                {error}
               </div>
-              <div className="w-[108px] h-[18px] text-[14px] text-[#80838D] font-yekanDemiBold">
-                مثال: 09120000000
-              </div>
+            )}
+
+            <div className="w-[159px] h-[21px] text-[14px] text-[#80838D] font-yekanDemiBold text-center">
+              {timer > 0 ? (
+                <>
+                  ارسال مجدد کد بعد از{" "}
+                  <span className="text-[#008BDF]">
+                    {`0${Math.floor(timer / 60)}:${(timer % 60)
+                      .toString()
+                      .padStart(2, "0")}`}
+                  </span>
+                </>
+              ) : (
+                <button
+                  onClick={handleResendCode}
+                  disabled={resending}
+                  className="text-[#006FB4] underline font-yekanDemiBold"
+                >
+                  {resending ? "در حال ارسال..." : "ارسال مجدد کد تایید"}
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -109,31 +155,20 @@ function Page() {
           <button
             onClick={handleSubmit}
             disabled={loading}
-            className="w-[377px] h-[48px] rounded-[16px] bg-gradient-to-r from-[#008BDF] to-[#006FB4] text-[14px] text-[#FCFCFD] font-yekanRegular disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-[377px] h-[48px] rounded-[16px] bg-gradient-to-r from-[#008BDF] to-[#006FB4] text-[14px] text-[#FCFCFD] font-yekanRegular"
           >
-            {loading ? "در حال ارسال..." : "ارسال کد تایید"}
+            {loading ? "در حال بررسی..." : "تایید کد"}
           </button>
 
-          {error && (
-            <div className="w-full text-center text-red-600 font-yekanDemiBold">
-              {error}
-            </div>
-          )}
-
-          {success && (
-            <div className="w-full text-center text-green-600 font-yekanDemiBold">
-              کد تایید با موفقیت ارسال شد.
-            </div>
-          )}
-
-          <div className="w-[160px] h-[20px] flex flex-row gap-[4px] cursor-pointer">
-            <div className="w-[136px] h-[18px] text-[14px] text-[#006FB4] font-yekanDemiBold">
-              بازگشت به صفحه اصلی
+          <div
+            className="w-[129px] h-[20px] flex flex-row gap-[4px] cursor-pointer"
+            onClick={() => router.push("/")}
+          >
+            <div className="w-[105px] h-[18px] text-[14px] text-[#006FB4] font-yekanDemiBold">
+              تغییر شماره همراه
             </div>
             <div className="w-[20px] h-[20px]">
-              <Image
-                width={20}
-                height={20}
+              <img
                 src="/Arrow-leftB.svg"
                 alt="Arrow Icon"
                 className="w-full h-full object-contain"
@@ -146,4 +181,4 @@ function Page() {
   );
 }
 
-export default Page;
+export default VerifyCodePage;
