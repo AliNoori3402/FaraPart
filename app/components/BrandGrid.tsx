@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface Car {
   id: number;
@@ -20,6 +21,7 @@ interface Brand {
 export default function BrandGrid() {
   const [brands, setBrands] = useState<Brand[]>([]);
   const [width, setWidth] = useState<number>(1280);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchBrands = async () => {
@@ -43,23 +45,24 @@ export default function BrandGrid() {
   const isTablet = width >= 640 && width < 1024;
   const isDesktop = width >= 1024;
 
-  const displayNames = brands.map((b) => b.display_name);
+  // ✅ اینجا هم id و هم display_name رو نگه می‌داریم
+  const brandItems = brands.map((b) => ({ id: b.id, name: b.display_name }));
 
-  const rows: string[][] = [];
+  const rows: { id: number; name: string }[][] = [];
 
   if (isMobile) {
-    rows.push(displayNames);
+    rows.push(brandItems);
   } else if (isTablet) {
-    const firstRow = [...displayNames.slice(0, 3)];
+    const firstRow = [...brandItems.slice(0, 3)];
     rows.push(firstRow);
-    for (let i = 3; i < displayNames.length; i += 4) {
-      rows.push(displayNames.slice(i, i + 4));
+    for (let i = 3; i < brandItems.length; i += 4) {
+      rows.push(brandItems.slice(i, i + 4));
     }
   } else {
-    const firstRow = [...displayNames.slice(0, 4)];
+    const firstRow = [...brandItems.slice(0, 4)];
     rows.push(firstRow);
-    for (let i = 4; i < displayNames.length; i += 5) {
-      rows.push(displayNames.slice(i, i + 5));
+    for (let i = 4; i < brandItems.length; i += 5) {
+      rows.push(brandItems.slice(i, i + 5));
     }
   }
 
@@ -119,14 +122,15 @@ export default function BrandGrid() {
               {rows.map((row, rowIndex) => (
                 <div
                   key={rowIndex}
-                  className={`flex flex-row-reverse gap-4 w-full border-b border-[#1987FF] ${
+                  className={`flex cursor-pointer flex-row-reverse gap-4 w-full border-b border-[#1987FF] ${
                     rowIndex === rows.length - 1 ? "border-b-0" : ""
                   }`}
                   style={{ height: rowHeight }}
                 >
-                  {row.map((brandName, i) => (
+                  {row.map((brand, i) => (
                     <div
-                      key={i}
+                      onClick={() => router.push(`/CarCategory/${brand.id}`)}
+                      key={brand.id}
                       className={`flex flex-col items-center justify-center relative border-r border-[#1987FF] ${
                         i === row.length - 1 ? "border-r-0" : ""
                       }`}
@@ -137,13 +141,13 @@ export default function BrandGrid() {
                     >
                       <Image
                         src="/car-logo.svg"
-                        alt={brandName}
+                        alt={brand.name}
                         className="w-[40px] h-[40px]"
                         width={40}
                         height={40}
                       />
                       <span className="mt-2 text-[16px] font-yekanDemiBold text-[#1C4024]">
-                        {brandName}
+                        {brand.name}
                       </span>
                     </div>
                   ))}
@@ -153,20 +157,21 @@ export default function BrandGrid() {
           ) : (
             <div className="w-full h-full flex items-center overflow-x-auto scrollbar-hide ">
               <div className="flex gap-4 pr-4">
-                {displayNames.map((brandName, i) => (
+                {brandItems.map((brand) => (
                   <div
-                    key={i}
-                    className="w-[100px] min-w-[100px] h-[120px] bg-white rounded-[12px] shadow-md flex flex-col items-center justify-center"
+                    onClick={() => router.push(`/CarCategory/${brand.id}`)}
+                    key={brand.id}
+                    className="w-[100px] cursor-pointer min-w-[100px] h-[120px] bg-white rounded-[12px] shadow-md flex flex-col items-center justify-center"
                   >
                     <Image
                       src="/car-logo.svg"
-                      alt={brandName}
+                      alt={brand.name}
                       className="w-[40px] h-[40px]"
                       width={40}
                       height={40}
                     />
                     <span className="mt-2 text-[14px] text-[#1C2024] font-yekanDemiBold text-center">
-                      {brandName}
+                      {brand.name}
                     </span>
                   </div>
                 ))}

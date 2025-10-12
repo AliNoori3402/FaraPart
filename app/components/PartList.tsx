@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 import Image from "next/image";
 
@@ -9,9 +9,8 @@ type Section = string;
 
 const PartsList = () => {
   const params = useParams<{ id: string }>();
-  console.log(params);
-  const car_name = decodeURIComponent(params.id); // درست گرفتن car_name
-  console.log("Car Name:", car_name);
+  const router = useRouter();
+  const car_name = params.id ? decodeURIComponent(params.id) : "";
 
   const [sections, setSections] = useState<Section[]>([]);
   const [loading, setLoading] = useState(false);
@@ -36,6 +35,12 @@ const PartsList = () => {
     fetchSections();
   }, [car_name]);
 
+  const goToDetail = (section: string) => {
+    const sectionName = encodeURIComponent(section);
+    const carName = encodeURIComponent(car_name);
+    router.push(`/investigate/${carName}/${sectionName}`);
+  };
+
   if (loading) {
     return (
       <div className="text-center text-gray-500">در حال دریافت داده...</div>
@@ -53,7 +58,8 @@ const PartsList = () => {
       {sections.map((section, index) => (
         <div
           key={index}
-          className="h-[295px] flex flex-col justify-center items-center border border-[#E0E1E6] rounded-[24px] hover:border-b-[4px] hover:border-b-[#005E95] transition-all duration-300"
+          onClick={() => goToDetail(section)}
+          className="h-[295px] flex flex-col justify-center items-center border border-[#E0E1E6] rounded-[24px] hover:border-b-[4px] hover:border-b-[#005E95] cursor-pointer transition-all duration-300"
         >
           <div className="w-[200px] h-[26px] text-[20px] text-[#1C2024] font-yekanDemiBold text-center">
             {section}
