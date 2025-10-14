@@ -5,7 +5,7 @@ export async function GET(request: NextRequest) {
   try {
     console.log(request);
     const res = await axios.get(
-      "https://isaco.liara.run/api/products/list-brands/"
+      "http://194.5.175.107:8000/api/products/list-brands/"
     );
     return new Response(JSON.stringify(res.data), {
       status: 200,

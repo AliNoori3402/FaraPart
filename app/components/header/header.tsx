@@ -73,7 +73,11 @@ export default function Header() {
                           <Image
                             width={28}
                             height={28}
-                            src="/car-logo.svg"
+                            src={
+                              brand.logo_binary
+                                ? `data:image/png;base64,${brand.logo_binary}` // اضافه کردن MIME type
+                                : "/car-logo.svg"
+                            }
                             alt={brand.display_name}
                             className="w-7 h-7 object-contain shrink-0"
                           />

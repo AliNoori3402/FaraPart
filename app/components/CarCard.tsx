@@ -9,6 +9,7 @@ import Image from "next/image";
 interface Car {
   id: number;
   name: string;
+  car_image_binary: string;
 }
 
 interface Brand {
@@ -102,7 +103,11 @@ const BrandCarsPage: React.FC = () => {
               <div className="w-full relative h-[190px] px-[24px]">
                 <Image
                   fill
-                  src="/category.svg"
+                  src={
+                    car.car_image_binary
+                      ? `data:image/png;base64,${car.car_image_binary}` // اضافه کردن MIME type
+                      : "/car-logo.svg"
+                  }
                   alt={car.name}
                   className="w-full h-full object-contain"
                 />

@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 interface Car {
   id: number;
   code: string;
+  logo_binary: string;
   name: string;
 }
 
@@ -16,6 +17,7 @@ interface Brand {
   name: string;
   display_name: string;
   cars: Car[];
+  logo_binary: string;
 }
 
 export default function BrandGrid() {
@@ -46,9 +48,13 @@ export default function BrandGrid() {
   const isDesktop = width >= 1024;
 
   // ✅ اینجا هم id و هم display_name رو نگه می‌داریم
-  const brandItems = brands.map((b) => ({ id: b.id, name: b.display_name }));
+  const brandItems = brands.map((b) => ({
+    id: b.id,
+    name: b.display_name,
+    logo_binary: b.logo_binary,
+  }));
 
-  const rows: { id: number; name: string }[][] = [];
+  const rows: { id: number; name: string; logo_binary: string }[][] = [];
 
   if (isMobile) {
     rows.push(brandItems);
@@ -140,7 +146,11 @@ export default function BrandGrid() {
                       }}
                     >
                       <Image
-                        src="/car-logo.svg"
+                        src={
+                          brand.logo_binary
+                            ? `data:image/png;base64,${brand.logo_binary}` // اضافه کردن MIME type
+                            : "/car-logo.svg"
+                        }
                         alt={brand.name}
                         className="w-[40px] h-[40px]"
                         width={40}
@@ -164,7 +174,11 @@ export default function BrandGrid() {
                     className="w-[100px] cursor-pointer min-w-[100px] h-[120px] bg-white rounded-[12px] shadow-md flex flex-col items-center justify-center"
                   >
                     <Image
-                      src="/car-logo.svg"
+                      src={
+                        brand.logo_binary
+                          ? `data:image/png;base64,${brand.logo_binary}` // اضافه کردن MIME type
+                          : "/car-logo.svg"
+                      }
                       alt={brand.name}
                       className="w-[40px] h-[40px]"
                       width={40}
