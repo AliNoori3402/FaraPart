@@ -18,10 +18,16 @@ export default function Header() {
   useEffect(() => {
     const getBrands = async () => {
       try {
-        const res = await axios.get("/api/brand");
-        setBrands(res.data);
+        const res = await axios.get(
+          "http://194.5.175.107:8000/api/products/list-brands/"
+        );
+        if (Array.isArray(res.data.results)) {
+          setBrands(res.data.results);
+        } else {
+          setBrands([]);
+        }
       } catch (err) {
-        console.error("خطا در axios:", err);
+        console.error(err);
       }
     };
     getBrands();
@@ -29,12 +35,12 @@ export default function Header() {
 
   return (
     <div className="h-[169px] flex flex-col items-center justify-center gap-4 font-yekanDemiBold py-4 relative">
-      <div className="w-[152px] h-[44px] bg-[#D9D9D9]" />
+      <div className=" relative w-[152px] h-[44px]">
+        <Image fill src={"/banner/headerIcon.png"} alt="logo" />
+      </div>
       <div className="w-[323px] h-px bg-[#E8E8EC]" />
-
       <div className="w-full max-w-[1280px] px-4 flex flex-nowrap items-center justify-between gap-4 lg:gap-[135px] relative">
         <div className="w-[50px] lg:w-[350px] h-[42px] flex flex-nowrap items-center justify-center gap-[28px] min-w-max">
-          {/* Dropdown - فقط برندها */}
           <div className="relative flex flex-col items-start cursor-pointer">
             <div className="hidden md:flex items-center gap-1 relative">
               <div
@@ -75,7 +81,7 @@ export default function Header() {
                             height={28}
                             src={
                               brand.logo_binary
-                                ? `data:image/png;base64,${brand.logo_binary}` // اضافه کردن MIME type
+                                ? `data:image/png;base64,${brand.logo_binary}`
                                 : "/car-logo.svg"
                             }
                             alt={brand.display_name}
@@ -91,8 +97,6 @@ export default function Header() {
                 )}
               </AnimatePresence>
             </div>
-
-            {/* منوی موبایل */}
             <div className="md:hidden flex items-center gap-2">
               <button
                 onClick={() => setIsBurgerOpen(true)}
@@ -113,7 +117,6 @@ export default function Header() {
                 </svg>
               </button>
             </div>
-
             <AnimatePresence>
               {isBurgerOpen && (
                 <motion.div
@@ -164,7 +167,6 @@ export default function Header() {
               )}
             </AnimatePresence>
           </div>
-
           <Link href={"/product"}>
             <div className="text-[14px] text-[#1C2024] hidden md:flex">
               محصولات
@@ -256,7 +258,6 @@ export default function Header() {
               </svg>
               <div className="text-[16px] font-yekanRegular">0</div>
             </div>
-
             <Link href={"/login-rigister"}>
               <button className="w-[115px] h-[42px] rounded-[16px] text-[14px] text-white font-yekanRegular bg-[#004D7A]">
                 ثبت نام / ورود

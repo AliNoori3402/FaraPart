@@ -69,7 +69,9 @@ export default function FilterProductPage({
       try {
         setLoadingBrands(true);
         const res = await axios.get("/api/brand");
-        setBrands(res.data);
+
+        const brandList: Brand[] = res.data.results || [];
+        setBrands(brandList);
       } catch (error) {
         console.error("خطا در دریافت برندها");
       } finally {

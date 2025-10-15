@@ -95,7 +95,8 @@ export default function FilterProductCar({
       try {
         setLoading((prev) => ({ ...prev, brands: true }));
         const res = await axios.get("/api/brand");
-        setBrands(res.data);
+        const brandList: Brand[] = res.data.results || [];
+        setBrands(brandList);
       } catch (err) {
         console.error(err);
       } finally {

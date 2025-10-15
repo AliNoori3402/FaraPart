@@ -28,8 +28,9 @@ const BrandCarsPage: React.FC = () => {
     axios
       .get("/api/brand")
       .then((res) => {
-        const allBrands: Brand[] = res.data;
-        const selectedBrand = allBrands.find((b) => b.id === brandId) || null;
+        const brandList: Brand[] = res.data.results || [];
+
+        const selectedBrand = brandList.find((b) => b.id === brandId) || null;
         setBrand(selectedBrand);
         setLoading(false);
       })

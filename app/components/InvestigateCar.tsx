@@ -7,7 +7,7 @@ interface Car {
   car_name_fa: string;
   car_name_en: string;
   brand_name_fa: string;
-  brand_logo_base64: string | null;
+  car_image_base64: string | null;
 }
 
 interface Props {
@@ -73,15 +73,19 @@ const InvestigateCar: React.FC<Props> = ({ brand, id }) => {
           </div>
 
           <div className="w-full h-[190px] px-[24px] flex items-center justify-center">
-            {car.brand_logo_base64 ? (
+            {car.car_image_base64 ? (
               <img
-                src={`data:image/png;base64,${car.brand_logo_base64}`}
+                src={`data:image/png;base64,${car.car_image_base64}`}
                 alt={car.car_name_fa}
                 className="w-full h-full object-contain"
               />
             ) : (
               <img
-                src="/category.svg"
+                src={
+                  car.car_image_base64
+                    ? `data:image/png;base64,${car.car_image_base64}` // اضافه کردن MIME type
+                    : "/car-logo.svg"
+                }
                 alt={car.car_name_fa}
                 className="w-[120px] h-[120px] object-contain opacity-70"
               />

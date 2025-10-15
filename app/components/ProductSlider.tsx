@@ -7,6 +7,7 @@ import { useRef, useEffect, useState } from "react";
 type Category = {
   id: number;
   name: string;
+  category_image_base64: string;
 };
 
 type ProductSliderProps = {
@@ -66,7 +67,11 @@ export default function ProductSlider({ onCategoryClick }: ProductSliderProps) {
               <Image
                 width={140}
                 height={100}
-                src={defaultImage}
+                src={
+                  category.category_image_base64
+                    ? `data:image/png;base64,${category.category_image_base64}` // اضافه کردن MIME type
+                    : "/car-logo.svg"
+                }
                 alt={category.name}
                 className="w-full h-full object-contain"
               />

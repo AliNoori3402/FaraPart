@@ -17,6 +17,7 @@ const BrandCards: React.FC = () => {
   useEffect(() => {
     axios
       .get("/api/brand")
+
       .then((res) => setBrands(res.data))
       .catch((err) => console.error("خطا در گرفتن برندها:", err));
   }, []);

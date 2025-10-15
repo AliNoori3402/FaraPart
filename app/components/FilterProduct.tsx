@@ -36,13 +36,20 @@ export default function FilterProduct() {
     const fetchBrands = async () => {
       try {
         const res = await axios.get("/api/brand");
-        setBrands(res.data);
-        const allCars = res.data.flatMap((b: Brand) => b.cars || []);
+
+        // ✅ داده واقعی داخل results قرار دارد
+        const brandList: Brand[] = res.data.results || [];
+
+        setBrands(brandList);
+
+        // استخراج تمام مدل‌ها از همه برندها
+        const allCars = brandList.flatMap((b) => b.cars || []);
         setCars(allCars);
       } catch (err) {
         console.error("خطا در دریافت برندها:", err);
       }
     };
+
     fetchBrands();
   }, []);
 
