@@ -11,9 +11,12 @@ export async function GET(request: NextRequest, context: any) {
   }
 
   try {
-    const res = await fetch(`http://isaco.liara.run/api/products/part/${id}/`, {
-      cache: "no-store",
-    });
+    const res = await fetch(
+      `http://194.5.175.107:8000/api/products/part/${id}/`,
+      {
+        cache: "no-store",
+      }
+    );
 
     if (!res.ok) {
       return NextResponse.json(

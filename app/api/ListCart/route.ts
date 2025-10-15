@@ -10,11 +10,14 @@ export async function GET(req: Request) {
     }
 
     // درخواست به سرور اصلی
-    const res = await axios.get("http://isaco.liara.run/api/cart/list-cart/", {
-      headers: {
-        Authorization: authHeader,
-      },
-    });
+    const res = await axios.get(
+      "http://194.5.175.107:8000/api/cart/list-cart/",
+      {
+        headers: {
+          Authorization: authHeader,
+        },
+      }
+    );
 
     return NextResponse.json(res.data, { status: 200 });
   } catch (error: any) {

@@ -24,7 +24,7 @@ export async function POST(request: Request) {
     const accessToken = authHeader.slice(7);
 
     const response = await axios.post(
-      "http://isaco.liara.run/api/users/register/",
+      "http://194.5.175.107:8000/api/users/register/",
       {
         first_name,
         last_name,

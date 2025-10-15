@@ -4,7 +4,7 @@ import axios from "axios";
 export async function GET() {
   try {
     const res = await axios.get(
-      "https://isaco.liara.run/api/admin/list-special-offer-box/",
+      "http://194.5.175.107:8000/api/admin/list-special-offer-box/",
       {
         // جلوگیری از کش شدن
         headers: {

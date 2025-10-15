@@ -5,7 +5,7 @@ import axios from "axios";
 export async function GET() {
   try {
     const response = await axios.get(
-      "http://isaco.liara.run/api/products/categories/"
+      "http://194.5.175.107:8000/api/products/categories/"
     );
     return NextResponse.json(response.data);
   } catch (error) {

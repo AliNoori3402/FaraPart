@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     }
 
     const response = await axios.post(
-      "http://isaco.liara.run/api/users/send-otp/",
+      "http://194.5.175.107:8000/api/users/send-otp/",
       {
         phone_number,
       }

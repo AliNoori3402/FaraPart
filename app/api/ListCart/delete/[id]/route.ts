@@ -18,7 +18,7 @@ export async function DELETE(req: NextRequest, context: any) {
       );
     }
 
-    const url = `http://isaco.liara.run/cart/delete/${id}/`;
+    const url = `http://194.5.175.107:8000/cart/delete/${id}/`;
 
     const response = await axios.delete(url, {
       headers: {

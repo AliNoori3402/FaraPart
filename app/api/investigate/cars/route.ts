@@ -15,7 +15,7 @@ export async function GET(req: Request) {
     }
 
     const response = await axios.get(
-      `https://isaco.liara.run/api/products/carlog-cars/?brand=${encodeURIComponent(
+      `http://194.5.175.107:8000/api/products/carlog-cars/?brand=${encodeURIComponent(
         brand
       )}`
     );

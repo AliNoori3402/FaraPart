@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
 
     // درخواست به API خارجی
     const response = await fetch(
-      "http://isaco.liara.run/api/products/list-car-products/",
+      "http://194.5.175.107:8000/api/products/list-car-products/",
       {
         method: "POST",
         headers: {

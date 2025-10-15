@@ -9,7 +9,7 @@ export async function GET(request: Request) {
 
   try {
     const response = await axios.get(
-      "http://isaco.liara.run/api/products/all/",
+      "http://194.5.175.107:8000/api/products/all/",
       {
         params: {
           pagenumber: pageNumber,

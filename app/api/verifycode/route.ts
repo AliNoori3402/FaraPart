@@ -7,7 +7,7 @@ export async function POST(request: Request) {
     const { phone_number, code } = body;
 
     const response = await axios.post(
-      "http://isaco.liara.run/api/users/verify-otp/",
+      "http://194.5.175.107:8000/api/users/verify-otp/",
       { phone_number, code }
     );
 

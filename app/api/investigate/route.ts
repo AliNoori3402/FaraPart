@@ -5,7 +5,7 @@ import axios from "axios";
 export async function GET() {
   try {
     const response = await axios.get(
-      "https://isaco.liara.run/api/products/carlog-brands/"
+      "http://194.5.175.107:8000/api/products/carlog-brands/"
     );
 
     return NextResponse.json(response.data, { status: 200 });

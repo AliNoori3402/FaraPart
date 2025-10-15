@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const res = await fetch(
-      `http://isaco.liara.run/api/products/filter-parts/?category_id=${category_id}`,
+      `http://194.5.175.107:8000/api/products/filter-parts/?category_id=${category_id}`,
       { cache: "no-store" }
     );
 

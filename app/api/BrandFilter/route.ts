@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const response = await axios.get(
-      "http://isaco.liara.run/api/products/filter-parts/",
+      "http://194.5.175.107:8000/api/products/filter-parts/",
       {
         params: {
           brand_id: brandId,
