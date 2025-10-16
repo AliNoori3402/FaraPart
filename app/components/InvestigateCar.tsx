@@ -28,8 +28,11 @@ const InvestigateCar: React.FC<Props> = ({ brand, id }) => {
       setLoading(true);
       try {
         const res = await fetch(`/api/investigate/cars?brand=${brand}`);
+
         const data = await res.json();
-        setCars(data);
+
+        setCars(data.results);
+        console.log(data);
       } catch (error) {
         console.error("خطا در گرفتن لیست ماشین‌ها:", error);
       } finally {

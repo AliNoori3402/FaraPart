@@ -24,7 +24,7 @@ const Page = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const page_size = 1;
-  const API_BASE = "https://isaco.liara.run/api/products/carlog-pics/";
+  const API_BASE = "http://194.5.175.107:8000/api/products/carlog-pics/";
 
   const fetchData = async (pageNumber: number) => {
     if (!car_name || !section_name) return;
@@ -79,7 +79,7 @@ const Page = () => {
         data.map((item: any, index: number) => (
           <div
             key={item.id || index}
-            className="bg-white rounded-2xl shadow-md border border-[#E8E8EC] overflow-hidden w-full"
+            className="bg-white rounded-2xl flex flex-col sm:flex-row justify-between shadow-md border border-[#E8E8EC] overflow-hidden w-full"
           >
             {/* تصویر */}
             {item.category_image_base64 && (

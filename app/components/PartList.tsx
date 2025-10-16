@@ -5,7 +5,10 @@ import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 import Image from "next/image";
 
-type Section = string;
+interface Section {
+  section_name: string;
+  image_base64: string | null;
+}
 
 const PartsList = () => {
   const params = useParams<{ id: string }>();
@@ -24,7 +27,8 @@ const PartsList = () => {
         const res = await axios.get(
           `/api/investigate/category/${encodeURIComponent(car_name)}`
         );
-        setSections(res.data.sections);
+        console.log(res);
+        setSections(res.data.results);
       } catch (error) {
         console.error("خطا در دریافت سکشن‌ها:", error);
       } finally {
@@ -58,19 +62,23 @@ const PartsList = () => {
       {sections.map((section, index) => (
         <div
           key={index}
-          onClick={() => goToDetail(section)}
+          onClick={() => goToDetail(section.section_name)}
           className="h-[295px] flex flex-col justify-center items-center border border-[#E0E1E6] rounded-[24px] hover:border-b-[4px] hover:border-b-[#005E95] cursor-pointer transition-all duration-300"
         >
           <div className="w-[200px] h-[26px] text-[20px] text-[#1C2024] font-yekanDemiBold text-center">
-            {section}
+            {section.section_name}
           </div>
           <div className="w-[275px] h-[183px]">
             <Image
               width={275}
               height={183}
-              src="/lent.svg"
-              className="w-full h-full object-contain"
-              alt={section}
+              src={
+                section.image_base64
+                  ? `data:image/png;base64,${section.image_base64}` // اضافه کردن MIME type
+                  : "/car-logo.svg"
+              }
+              className="w-full h-full object-contain mt-3"
+              alt={section.section_name}
             />
           </div>
         </div>
