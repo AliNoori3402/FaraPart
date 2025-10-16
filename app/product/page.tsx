@@ -48,9 +48,9 @@ export default function Page() {
   const [filteredProducts, setFilteredProducts] = useState<Product[] | null>(
     null
   );
-  const [selectedCategory, setSelectedCategory] = useState<number | undefined>(
-    2
-  );
+  const [selectedCategory, setSelectedCategory] = useState<
+    number | undefined
+  >();
   const [filteredTotalCount, setFilteredTotalCount] = useState<number | null>(
     null
   );
@@ -72,27 +72,6 @@ export default function Page() {
   return (
     <div className="w-full px-4 md:px-8 lg:px-0 max-w-[1440px] mx-auto">
       <div className="w-full flex flex-col justify-center items-center gap-6 md:gap-[58px] pt-8 pb-20 lg:pr-[80px]">
-        {/* نوار مسیر */}
-        <div className="flex flex-wrap gap-1 justify-center items-center text-[14px] text-[#1C2024] font-yekanDemiBold">
-          <span>لوازم یدکی</span>
-          <Image
-            src="/Arrow-leftG.svg"
-            width={16}
-            height={16}
-            className="w-4 h-4"
-            alt="arrow"
-          />
-          <span>لوازم یدکی کیا</span>
-          <Image
-            src="/Arrow-leftG.svg"
-            width={16}
-            height={16}
-            className="w-4 h-4"
-            alt="arrow"
-          />
-          <span>لوازم یدکی سراتو</span>
-        </div>
-
         <div className="w-full flex flex-col items-center gap-10">
           <div className="text-[16px] text-[#8B8D98] font-yekanBold">
             جستجوی دقیق
