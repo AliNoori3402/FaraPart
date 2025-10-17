@@ -46,7 +46,7 @@ export default function Slider() {
             src={slides[current].src}
             alt={slides[current].alt}
             fill
-            className="object-cover"
+            className="object-contain"
             priority
           />
         </motion.div>
@@ -54,34 +54,6 @@ export default function Slider() {
 
       {/* 👇 Controls */}
       <div className="absolute bottom-6 left-0 right-0 flex flex-col sm:flex-row items-center justify-between px-6">
-        {/* Arrows */}
-        <div className="flex gap-3">
-          <button
-            onClick={prevSlide}
-            className="w-[48px] h-[48px] bg-[#FCFCFD] rounded-full flex items-center justify-center shadow-md"
-          >
-            <Image
-              src="/right.svg"
-              width={24}
-              height={24}
-              alt="prev"
-              className="w-6 h-6"
-            />
-          </button>
-          <button
-            onClick={nextSlide}
-            className="w-[48px] h-[48px] bg-[#FCFCFD] rounded-full flex items-center justify-center shadow-md"
-          >
-            <Image
-              src="/left.svg"
-              alt="next"
-              width={24}
-              height={24}
-              className="w-6 h-6"
-            />
-          </button>
-        </div>
-
         {/* Dots */}
         <ul className="flex gap-2 items-center mt-4 sm:mt-0">
           {slides.map((_, index) => (

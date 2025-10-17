@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 export default function Footer() {
@@ -28,9 +29,6 @@ export default function Footer() {
         <div className="flex flex-col gap-8 max-w-[376px] mx-auto lg:mx-0">
           <div className="flex items-center gap-6 justify-center lg:justify-start">
             <div className="w-[126px] h-[65px] bg-[#D9D9D9]" />
-            <div className="text-[32px] sm:text-[36px] text-white font-yekanBold">
-              اسم برند
-            </div>
           </div>
           <p className="text-[14px] text-white font-yekanRegular leading-7 text-justify">
             لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
@@ -51,7 +49,10 @@ export default function Footer() {
               <li>تماس با ما</li>
               <li>قوانین و مقررات</li>
               <li>فروش اعتباری</li>
-              <li>درباره ماشین نو</li>
+              <Link href={"/about-us"}>
+                {" "}
+                <li>درباره فراپارت</li>
+              </Link>
               <li>وبلاگ</li>
               <li>شرایط بازگشت کالا</li>
             </ul>
