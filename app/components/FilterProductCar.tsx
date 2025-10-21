@@ -5,25 +5,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import axios from "axios";
 
-type Car = {
-  id: number;
-  code: string;
-  name: string;
-};
-
-type Brand = {
-  id: number;
-  name: string;
-  display_name: string;
-  cars: Car[];
-};
-
+type Car = { id: number; code: string; name: string };
+type Brand = { id: number; name: string; display_name: string; cars: Car[] };
+type Category = { id: number; name: string; child?: Category[] };
 type ProductType = "spare" | "consumable";
-
-type Category = {
-  id: number;
-  name: string;
-};
 
 type FilterProductCarProps = {
   onFilterChange: (
@@ -44,7 +29,7 @@ export default function FilterProductCar({
   categoryId,
 }: FilterProductCarProps) {
   const [isOpen, setIsOpen] = useState(false);
-  console.log(isOpen);
+
   const [categories, setCategories] = useState<Category[]>([]);
   const [brands, setBrands] = useState<Brand[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
@@ -61,42 +46,25 @@ export default function FilterProductCar({
     productType: false,
   });
 
-  // وضعیت اکاردیون‌ها
   const [accordion, setAccordion] = useState({
-    category: false,
-    brand: false,
-    car: false,
-    productType: false,
+    category: true,
+    brand: true,
+    car: true,
+    productType: true,
   });
 
+  const [openCategories, setOpenCategories] = useState<Record<number, boolean>>(
+    {}
+  );
   const productTypes: ProductType[] = ["spare", "consumable"];
 
-  // fetch categories
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        setLoading((prev) => ({ ...prev, categories: true }));
-        const res = await fetch("/api/categorylist");
-        if (!res.ok) throw new Error("Failed to fetch");
-        const data: Category[] = await res.json();
-        setCategories(data);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading((prev) => ({ ...prev, categories: false }));
-      }
-    };
-    fetchCategories();
-  }, []);
-
-  // fetch brands
+  // ----------------- fetch brands -----------------
   useEffect(() => {
     const fetchBrands = async () => {
       try {
         setLoading((prev) => ({ ...prev, brands: true }));
         const res = await axios.get("/api/brand");
-        const brandList: Brand[] = res.data.results || [];
-        setBrands(brandList);
+        setBrands(res.data.results || []);
       } catch (err) {
         console.error(err);
       } finally {
@@ -106,7 +74,35 @@ export default function FilterProductCar({
     fetchBrands();
   }, []);
 
-  // تغییرات فیلترها را به Page بفرست
+  // ----------------- fetch categories -----------------
+  const fetchCategories = async (parentId?: number) => {
+    try {
+      setLoading((prev) => ({ ...prev, categories: true }));
+      let data: Category[] = [];
+
+      if (parentId) {
+        const res = await axios.post("/api/products/categories", {
+          parent_id: parentId,
+        });
+        data = res.data || [];
+      } else {
+        const res = await axios.get("/api/categorylist");
+        data = res.data || [];
+      }
+
+      setCategories(data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading((prev) => ({ ...prev, categories: false }));
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  // ----------------- filter updates -----------------
   useEffect(() => {
     onFilterChange(
       selectedBrands,
@@ -124,24 +120,83 @@ export default function FilterProductCar({
 
   const toggleItem = (
     id: number,
-    stateArray: number[],
+    arr: number[],
     setter: (val: number[]) => void
   ) => {
-    setter(
-      stateArray.includes(id)
-        ? stateArray.filter((i) => i !== id)
-        : [...stateArray, id]
-    );
+    setter(arr.includes(id) ? arr.filter((i) => i !== id) : [...arr, id]);
     resetPage();
   };
 
-  const handleProductType = (type: ProductType) => {
-    setSelectedProductType((prev) => (prev === type ? "" : type));
+  const handleProductType = async (type: ProductType) => {
+    const newType = selectedProductType === type ? "" : type;
+    setSelectedProductType(newType);
     resetPage();
+
+    // اگر نوع کالا انتخاب شد، fetch دسته‌بندی‌های والد مربوطه
+    if (newType === "spare") await fetchCategories(1); // لوازم یدکی
+    else if (newType === "consumable")
+      await fetchCategories(175); // لوازم مصرفی
+    else await fetchCategories(); // اگر خالی شد، کل دسته‌بندی‌ها
   };
 
   const toggleAccordion = (key: keyof typeof accordion) => {
     setAccordion((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  const toggleNestedCategory = (id: number) => {
+    setOpenCategories((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  const renderNestedCategory = (category: Category, level = 0) => {
+    const hasChild = category.child && category.child.length > 0;
+    const isOpen = openCategories[category.id];
+
+    return (
+      <div key={category.id} className="flex flex-col gap-1">
+        <div
+          className={`flex items-center justify-between gap-2 py-1 px-2 rounded-lg cursor-pointer select-none ${
+            selectedCategories.includes(category.id)
+              ? "bg-blue-50"
+              : "hover:bg-gray-50"
+          }`}
+          style={{ paddingLeft: `${level * 16}px` }}
+          onClick={() => hasChild && toggleNestedCategory(category.id)}
+        >
+          <span>{category.name}</span>
+          {hasChild && (
+            <Image
+              src="/Arrow-downG.svg"
+              alt="toggle"
+              width={12}
+              height={12}
+              className={`transition-transform duration-300 ${
+                isOpen ? "rotate-180" : ""
+              }`}
+            />
+          )}
+          <input
+            type="checkbox"
+            checked={selectedCategories.includes(category.id)}
+            onChange={(e) => {
+              e.stopPropagation();
+              toggleItem(
+                category.id,
+                selectedCategories,
+                setSelectedCategories
+              );
+            }}
+          />
+        </div>
+
+        {hasChild && isOpen && (
+          <div className="flex flex-col gap-1 ml-4 border-l border-gray-200">
+            {category.child!.map((child) =>
+              renderNestedCategory(child, level + 1)
+            )}
+          </div>
+        )}
+      </div>
+    );
   };
 
   const renderAccordion = <
@@ -162,9 +217,7 @@ export default function FilterProductCar({
       >
         <div className="flex items-center gap-2 pr-1">
           <Image src="/car.svg" alt={title} width={20} height={20} />
-          <span className="text-[14px] font-yekanDemiBold text-[#000]">
-            {title}
-          </span>
+          <span className="text-[14px] font-medium">{title}</span>
         </div>
         <Image
           src="/Arrow-downG.svg"
@@ -187,11 +240,13 @@ export default function FilterProductCar({
             exit={{ height: 0, opacity: 0 }}
             className="overflow-hidden mt-2"
           >
-            <div className="flex flex-col gap-2 bg-white border border-gray-200 rounded-[12px] max-h-[200px] overflow-auto p-2 shadow">
+            <div className="flex flex-col gap-1 bg-white border border-gray-200 rounded-[12px] max-h-[220px] overflow-auto p-2 shadow">
               {loading[loadingKey] ? (
                 <div className="text-center py-4 text-gray-500">
                   در حال بارگذاری...
                 </div>
+              ) : title === "Category" ? (
+                items.map((cat) => renderNestedCategory(cat))
               ) : (
                 items.map((item) => {
                   const label = item.name || item.display_name || "";
@@ -217,13 +272,22 @@ export default function FilterProductCar({
     </div>
   );
 
+  const clearFilters = () => {
+    setSelectedCategories([]);
+    setSelectedBrands([]);
+    setSelectedCars([]);
+    setSelectedProductType("");
+    fetchCategories();
+    resetPage();
+  };
+
   return (
     <>
       {/* دکمه موبایل */}
       <div className="md:hidden w-full flex justify-start px-4 mb-4">
         <button
           onClick={() => setIsOpen(true)}
-          className="bg-[#F0F0F3] text-[#000] px-4 py-2 rounded-xl font-yekanDemiBold text-sm flex items-center gap-2"
+          className="bg-[#F0F0F3] text-[#000] px-4 py-2 rounded-xl font-medium flex items-center gap-2"
         >
           <Image src="/filter.svg" alt="filter" width={16} height={16} />
           فیلتر
@@ -231,12 +295,22 @@ export default function FilterProductCar({
       </div>
 
       {/* فیلتر دسکتاپ */}
-      <div className="hidden md:flex w-full max-w-[281px] border border-[#E0E1E6] bg-[#F9F9FB] rounded-[24px] flex-col gap-6 px-4 py-6">
-        <div className="text-[20px] text-[#000000] font-yekanDemiBold">
-          فیلترها
+      <div className="hidden md:flex w-full max-w-[281px] border border-[#E0E1E6] bg-[#F9F9FB] rounded-[24px] flex-col gap-4 px-4 py-6">
+        <div className="flex justify-between items-center">
+          <span className="text-[18px] font-medium">فیلترها</span>
+          {(selectedCategories.length > 0 ||
+            selectedBrands.length > 0 ||
+            selectedCars.length > 0 ||
+            selectedProductType !== "") && (
+            <button
+              onClick={clearFilters}
+              className="text-sm text-red-500 hover:underline"
+            >
+              حذف فیلترها
+            </button>
+          )}
         </div>
 
-        {/* دسته‌بندی */}
         {renderAccordion(
           "Category",
           categories,
@@ -244,8 +318,6 @@ export default function FilterProductCar({
           (id) => toggleItem(id, selectedCategories, setSelectedCategories),
           "categories"
         )}
-
-        {/* برند */}
         {renderAccordion(
           "Brand",
           brands,
@@ -253,8 +325,6 @@ export default function FilterProductCar({
           (id) => toggleItem(id, selectedBrands, setSelectedBrands),
           "brands"
         )}
-
-        {/* خودرو */}
         {renderAccordion(
           "Car",
           brands.flatMap((b) => b.cars || []),
@@ -271,9 +341,7 @@ export default function FilterProductCar({
           >
             <div className="flex items-center gap-2 pr-1">
               <Image src="/car.svg" alt="نوع کالا" width={20} height={20} />
-              <span className="text-[14px] font-yekanDemiBold text-[#000]">
-                نوع کالا
-              </span>
+              <span className="text-[14px] font-medium">نوع کالا</span>
             </div>
             <Image
               src="/Arrow-downG.svg"

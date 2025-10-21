@@ -5,7 +5,7 @@ import axios from "axios";
 import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 12;
 
 type Product = {
   id: number;
@@ -19,9 +19,7 @@ type ProductListProps = {
   currentPage?: number;
   onPageChange?: (page: number) => void;
   selectedBrands?: number[];
-  selectedCars?: number[];
-  selectedCategories?: number[]; // ← اضافه شد
-  selectedProductType?: string;
+  selectedCategories?: number[];
 };
 
 const ProductList: React.FC<ProductListProps> = ({
@@ -29,49 +27,53 @@ const ProductList: React.FC<ProductListProps> = ({
   currentPage = 1,
   onPageChange,
   selectedBrands = [],
-  selectedProductType = "",
+  selectedCategories = [],
 }) => {
   const router = useRouter();
   const params = useParams();
   const { id, subid } = params as { id: string; subid: string };
 
   const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [page, setPage] = useState<number>(currentPage);
-  const [totalParts, setTotalParts] = useState<number>(0);
+  const [page, setPage] = useState(currentPage);
+  const [totalParts, setTotalParts] = useState(0);
 
   const totalPages = Math.ceil(totalParts / PAGE_SIZE);
 
+  // وقتی currentPage از props تغییر کنه، state page رو آپدیت کن بدون ایجاد لوپ
   useEffect(() => {
     setPage(currentPage);
   }, [currentPage]);
 
+  // fetch محصولات
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
         setError(null);
 
-        const res = await axios.post("/api/CarProduct", {
-          car_id: carId,
-          page_number: page,
-          page_size: PAGE_SIZE,
-          brand_ids:
-            selectedBrands.length > 0 ? selectedBrands.join(",") : undefined,
-          product_type: selectedProductType || undefined,
+        const response = await axios.get("/api/AllProduct", {
+          params: {
+            car_id: carId,
+
+            pagenumber: page,
+            pagesize: PAGE_SIZE,
+          },
         });
 
-        const apiProducts = res.data.results.map((item: any) => ({
+        const data = response.data;
+        const apiProducts = data.results.map((item: any) => ({
           id: item.id,
           title: item.name,
-          price: item.price.toLocaleString("fa-IR"),
+          price: Number(item.price).toLocaleString("fa-IR"),
           image: item.image_urls.length > 0 ? item.image_urls[0] : "/Light.svg",
         }));
 
         setProducts(apiProducts);
-        setTotalParts(res.data.total_parts);
-      } catch {
+        setTotalParts(data.total_parts || 0);
+      } catch (err) {
+        console.error(err);
         setError("خطا در دریافت محصولات");
       } finally {
         setLoading(false);
@@ -79,12 +81,12 @@ const ProductList: React.FC<ProductListProps> = ({
     };
 
     fetchProducts();
-  }, [carId, page, selectedBrands, selectedProductType]);
+  }, [carId, page]);
 
   const changePage = (newPage: number) => {
     if (newPage < 1 || newPage > totalPages) return;
     setPage(newPage);
-    if (onPageChange) onPageChange(newPage);
+    onPageChange?.(newPage);
   };
 
   if (loading) return <div>در حال بارگذاری...</div>;

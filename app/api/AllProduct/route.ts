@@ -3,19 +3,22 @@ import { NextResponse } from "next/server";
 import axios from "axios";
 
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const pageNumber = searchParams.get("pagenumber") || "1";
-  const pageSize = searchParams.get("pagesize") || "12";
-
   try {
+    const { searchParams } = new URL(request.url);
+
+    // جمع‌آوری همه پارامترها از URL
+    const params: Record<string, string> = {};
+    searchParams.forEach((value, key) => {
+      if (value) params[key.toLowerCase()] = value; // نام پارامترها را به lowercase می‌بریم
+    });
+
+    // مقدار پیشفرض
+    if (!params.pagenumber) params.pagenumber = "1";
+    if (!params.pagesize) params.pagesize = "12";
+
     const response = await axios.get(
-      "http://194.5.175.107:8000/api/products/all/",
-      {
-        params: {
-          pagenumber: pageNumber,
-          pagesize: pageSize,
-        },
-      }
+      "http://194.5.175.107:8000/api/products/filter-parts/",
+      { params }
     );
 
     return NextResponse.json(response.data);

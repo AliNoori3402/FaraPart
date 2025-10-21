@@ -77,7 +77,6 @@ export default function Page() {
             جستجوی دقیق
           </div>
 
-          {/* اسلایدر محصولات */}
           <ProductSlider
             onCategoryClick={(categoryId: number) => {
               setSelectedCategory(categoryId);
