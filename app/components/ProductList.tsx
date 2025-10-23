@@ -1,104 +1,50 @@
 "use client";
-
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React from "react";
 import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
 
-const PAGE_SIZE = 12;
-
 type Product = {
   id: number;
-  title: string;
-  price: string;
-  image: string;
+  name: string; // بجای title
+  price: number; // بجای string
+  image_urls: string[];
 };
 
 type ProductListProps = {
-  carId: string;
-  currentPage?: number;
-  onPageChange?: (page: number) => void;
-  selectedBrands?: number[];
-  selectedCategories?: number[];
+  products: Product[];
+  totalCount: number;
+  currentPage: number;
+  onPageChange: (page: number) => void;
 };
 
-const ProductList: React.FC<ProductListProps> = ({
-  carId,
-  currentPage = 1,
+const PAGE_SIZE = 12;
+
+export default function ProductList({
+  products,
+  totalCount,
+  currentPage,
   onPageChange,
-  selectedBrands = [],
-  selectedCategories = [],
-}) => {
+}: ProductListProps) {
   const router = useRouter();
-  const params = useParams();
-  const { id, subid } = params as { id: string; subid: string };
+  const { id, subid } = useParams() as { id: string; subid: string };
 
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [page, setPage] = useState(currentPage);
-  const [totalParts, setTotalParts] = useState(0);
-
-  const totalPages = Math.ceil(totalParts / PAGE_SIZE);
-
-  // وقتی currentPage از props تغییر کنه، state page رو آپدیت کن بدون ایجاد لوپ
-  useEffect(() => {
-    setPage(currentPage);
-  }, [currentPage]);
-
-  // fetch محصولات
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        const response = await axios.get("/api/AllProduct", {
-          params: {
-            car_id: carId,
-
-            pagenumber: page,
-            pagesize: PAGE_SIZE,
-          },
-        });
-
-        const data = response.data;
-        const apiProducts = data.results.map((item: any) => ({
-          id: item.id,
-          title: item.name,
-          price: Number(item.price).toLocaleString("fa-IR"),
-          image: item.image_urls.length > 0 ? item.image_urls[0] : "/Light.svg",
-        }));
-
-        setProducts(apiProducts);
-        setTotalParts(data.total_parts || 0);
-      } catch (err) {
-        console.error(err);
-        setError("خطا در دریافت محصولات");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, [carId, page]);
-
+  const totalPages = Math.ceil(totalCount / PAGE_SIZE);
+  console.log(products);
   const changePage = (newPage: number) => {
     if (newPage < 1 || newPage > totalPages) return;
-    setPage(newPage);
-    onPageChange?.(newPage);
+    onPageChange(newPage);
   };
 
-  if (loading) return <div>در حال بارگذاری...</div>;
-  if (error) return <div>{error}</div>;
+  if (!products || products.length === 0)
+    return <div className="text-center py-8">محصولی یافت نشد</div>;
 
   return (
     <div>
       {/* محصولات */}
       <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {products.map((product) => (
+        {products.map((product, index) => (
           <div
-            key={product.id}
+            key={index}
             onClick={() =>
               router.push(`/CarCategory/${id}/${subid}/${product.id}`)
             }
@@ -107,14 +53,14 @@ const ProductList: React.FC<ProductListProps> = ({
             <div className="w-full relative h-[180px] flex justify-center items-center">
               <Image
                 fill
-                src={product.image}
+                src={product.image_urls?.[0] ?? "/Light.svg"}
                 className="w-[200px] h-full object-contain"
-                alt={product.title}
+                alt={product.name}
               />
             </div>
             <div className="w-full flex flex-col gap-6">
               <div className="text-[14px] text-[#1C2024] font-yekanDemiBold leading-[20px]">
-                {product.title}
+                {product.name}
               </div>
               <div className="flex flex-col gap-2">
                 <div className="flex flex-row gap-2 items-center">
@@ -146,20 +92,20 @@ const ProductList: React.FC<ProductListProps> = ({
       {/* پجینیشن */}
       <div className="flex justify-center items-center gap-4 mt-8">
         <button
-          disabled={page <= 1}
-          onClick={() => changePage(page - 1)}
+          disabled={currentPage <= 1}
+          onClick={() => changePage(currentPage - 1)}
           className="px-4 py-2 rounded bg-[#004D7A] text-white font-yekanDemiBold disabled:bg-gray-400"
         >
           صفحه قبلی
         </button>
 
         <span className="text-[#004D7A] font-yekanDemiBold">
-          صفحه {page} از {totalPages}
+          صفحه {currentPage} از {totalPages}
         </span>
 
         <button
-          disabled={page >= totalPages}
-          onClick={() => changePage(page + 1)}
+          disabled={currentPage >= totalPages}
+          onClick={() => changePage(currentPage + 1)}
           className="px-4 py-2 rounded bg-[#004D7A] text-white font-yekanDemiBold disabled:bg-gray-400"
         >
           صفحه بعدی
@@ -167,6 +113,4 @@ const ProductList: React.FC<ProductListProps> = ({
       </div>
     </div>
   );
-};
-
-export default ProductList;
+}

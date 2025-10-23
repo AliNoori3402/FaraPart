@@ -34,9 +34,11 @@ export default function Header() {
   return (
     <header className="h-[169px] flex flex-col items-center justify-center gap-4 font-yekanDemiBold py-4 relative">
       {/* Logo */}
-      <div className="relative w-[152px] h-[44px]">
-        <Image fill src={"/banner/headerIcon.png"} alt="logo" />
-      </div>
+      <Link href={"/"}>
+        <div className="relative w-[152px] h-[44px]">
+          <Image fill src={"/banner/headerIcon.png"} alt="logo" />
+        </div>
+      </Link>
 
       {/* Divider */}
       <div className="w-[323px] h-px bg-[#E8E8EC]" />

@@ -1,12 +1,14 @@
 // app/product/[id]/page.tsx
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ProductSlider from "../components/ProductSlider";
 import FilterProductPage from "../components/FilterProductPage";
 import AllProductList from "../components/Allproduct";
 import Image from "next/image";
-// types/product.ts
+import { useSearchParams } from "next/navigation";
+import axios from "axios";
+
 export interface Product {
   id: number;
   name: string;
@@ -27,9 +29,6 @@ export interface Product {
   warranty_name: string | null;
 }
 
-// -------------------
-// تایپ پروپ‌ها
-// -------------------
 interface FilterProductPageProps {
   onFilter: (products: Product[], totalCount: number) => void;
   currentPage: number;
@@ -68,6 +67,32 @@ export default function Page() {
   const resetPage = () => {
     setCurrentPage(1);
   };
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const fetchFilteredProducts = async () => {
+      const brand_id = searchParams.get("brand_id");
+      const car_id = searchParams.get("car_id");
+      const category_id = searchParams.get("category_id");
+
+      try {
+        const res = await axios.get("/api/AllProduct", {
+          params: { car_id, brand_id, category_id },
+        });
+
+        console.log("API Response:", res.data);
+
+        setFilteredProducts(res.data.results ?? []);
+        setFilteredTotalCount(res.data.count ?? 0);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+        setFilteredProducts([]);
+        setFilteredTotalCount(0);
+      }
+    };
+
+    fetchFilteredProducts();
+  }, [searchParams]);
 
   return (
     <div className="w-full px-4 md:px-8 lg:px-0 max-w-[1440px] mx-auto">
@@ -97,7 +122,7 @@ export default function Page() {
             <div className="w-full lg:w-[70%]">
               <AllProductList
                 products={
-                  filteredProducts !== null && filteredProducts.length >= 0
+                  filteredProducts !== null && filteredProducts
                     ? filteredProducts
                     : undefined
                 }

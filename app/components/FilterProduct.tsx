@@ -18,33 +18,24 @@ type Brand = {
   cars: Car[];
 };
 
-type ProductType = "spare" | "consumable";
+type ProductType = "175" | "2";
 
 export default function FilterProduct() {
   const router = useRouter();
 
   const [brands, setBrands] = useState<Brand[]>([]);
-  const [cars, setCars] = useState<Car[]>([]);
-  const [productTypes] = useState<ProductType[]>(["spare", "consumable"]);
+  const [productTypes] = useState<ProductType[]>(["175", "2"]);
 
   const [selectedBrand, setSelectedBrand] = useState("");
   const [selectedCar, setSelectedCar] = useState("");
   const [selectedType, setSelectedType] = useState("");
-  const [selectedStock, setSelectedStock] = useState("");
 
   useEffect(() => {
     const fetchBrands = async () => {
       try {
         const res = await axios.get("/api/brand");
-
-        // ✅ داده واقعی داخل results قرار دارد
         const brandList: Brand[] = res.data.results || [];
-
         setBrands(brandList);
-
-        // استخراج تمام مدل‌ها از همه برندها
-        const allCars = brandList.flatMap((b) => b.cars || []);
-        setCars(allCars);
       } catch (err) {
         console.error("خطا در دریافت برندها:", err);
       }
@@ -53,13 +44,16 @@ export default function FilterProduct() {
     fetchBrands();
   }, []);
 
+  // ماشین‌های برند انتخاب شده، یا همه ماشین‌ها اگر برندی انتخاب نشده باشد
+  const filteredCars = selectedBrand
+    ? brands.find((b) => b.id.toString() === selectedBrand)?.cars || []
+    : brands.flatMap((b) => b.cars || []);
+
   const handleFilter = () => {
     const params = new URLSearchParams();
-
-    if (selectedBrand) params.append("brand", selectedBrand);
-    if (selectedCar) params.append("car", selectedCar);
-    if (selectedType) params.append("type", selectedType);
-    if (selectedStock) params.append("stock", selectedStock);
+    if (selectedBrand) params.append("brand_id", selectedBrand);
+    if (selectedCar) params.append("car_id", selectedCar);
+    if (selectedType) params.append("category_id", selectedType);
 
     router.push(`/product?${params.toString()}`);
   };
@@ -81,30 +75,37 @@ export default function FilterProduct() {
 
       <div className="w-full flex flex-col lg:flex-row items-center justify-center gap-4">
         <div className="w-full flex flex-wrap justify-center gap-[20px]">
+          {/* برند خودرو */}
           <FilterBox
             icon="/car.svg"
             title="برند خودرو"
             value={selectedBrand}
-            onChange={(e) => setSelectedBrand(e.target.value)}
-            options={brands.map((b) => b.display_name)}
+            onChange={(e) => {
+              setSelectedBrand(e.target.value);
+              setSelectedCar(""); // ریست کردن مدل قبلی
+            }}
+            options={brands.map((b) => ({ id: b.id, label: b.display_name }))}
           />
 
+          {/* مدل خودرو */}
           <FilterBox
             icon="/car.svg"
             title="مدل خودرو"
             value={selectedCar}
             onChange={(e) => setSelectedCar(e.target.value)}
-            options={cars.map((c) => c.name)}
+            options={filteredCars.map((c) => ({ id: c.id, label: c.name }))}
           />
 
+          {/* نوع کالا */}
           <FilterBox
             icon="/product.svg"
             title="نوع کالا"
             value={selectedType}
             onChange={(e) => setSelectedType(e.target.value)}
-            options={productTypes.map((t) =>
-              t === "spare" ? "قطعات یدکی" : "مصرفی"
-            )}
+            options={productTypes.map((t) => ({
+              id: t,
+              label: t === "175" ? "قطعات یدکی" : "مصرفی",
+            }))}
           />
         </div>
 
@@ -131,7 +132,7 @@ function FilterBox({
   title: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  options: string[];
+  options: { id: string | number; label: string }[];
 }) {
   return (
     <div className="w-[238px] h-[76px] flex flex-col gap-[8px]">
@@ -154,9 +155,9 @@ function FilterBox({
           "
         >
           <option value="">انتخاب کنید</option>
-          {options.map((opt, index) => (
-            <option key={index} value={opt}>
-              {opt}
+          {options.map((opt) => (
+            <option key={opt.id} value={opt.id}>
+              {opt.label}
             </option>
           ))}
         </select>

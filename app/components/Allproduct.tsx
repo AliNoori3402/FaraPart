@@ -105,13 +105,27 @@ const AllProductList: React.FC<ProductListProps> = ({
     if (onPageChange) onPageChange(newPage);
   };
 
-  if (loading) return <div>در حال بارگذاری...</div>;
+  if (loading)
+    return (
+      <div className="flex flex-col justify-center items-center py-20">
+        <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+      </div>
+    );
+
   if (error) return <div>{error}</div>;
 
   return (
     <div>
       {products.length === 0 ? (
-        <div className="text-center py-10">محصولی یافت نشد</div>
+        <div className="flex flex-col justify-center items-center py-20">
+          <div className="w-20 h-20 mb-4 flex justify-center items-center bg-gray-100 rounded-full"></div>
+          <div className="text-center text-gray-500 font-yekanBold text-lg sm:text-xl">
+            محصولی یافت نشد
+          </div>
+          <div className="text-center text-gray-400 text-sm mt-2">
+            ممکن است فیلترهای شما نتیجه‌ای نداشته باشند
+          </div>
+        </div>
       ) : (
         <>
           <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

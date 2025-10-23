@@ -28,6 +28,9 @@ export default function Footer() {
         {/* توضیحات برند */}
         <div className="flex flex-col gap-8 max-w-[376px] mx-auto lg:mx-0">
           <div className="flex items-center gap-6 justify-center lg:justify-start">
+            <Link href={"/"}>
+              <div className="w-[126px] h-[65px] bg-[#D9D9D9]" />
+            </Link>
             <div className="w-[126px] h-[65px] bg-[#D9D9D9]" />
           </div>
           <p className="text-[14px] text-white font-yekanRegular leading-7 text-justify">
@@ -47,14 +50,21 @@ export default function Footer() {
             </h3>
             <ul className="text-white text-[16px] font-yekanRegular flex flex-col gap-3">
               <li>تماس با ما</li>
-              <li>قوانین و مقررات</li>
-              <li>فروش اعتباری</li>
+
+              <Link href={"/TermsAndCondition"}>
+                <li>قوانین و مقررات</li>
+              </Link>
               <Link href={"/about-us"}>
                 {" "}
                 <li>درباره فراپارت</li>
               </Link>
-              <li>وبلاگ</li>
-              <li>شرایط بازگشت کالا</li>
+              <Link href={"/blogs"}>
+                <li>وبلاگ</li>
+              </Link>
+
+              <Link href={"/ReturnPolicy"}>
+                <li>شرایط بازگشت کالا</li>
+              </Link>
             </ul>
           </div>
 
@@ -64,12 +74,21 @@ export default function Footer() {
               لوازم یدکی
             </h3>
             <ul className="text-white text-[16px] font-yekanRegular flex flex-col gap-3">
-              <li>لوازم یدکی بنز</li>
-              <li>لوازم یدکی کیا</li>
-              <li>لوازم یدکی هیوندا</li>
-              <li>لوازم یدکی پژو</li>
-              <li>لوازم یدکی سایپا</li>
-              <li>لوازم یدکی رنو</li>
+              <Link href={`/product?${"brand_id=2"}`}>
+                <li>لوازم یدکی پژو</li>
+              </Link>
+              <Link href={`/product?${"brand_id=3"}`}>
+                <li>لوازم یدکی ایران خودرو</li>
+              </Link>
+              <Link href={`/product?${"brand_id=7"}`}>
+                <li>لوازم یدکی رنو</li>
+              </Link>
+              <Link href={`/product?${"brand_id=8"}`}>
+                <li>لوازم یدکی سوزوکی</li>
+              </Link>
+              <Link href={`/product?${"brand_id=9"}`}>
+                <li>لوازم یدکی چری</li>
+              </Link>
             </ul>
           </div>
 
@@ -98,15 +117,17 @@ export default function Footer() {
                 ))}
               </div>
             </div>
-            <div className="w-[158px] h-[108px] bg-[#D9D9D9]" />
+            <Link href={"/"}>
+              <div className="w-[158px] h-[108px] bg-[#D9D9D9]" />
+            </Link>
           </div>
         </div>
       </div>
 
       {/* خط جداکننده و کپی‌رایت */}
       <div className="mt-10 border-t border-[#B9BBC6] pt-4 text-center text-white text-[14px] font-yekanRegular">
-        تمامی حقوق مادی و معنوی برای اسم برند محفوظ است. هرگونه کپی‌برداری پیگرد
-        قانونی دارد.
+        تمامی حقوق مادی و معنوی برای اسم فراپارت محفوظ است. هرگونه کپی‌برداری
+        پیگرد قانونی دارد.
       </div>
     </div>
   );

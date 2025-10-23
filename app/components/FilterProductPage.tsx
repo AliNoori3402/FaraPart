@@ -49,7 +49,6 @@ export default function FilterProductPage({
 
   const productTypes: ProductType[] = ["spare", "consumable"];
 
-  // --------------------- دریافت برندها و ماشین‌ها ---------------------
   useEffect(() => {
     const fetchBrands = async () => {
       try {
@@ -62,14 +61,25 @@ export default function FilterProductPage({
     fetchBrands();
   }, []);
 
-  // --------------------- دریافت دسته‌بندی‌ها ---------------------
   const fetchCategories = async (type: ProductType | "" = "") => {
     setLoading(true);
     try {
       const res = await axios.post("/api/categorylistbyid/", {
         parent_id: type === "" ? undefined : type === "spare" ? 1 : 175,
       });
-      setCategories(res.data || []);
+
+      const allCategories = res.data || [];
+
+      let childCategories: Category[] = [];
+      if (Array.isArray(allCategories)) {
+        allCategories.forEach((cat: Category) => {
+          if (Array.isArray(cat.child) && cat.child.length > 0) {
+            childCategories.push(...cat.child);
+          }
+        });
+      }
+
+      setCategories(childCategories);
     } catch (error) {
       console.error("خطا در دریافت دسته‌بندی‌ها:", error);
       setCategories([]);
@@ -179,7 +189,9 @@ export default function FilterProductPage({
           style={{ paddingLeft: `${level * 16}px` }}
           onClick={() => hasChild && toggleNestedCategory(category.id)}
         >
-          <span className="text-sm text-gray-800">{category.name}</span>
+          <span className="text-sm text-gray-800 font-yekanRegular">
+            {category.name}
+          </span>
           {hasChild && (
             <Image
               src="/Arrow-downG.svg"
@@ -198,7 +210,7 @@ export default function FilterProductPage({
               e.stopPropagation();
               toggleCategory(category.id);
             }}
-            className="w-4 h-4 accent-blue-500 rounded"
+            className="w-4 h-4 accent-blue-500  rounded"
           />
         </div>
 
@@ -231,7 +243,7 @@ export default function FilterProductPage({
       className={`flex items-center justify-between gap-2 py-2 px-3 rounded-lg cursor-pointer select-none transition-colors
       ${checked ? "bg-blue-50" : "hover:bg-gray-50"}`}
     >
-      <span className="text-sm text-gray-800">{label}</span>
+      <span className="text-sm text-gray-800 font-yekanRegular">{label}</span>
       <input
         type="checkbox"
         checked={checked}
@@ -247,10 +259,10 @@ export default function FilterProductPage({
     onChange: () => void
   ) => (
     <label
-      className={`flex items-center justify-between gap-2 py-2 px-3 rounded-lg cursor-pointer select-none transition-colors
+      className={`flex items-center justify-between gap-2 py-2 font-yekanBold px-3 rounded-lg cursor-pointer select-none transition-colors
       ${checked ? "bg-blue-50" : "hover:bg-gray-50"}`}
     >
-      <span className="text-sm text-gray-800">{label}</span>
+      <span className="text-sm text-gray-800 font-yekanRegular">{label}</span>
       <input
         type="radio"
         checked={checked}
@@ -273,7 +285,9 @@ export default function FilterProductPage({
       >
         <div className="flex items-center gap-2 pr-1">
           <Image src="/car.svg" alt={title} width={20} height={20} />
-          <span className="text-sm font-medium text-gray-900">{title}</span>
+          <span className="text-sm font-medium text-gray-900 font-yekanBold">
+            {title}
+          </span>
         </div>
         <div className="flex items-center gap-2">
           {loading && (
@@ -344,12 +358,6 @@ export default function FilterProductPage({
         </div>
 
         {/* دسته‌بندی */}
-        {renderAccordion(
-          "دسته‌بندی",
-          categoryAccordionOpen,
-          setCategoryAccordionOpen,
-          categories.map((cat) => renderNestedCategory(cat))
-        )}
 
         {/* برند */}
         {renderAccordion(
@@ -394,6 +402,12 @@ export default function FilterProductPage({
               () => handleSelectProductType(type)
             )
           )
+        )}
+        {renderAccordion(
+          "دسته‌بندی",
+          categoryAccordionOpen,
+          setCategoryAccordionOpen,
+          categories.map((cat) => renderNestedCategory(cat))
         )}
       </div>
     </>
