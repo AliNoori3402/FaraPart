@@ -12,7 +12,7 @@ export default function Page() {
 
   return (
     <div className="w-full flex justify-center px-4">
-      <div className="w-full max-w-[1280px] flex flex-col items-center gap-[40px]">
+      <div className="w-full bg-[#F9F9FB] max-w-[1280px] flex flex-col items-center gap-[40px]">
         {/* مسیر ناوبری (Breadcrumb) */}
         <div className="flex flex-wrap gap-[4px] justify-center items-center text-[14px] text-[#1C2024] font-yekanDemiBold">
           <span>بررسی تخصصی</span>

@@ -23,7 +23,7 @@ export default function Footer() {
   ];
 
   return (
-    <div className="bg-[#005E95] rounded-[32px] px-4 py-10 sm:px-6 lg:px-12 max-w-[1280px] mx-auto">
+    <div className="bg-[#005E95] rounded-0 sm:rounded-[32px] px-4 py-10 sm:px-6 lg:px-12 max-w-[1280px] mx-auto">
       <div className="flex flex-col-reverse lg:flex-row lg:justify-between gap-12">
         {/* توضیحات برند */}
         <div className="flex flex-col gap-8 max-w-[376px] mx-auto lg:mx-0">
@@ -34,10 +34,10 @@ export default function Footer() {
             <div className="w-[126px] h-[65px] bg-[#D9D9D9]" />
           </div>
           <p className="text-[14px] text-white font-yekanRegular leading-7 text-justify">
-            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
-            استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در
-            ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز،
-            و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می‌باشد...
+            فراپارت برندی ایرانی در حوزه تأمین و فروش قطعات خودرو است که با شعار
+            «فراپارت، فراتر از نیاز» بر کیفیت، اصالت کالا و رضایت مشتری تمرکز
+            دارد. این برند با هدف ایجاد تحولی نوین در بازار قطعات، تجربه‌ای
+            مطمئن و جامع از خرید قطعات خودرو را برای مصرف‌کنندگان فراهم می‌کند.
           </p>
         </div>
 
@@ -49,8 +49,9 @@ export default function Footer() {
               دسترسی سریع
             </h3>
             <ul className="text-white text-[16px] font-yekanRegular flex flex-col gap-3">
-              <li>تماس با ما</li>
-
+              <Link href={"/contact-us"}>
+                <li>تماس با ما</li>
+              </Link>
               <Link href={"/TermsAndCondition"}>
                 <li>قوانین و مقررات</li>
               </Link>

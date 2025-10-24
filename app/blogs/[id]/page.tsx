@@ -37,7 +37,7 @@ export default function BlogDetailsPage() {
   }
 
   return (
-    <div className="w-full max-w-[1440px] mx-auto px-4 md:px-[40px] lg:px-0">
+    <div className="w-full bg-[#fcfcfc] max-w-[1440px] mx-auto px-4 md:px-[40px] lg:px-0">
       <div className="w-full max-w-[1280px] flex flex-col gap-[48px] justify-center items-center mx-auto">
         <div className="w-full flex flex-wrap gap-[4px] justify-center items-center">
           <span className="text-[14px] text-[#1C2024] font-yekanDemiBold">

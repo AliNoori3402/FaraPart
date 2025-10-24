@@ -8,7 +8,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="w-full flex flex-col gap-[96px] px-4 sm:px-6 lg:px-0 max-w-[1280px] mx-auto">
+    <div className="w-full bg-[#F9F9FB] flex flex-col gap-[96px] px-4 sm:px-6 lg:px-0 max-w-[1440px] mx-auto">
       {/* 🔹 اسلایدر اصلی */}
       <Slider />
 

@@ -9,7 +9,7 @@ import Image from "next/image";
 
 function Page() {
   return (
-    <div className="w-full max-w-[1440px] mx-auto px-4 md:px-[10px]">
+    <div className="w-full bg-[#F9F9FB] max-w-[1440px] mx-auto px-4 md:px-[10px]">
       <div className="w-full max-w-[1280px] flex flex-col gap-[48px] justify-center items-center px-4 pb-[89px]">
         {/* مسیر نان‌بری */}
         <div className="w-full max-w-[454px] flex flex-wrap gap-[4px] justify-center md:justify-start">

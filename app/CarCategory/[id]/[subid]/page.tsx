@@ -61,8 +61,8 @@ function Page() {
   }, [carId, currentPage, filtersActive]);
 
   return (
-    <div className="w-full px-4 md:px-8 lg:px-0 max-w-[1440px] mx-auto">
-      <div className="w-full flex flex-col justify-center items-center gap-6 md:gap-[58px] pt-8 pb-20 lg:pr-[80px]">
+    <div className="w-full  bg-[#F9F9FB] px-4 md:px-8 lg:px-0 max-w-[1440px] mx-auto">
+      <div className="w-full flex flex-col justify-center items-center gap-6 md:gap-[58px] pt-8 pb-20 ">
         <div className="w-full flex flex-col items-center gap-10">
           <div className="text-[16px] text-[#8B8D98] font-yekanBold">
             جستجوی دقیق
@@ -76,7 +76,7 @@ function Page() {
             }}
           />
 
-          <div className="w-full flex flex-col lg:flex-row gap-10">
+          <div className="w-full flex flex-col lg:flex-row gap-0 px-6">
             {/* ستون فیلتر */}
             <div className="w-full lg:w-[30%]">
               <FilterProductPage

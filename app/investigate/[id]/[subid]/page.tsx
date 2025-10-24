@@ -58,7 +58,7 @@ const Page = () => {
   }, [car_name, section_name]);
 
   return (
-    <div className="w-full max-w-[1440px] flex flex-col gap-12 mx-auto px-4 pb-16">
+    <div className="w-full bg-[#F9F9FB] max-w-[1440px] flex flex-col gap-12 mx-auto px-4 pb-16">
       {/* عنوان صفحه */}
       <div className="text-[28px] text-[#1C2024] font-yekanBold text-center mt-8">
         قطعات {section_name} {car_name}
@@ -83,12 +83,35 @@ const Page = () => {
           >
             {/* تصویر */}
             {item.category_image_base64 && (
-              <div className="w-full h-[400px] relative">
+              <div
+                className="w-full h-[400px] relative overflow-hidden rounded-t-2xl sm:rounded-l-2xl sm:rounded-tr-none"
+                onMouseMove={(e) => {
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  const x = ((e.clientX - rect.left) / rect.width) * 100;
+                  const y = ((e.clientY - rect.top) / rect.height) * 100;
+                  const img = e.currentTarget.querySelector(
+                    "img"
+                  ) as HTMLImageElement;
+                  if (img) {
+                    img.style.transformOrigin = `${x}% ${y}%`;
+                    img.style.transform = "scale(2)"; // میزان زوم
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  const img = e.currentTarget.querySelector(
+                    "img"
+                  ) as HTMLImageElement;
+                  if (img) {
+                    img.style.transformOrigin = "center center";
+                    img.style.transform = "scale(1)";
+                  }
+                }}
+              >
                 <Image
                   src={`data:image/png;base64,${item.category_image_base64}`}
                   alt={item.part_name || "تصویر قطعه"}
                   fill
-                  className="object-contain bg-[#F9FAFB]"
+                  className="object-contain bg-[#F9FAFB] transition-transform duration-300 ease-out"
                 />
               </div>
             )}

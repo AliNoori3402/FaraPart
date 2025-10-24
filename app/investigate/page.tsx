@@ -9,7 +9,7 @@ function Page() {
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
 
   return (
-    <div className="w-full max-w-[1440px] mx-auto px-4 md:px-[40px] lg:px-0">
+    <div className="w-full bg-[#F9F9FB] max-w-[1440px] mx-auto px-4 md:px-[40px] lg:px-0">
       <div className="w-full max-w-[1280px] flex flex-col justify-center items-center gap-[40px] mx-auto">
         {/* عنوان مسیر */}
         <div className="w-full flex flex-wrap gap-[4px] justify-center items-center">

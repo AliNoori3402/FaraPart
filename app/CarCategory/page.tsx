@@ -3,7 +3,7 @@ import ProductCards from "../components/CardCategory";
 
 const Page = () => {
   return (
-    <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 md:px-8">
+    <div className="w-full bg-[#F9F9FB] max-w-[1440px] mx-auto px-4 sm:px-6 md:px-8">
       <div className="flex flex-col gap-[30px] justify-center items-center">
         {/* مسیر و عنوان */}
         <div className="flex flex-col gap-[32px] items-center">

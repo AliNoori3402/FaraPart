@@ -31,7 +31,7 @@ export default function Slider() {
   };
 
   return (
-    <div className="w-full h-[529px] sm:h-[440px] md:h-[440px] rounded-[32px] overflow-hidden relative">
+    <div className="w-full h-[529px] sm:h-[440px] md:h-[540px] rounded-[32px] overflow-hidden relative">
       {/* 👇 Slide Images */}
       <AnimatePresence mode="wait">
         <motion.div
