@@ -15,7 +15,9 @@ export default function BlogDetailsPage() {
 
     const fetchData = async () => {
       try {
-        const res = await axios.get(`/api/blog/${id}`);
+        const res = await axios.get(
+          `http://194.5.175.107:8000/api/blog/posts/${id}/`
+        );
         setData(res.data);
       } catch (err) {
         console.error("Error fetching blog details:", err);
@@ -59,7 +61,11 @@ export default function BlogDetailsPage() {
           <div className=" relative w-full lg:w-[642px] h-auto">
             <Image
               fill
-              src={data.image || "/car-blog.svg"}
+              src={
+                data.images_binary[0].content
+                  ? `data:image/png;base64,${data.images_binary[0].content}` // اضافه کردن MIME type
+                  : "/car-logo.svg"
+              }
               alt={data.title}
               className="w-full h-full object-contain"
             />
@@ -85,20 +91,20 @@ export default function BlogDetailsPage() {
                   />
                 </div>
                 <span className="text-[14px] text-[#1C2024] font-yekanDemiBold">
-                  {data.date || "بدون تاریخ"}
+                  {new Date(data.publish).toLocaleDateString("fa-IR")}
                 </span>
               </div>
             </div>
 
             <p className="text-[14px] text-[#1C2024] font-yekanRegular leading-[2]">
-              {data.short_description || "بدون توضیح"}
+              {data.excerpt || "بدون توضیح"}
             </p>
           </div>
         </div>
 
         <div className="w-full flex flex-col gap-[40px]">
           <p className="text-[14px] text-[#1C2024] font-yekanRegular leading-[2]">
-            {data.content || "محتوای کامل خبر در دسترس نیست."}
+            {data.body || "محتوای کامل خبر در دسترس نیست."}
           </p>
         </div>
       </div>

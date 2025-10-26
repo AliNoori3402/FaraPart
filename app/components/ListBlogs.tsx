@@ -38,10 +38,12 @@ export default function CarCardList() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[32px] gap-y-[66px]">
           {cardData.map((card, index) => (
             <CarCard
+              logo_binary={card.images_binary[0].content}
+              id={card.id}
               key={index}
               title={card.title}
               description={card.description}
-              date={card.date}
+              date={card.publish}
             />
           ))}
         </div>
