@@ -242,8 +242,11 @@ export default function FilterProductCar({
           >
             <div className="flex flex-col gap-1 bg-white border border-gray-200 rounded-[12px] max-h-[220px] overflow-auto p-2 shadow">
               {loading[loadingKey] ? (
-                <div className="text-center py-4 text-gray-500">
-                  در حال بارگذاری...
+                <div className="flex flex-col items-center justify-center gap-2">
+                  <div className="w-10 h-10 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
+                  <div className="text-[#1C2024] font-yekanRegular mt-2">
+                    در حال بارگذاری ...
+                  </div>
                 </div>
               ) : title === "Category" ? (
                 items.map((cat) => renderNestedCategory(cat))

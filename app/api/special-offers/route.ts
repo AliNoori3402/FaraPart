@@ -3,7 +3,9 @@ import axios from "axios";
 
 export async function GET() {
   try {
-    const res = await axios.get("http://194.5.175.107:8000/api/blog/posts/");
+    const res = await axios.get(
+      "http://194.5.175.107:8000/api/admin/list-special-offer-box/"
+    );
     const offers = res.data || [];
 
     // فیلتر کردن پیشنهادهای فعال

@@ -3,11 +3,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
+import { toast } from "sonner"; // ✅ اضافه شد
 
 function VerifyCodePage() {
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
   const [timer, setTimer] = useState(80);
   const [resending, setResending] = useState(false);
 
@@ -15,6 +15,7 @@ function VerifyCodePage() {
   const searchParams = useSearchParams();
   const phoneNumber = searchParams.get("phone");
 
+  // تایمر شمارش معکوس
   useEffect(() => {
     if (timer <= 0) return;
     const countdown = setInterval(() => {
@@ -23,14 +24,14 @@ function VerifyCodePage() {
     return () => clearInterval(countdown);
   }, [timer]);
 
+  // ✅ ارسال کد تأیید
   const handleSubmit = async () => {
     if (!code || !phoneNumber) {
-      setError("کد یا شماره تلفن وارد نشده است.");
+      toast.error("کد یا شماره تلفن وارد نشده است.");
       return;
     }
 
     setLoading(true);
-    setError("");
 
     try {
       const response = await axios.post("/api/verifycode", {
@@ -43,39 +44,40 @@ function VerifyCodePage() {
       if (response.status === 200 && data.status === "success") {
         const { tokens, user_created, person_created, phone_number } = data;
 
-        // ✅ ذخیره توکن‌ها در localStorage
+        // ذخیره توکن‌ها
         localStorage.setItem("accessToken", tokens.access);
         localStorage.setItem("refreshToken", tokens.refresh);
         localStorage.setItem("userId", tokens.user_id.toString());
         localStorage.setItem("phoneNumber", phone_number);
 
-        // ✅ هدایت بر اساس وضعیت کاربر
+        toast.success("ورود با موفقیت انجام شد 🎉");
+
+        // هدایت بر اساس وضعیت کاربر
         if (!user_created || !person_created) {
           router.push("/personal-information");
         } else {
           router.push("/");
         }
       } else {
-        setError("کد وارد شده نادرست است.");
+        toast.error("کد وارد شده نادرست است ❌");
       }
     } catch (err: any) {
-      setError(err?.response?.data?.message || "خطا در ارتباط با سرور");
+      toast.error(err?.response?.data?.message || "خطا در ارتباط با سرور");
     } finally {
       setLoading(false);
     }
   };
 
+  // ✅ ارسال مجدد کد
   const handleResendCode = async () => {
     if (!phoneNumber) return;
     try {
       setResending(true);
-      await axios.post("/api/sendotp", {
-        phone_number: phoneNumber,
-      });
-      setTimer(80); // ریست تایمر
-      setError("");
+      await axios.post("/api/sendotp", { phone_number: phoneNumber });
+      setTimer(80);
+      toast.success("کد تأیید جدید ارسال شد 📩");
     } catch {
-      setError("خطا در ارسال مجدد کد.");
+      toast.error("خطا در ارسال مجدد کد ❌");
     } finally {
       setResending(false);
     }
@@ -84,11 +86,13 @@ function VerifyCodePage() {
   return (
     <div className="w-full h-screen flex justify-center items-start overflow-hidden">
       <div className="w-[377px] max-w-full px-4 mx-auto flex flex-col items-center mt-[24px]">
+        {/* هدر */}
         <div className="w-[377px] h-[64px] flex flex-col gap-[24px] items-center">
           <div className="w-[152px] h-[44px] bg-[#D9D9D9]"></div>
           <div className="w-[377px] h-[1px] bg-[#E8E8EC]"></div>
         </div>
 
+        {/* محتوای اصلی */}
         <div className="w-[377px] h-[243px] flex flex-col gap-[56px] items-center mt-[24px]">
           <div className="w-[307px] h-[83px] flex flex-col gap-[16px] justify-center items-center">
             <div className="w-[307px] h-[31px] text-[24px] text-center text-[#000000] font-yekanDemiBold">
@@ -122,12 +126,6 @@ function VerifyCodePage() {
               className="flex-grow w-[377px] h-[48px] bg-[#E8E8EC] rounded-[20px] text-right px-2 placeholder:text-[#80838D] outline-none font-yekanDemiBold"
             />
 
-            {error && (
-              <div className="text-red-500 text-sm text-center mt-2">
-                {error}
-              </div>
-            )}
-
             <div className="w-[159px] h-[21px] text-[14px] text-[#80838D] font-yekanDemiBold text-center">
               {timer > 0 ? (
                 <>
@@ -151,6 +149,7 @@ function VerifyCodePage() {
           </div>
         </div>
 
+        {/* دکمه‌ها */}
         <div className="w-[377px] h-[92px] flex flex-col gap-[24px] mt-[24px] justify-center items-center">
           <button
             onClick={handleSubmit}
@@ -162,7 +161,7 @@ function VerifyCodePage() {
 
           <div
             className="w-[129px] h-[20px] flex flex-row gap-[4px] cursor-pointer"
-            onClick={() => router.push("/")}
+            onClick={() => router.push("/login-rigister")}
           >
             <div className="w-[105px] h-[18px] text-[14px] text-[#006FB4] font-yekanDemiBold">
               تغییر شماره همراه

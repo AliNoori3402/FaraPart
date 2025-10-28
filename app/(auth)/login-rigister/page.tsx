@@ -3,22 +3,20 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner"; // ✅ اضافه شد
+import Link from "next/link";
 
 function Page() {
   const router = useRouter();
 
   const [phoneNumber, setPhoneNumber] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
 
   const handleSubmit = async () => {
-    setError(null);
     console.log("Sending POST request to /api/sendotp", phoneNumber);
-    setSuccess(false);
 
     if (!/^09\d{9}$/.test(phoneNumber)) {
-      setError("لطفاً شماره تلفن معتبر وارد کنید. مثال: 09120000000");
+      toast.error("❌ لطفاً شماره تلفن معتبر وارد کنید. مثال: 09120000000");
       return;
     }
 
@@ -29,15 +27,14 @@ function Page() {
       });
 
       if (res.status === 200) {
-        setSuccess(true);
-        // بعد از موفقیت، ریدایرکت به verify-code همراه شماره (اختیاری)
+        toast.success("✅ کد تایید با موفقیت ارسال شد");
         router.push(`/verify-code?phone=${encodeURIComponent(phoneNumber)}`);
       } else {
-        setError("خطا در ارسال کد تایید. لطفاً دوباره تلاش کنید.");
+        toast.error("⚠️ خطا در ارسال کد تایید. لطفاً دوباره تلاش کنید.");
         console.log(res);
       }
     } catch (err) {
-      setError("خطا در ارسال کد تایید. لطفاً دوباره تلاش کنید.");
+      toast.error("⚠️ خطا در برقراری ارتباط با سرور.");
     } finally {
       setLoading(false);
     }
@@ -108,30 +105,20 @@ function Page() {
             {loading ? "در حال ارسال..." : "ارسال کد تایید"}
           </button>
 
-          {error && (
-            <div className="w-full text-center text-red-600 font-yekanDemiBold">
-              {error}
+          <Link href={"/"}>
+            <div className="w-[160px] h-[20px] flex flex-row gap-[4px] cursor-pointer">
+              <div className="w-[136px] h-[18px] text-[14px] text-[#006FB4] font-yekanDemiBold">
+                بازگشت به صفحه اصلی
+              </div>
+              <div className="w-[20px] h-[20px]">
+                <img
+                  src="/Arrow-leftB.svg"
+                  alt="Arrow Icon"
+                  className="w-full h-full object-contain"
+                />
+              </div>
             </div>
-          )}
-
-          {success && (
-            <div className="w-full text-center text-green-600 font-yekanDemiBold">
-              کد تایید با موفقیت ارسال شد.
-            </div>
-          )}
-
-          <div className="w-[160px] h-[20px] flex flex-row gap-[4px] cursor-pointer">
-            <div className="w-[136px] h-[18px] text-[14px] text-[#006FB4] font-yekanDemiBold">
-              بازگشت به صفحه اصلی
-            </div>
-            <div className="w-[20px] h-[20px]">
-              <img
-                src="/Arrow-leftB.svg"
-                alt="Arrow Icon"
-                className="w-full h-full object-contain"
-              />
-            </div>
-          </div>
+          </Link>
         </div>
       </div>
     </div>

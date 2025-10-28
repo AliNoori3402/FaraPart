@@ -9,7 +9,7 @@ interface Part {
   id: number;
   name: string;
   price: number;
-  image_urls: string[];
+  image_urls?: string[];
 }
 
 interface Offer {
@@ -30,24 +30,29 @@ export default function AmazingSlider() {
   const [cardWidth, setCardWidth] = useState<number>(0);
 
   const visibleCards = 5;
-  const maxIndex = offer ? offer.parts.length - visibleCards : 0;
+  const maxIndex = offer ? Math.max(offer.parts.length - visibleCards, 0) : 0;
 
-  // دریافت پیشنهاد فعال
+  // دریافت پیشنهاد
   useEffect(() => {
     const fetchOffer = async () => {
       try {
         const res = await axios.get("/api/special-offers");
-        const data: Offer[] = res.data || [];
-        const now = new Date().getTime();
+        const data = res.data;
 
-        const activeOffer = data.find(
-          (o) =>
-            o.is_active &&
-            new Date(o.start_time).getTime() <= now &&
-            now <= new Date(o.end_time).getTime()
-        );
-
-        setOffer(activeOffer || null);
+        if (Array.isArray(data)) {
+          const now = new Date().getTime();
+          const activeOffer = data.find(
+            (o: Offer) =>
+              o.is_active &&
+              new Date(o.start_time).getTime() <= now &&
+              now <= new Date(o.end_time).getTime()
+          );
+          setOffer(activeOffer || null);
+        } else if (data && data.is_active) {
+          setOffer(data);
+        } else {
+          setOffer(null);
+        }
       } catch (err) {
         console.error("Error fetching offer:", err);
         setOffer(null);
@@ -68,7 +73,7 @@ export default function AmazingSlider() {
       if (diff <= 0) {
         setTimeLeft("00:00:00");
         clearInterval(interval);
-        setOffer(null); // وقتی پیشنهاد تمام شد، حذف شود
+        setOffer(null);
         return;
       }
 
@@ -126,7 +131,6 @@ export default function AmazingSlider() {
         <div className="text-[#D9D9E0] font-yekanDemiBold">
           {offer.description}
         </div>
-        {/* تایمر */}
         <div className="text-white font-yekanDemiBold mt-2 sm:mt-0">
           {timeLeft} باقی مانده
         </div>
@@ -152,7 +156,7 @@ export default function AmazingSlider() {
                 <Image
                   width={136}
                   height={109}
-                  src={p.image_urls[0] || "/no-image.svg"}
+                  src={p.image_urls?.[0] || "/no-image.svg"}
                   className="w-full h-full object-contain"
                   alt={p.name}
                 />
@@ -162,7 +166,7 @@ export default function AmazingSlider() {
                   {p.name}
                 </p>
                 <div className="text-[#004D7A] font-yekanDemiBold">
-                  {p.price.toLocaleString()}{" "}
+                  {p.price?.toLocaleString() || 0}{" "}
                   <span className="text-[8px]">تومان</span>
                 </div>
               </div>
@@ -171,7 +175,7 @@ export default function AmazingSlider() {
         </motion.div>
       </div>
 
-      {/* اسلایدر دسکتاپ/تبلت */}
+      {/* اسلایدر دسکتاپ */}
       <div className="hidden sm:block relative px-4">
         <motion.div
           className="flex gap-4"
@@ -189,7 +193,7 @@ export default function AmazingSlider() {
                 <Image
                   width={221}
                   height={178}
-                  src={p.image_urls[0] || "/no-image.svg"}
+                  src={p.image_urls?.[0] || "/no-image.svg"}
                   className="w-full h-full object-contain"
                   alt={p.name}
                 />
@@ -199,7 +203,7 @@ export default function AmazingSlider() {
                   {p.name}
                 </p>
                 <div className="text-[#004D7A] font-yekanDemiBold text-lg">
-                  {p.price.toLocaleString()}{" "}
+                  {p.price?.toLocaleString() || 0}{" "}
                   <span className="text-sm">تومان</span>
                 </div>
               </div>
@@ -207,7 +211,6 @@ export default function AmazingSlider() {
           ))}
         </motion.div>
 
-        {/* سایه چپ */}
         <div className="absolute top-0 left-0 w-[80px] h-full bg-gradient-to-r from-[#004D7A] to-transparent z-10 pointer-events-none rounded-r-[32px]" />
       </div>
 
@@ -221,13 +224,7 @@ export default function AmazingSlider() {
               index === 0 ? "bg-[#d9d9d980] cursor-not-allowed" : "bg-white"
             }`}
           >
-            <Image
-              src="/Arrow-rightB.svg"
-              alt=""
-              width={20}
-              height={20}
-              className="w-5 h-5"
-            />
+            <Image src="/Arrow-rightB.svg" alt="" width={20} height={20} />
           </button>
           <button
             onClick={nextSlide}
@@ -238,13 +235,7 @@ export default function AmazingSlider() {
                 : "bg-[#004D7A]"
             }`}
           >
-            <Image
-              src="/Arrow-leftW.svg"
-              width={20}
-              height={20}
-              alt=""
-              className="w-5 h-5"
-            />
+            <Image src="/Arrow-leftW.svg" width={20} height={20} alt="" />
           </button>
         </div>
       </div>

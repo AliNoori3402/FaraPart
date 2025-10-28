@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-
 import axios from "axios";
 import ProductImages from "../../components/DeatilPartImage";
 import TextDetails from "../../components/TextDetails";
@@ -18,11 +17,7 @@ type ProductDetail = {
   image_urls: string[];
   part_type: string;
   car_names: string[];
-  category: {
-    name: string;
-  };
-
-  inventory: number;
+  category: { name: string };
   inventory_warning: string;
   has_warranty: boolean;
   warranty_name: string | null;
@@ -33,26 +28,39 @@ const ProductDetailPage: React.FC = () => {
   const id = params?.id;
 
   const [product, setProduct] = useState<ProductDetail | null>(null);
+  const [hasInventory, setHasInventory] = useState<boolean | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-
-  // state تعداد کالا
   const [quantity, setQuantity] = useState<number>(1);
 
   useEffect(() => {
     if (!id) return;
 
-    const fetchProduct = async () => {
+    const fetchProductAndInventory = async () => {
       setLoading(true);
       setError(null);
 
       try {
+        // دریافت جزئیات محصول
         const res = await fetch(`/api/AllProduct/${id}`);
-        if (!res.ok) {
-          throw new Error("خطا در دریافت اطلاعات محصول");
-        }
+        if (!res.ok) throw new Error("خطا در دریافت اطلاعات محصول");
         const data = await res.json();
         setProduct(data);
+
+        // دریافت موجودی محصول از API خارجی
+        try {
+          const inventoryRes = await axios({
+            method: "post",
+            url: "http://194.5.175.107:8000/api/products/inventory/",
+            data: { id: Number(id) }, // body شامل id
+            headers: { "Content-Type": "application/json" },
+          });
+
+          setHasInventory(inventoryRes.data?.has_inventory ?? false);
+        } catch (invErr) {
+          console.error("خطا در دریافت موجودی:", invErr);
+          setHasInventory(null);
+        }
       } catch (err) {
         setError((err as Error).message);
       } finally {
@@ -60,84 +68,60 @@ const ProductDetailPage: React.FC = () => {
       }
     };
 
-    fetchProduct();
+    fetchProductAndInventory();
   }, [id]);
 
-  // تابع افزودن به سبد خرید
   const addToCart = async (quantityToAdd: number) => {
-    if (!id) {
-      alert("شناسه محصول نامشخص است");
-      return;
-    }
+    if (!id) return alert("شناسه محصول نامشخص است");
 
-    const rawAccessToken = localStorage.getItem("accessToken"); // یا accessToken اگر نامش متفاوت است
+    const rawAccessToken = localStorage.getItem("accessToken");
     const accessToken = rawAccessToken
       ? rawAccessToken.replace(/^"(.*)"$/, "$1")
       : null;
+    if (!accessToken) return alert("لطفا ابتدا وارد شوید");
 
-    if (!accessToken) {
-      alert("لطفا ابتدا وارد شوید");
-      return;
-    }
-
-    const response = await axios.post(
+    await axios.post(
       "/api/Addcart",
-      {
-        part_id: Number(id),
-        quantity: quantityToAdd,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-        },
-      }
+      { part_id: Number(id), quantity: quantityToAdd },
+      { headers: { Authorization: `Bearer ${accessToken}` } }
     );
   };
 
-  if (loading) return <div>در حال بارگذاری...</div>;
+  if (loading)
+    return (
+      <div className="flex flex-col items-center justify-center gap-2">
+        <div className="w-10 h-10 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
+        <div className="text-[#1C2024] font-yekanRegular mt-2">
+          در حال بارگذاری ...
+        </div>
+      </div>
+    );
   if (error) return <div>{error}</div>;
   if (!product) return <div>محصول یافت نشد</div>;
 
   return (
     <div className="w-full max-w-[1440px] flex flex-col gap-[64px] mx-auto px-4 md:px-[10px]">
       <div className="w-full flex flex-col gap-[48px] items-center">
+        {/* مسیر دسته‌بندی */}
         <div className="w-full max-w-[454px] flex flex-wrap gap-[4px] justify-center sm:justify-center md:justify-start">
           <div className="text-[14px] text-[#1C2024] font-yekanDemiBold">
             لوازم یدکی
           </div>
-          <Image
-            width={16}
-            height={16}
-            src="/Arrow-leftG.svg"
-            alt="arrow"
-            className="w-[16px] h-[16px]"
-          />
+          <Image width={16} height={16} src="/Arrow-leftG.svg" alt="arrow" />
           <div className="text-[14px] text-[#1C2024] font-yekanDemiBold">
             {product.category.name}
           </div>
-          <Image
-            width={16}
-            height={16}
-            src="/Arrow-leftG.svg"
-            alt="arrow"
-            className="w-[16px] h-[16px]"
-          />
+          <Image width={16} height={16} src="/Arrow-leftG.svg" alt="arrow" />
           <div className="text-[14px] text-[#1C2024] font-yekanDemiBold">
             {product.car_names.join(", ")}
           </div>
-          <Image
-            width={16}
-            height={16}
-            src="/Arrow-leftG.svg"
-            alt="arrow"
-            className="w-[16px] h-[16px]"
-          />
+          <Image width={16} height={16} src="/Arrow-leftG.svg" alt="arrow" />
           <div className="text-[14px] text-[#1C2024] font-yekanDemiBold">
             {product.name}
           </div>
         </div>
 
+        {/* تصاویر و جزئیات */}
         <div className="w-full flex flex-col sm:flex-col md:flex-row gap-[32px] sm:gap-[32px] md:gap-[67px] items-center md:items-start">
           <ProductImages images={product.image_urls} />
 
@@ -181,9 +165,11 @@ const ProductDetailPage: React.FC = () => {
                   موجودی
                 </div>
                 <div className="text-[#1C2024] text-[14px] font-yekanDemiBold">
-                  {product.inventory > 0
-                    ? product.inventory
-                    : product.inventory_warning}
+                  {hasInventory === null
+                    ? "در حال دریافت..."
+                    : hasInventory
+                    ? "دارد"
+                    : "ندارد"}
                 </div>
               </div>
               <div className="flex-1 flex flex-col gap-[16px] justify-center p-4">
@@ -206,6 +192,7 @@ const ProductDetailPage: React.FC = () => {
               </div>
             </div>
 
+            {/* قیمت */}
             <div className="flex gap-[4px] items-center justify-center md:justify-start">
               <div className="text-[24px] text-[#004D7A] font-yekanDemiBold leading-[26px]">
                 {product.price.toLocaleString("fa-IR")}
@@ -215,23 +202,17 @@ const ProductDetailPage: React.FC = () => {
               </div>
             </div>
 
-            {/* کنترل تعداد و دکمه های خرید */}
+            {/* کنترل تعداد و خرید */}
             <div className="flex flex-col sm:flex-row gap-[16px]">
               <div className="flex items-center gap-[16px] justify-center sm:justify-start">
                 <button
                   onClick={() =>
-                    setQuantity((q) => Math.min(q + 1, product.inventory))
+                    setQuantity((q) => Math.min(q + 1, hasInventory ? 1000 : 1))
                   }
                   className="w-[48px] h-[48px] rounded-[20px] bg-[#006FB4] flex justify-center items-center"
-                  aria-label="افزایش تعداد"
+                  disabled={!hasInventory}
                 >
-                  <Image
-                    src="/Add.svg"
-                    width={24}
-                    height={24}
-                    className="w-[24px] h-[24px]"
-                    alt="+"
-                  />
+                  <Image src="/Add.svg" width={24} height={24} alt="+" />
                 </button>
                 <div className="text-[20px] text-[#000000] font-yekanDemiBold">
                   {quantity}
@@ -239,15 +220,9 @@ const ProductDetailPage: React.FC = () => {
                 <button
                   onClick={() => setQuantity((q) => Math.max(q - 1, 1))}
                   className="w-[48px] h-[48px] rounded-[20px] bg-[#FCFCFD] border border-[#E0E1E6] flex justify-center items-center"
-                  aria-label="کاهش تعداد"
+                  disabled={!hasInventory}
                 >
-                  <Image
-                    width={24}
-                    height={24}
-                    src="/negative.svg"
-                    className="w-[24px] h-[24px]"
-                    alt="-"
-                  />
+                  <Image src="/negative.svg" width={24} height={24} alt="-" />
                 </button>
               </div>
 
@@ -255,12 +230,12 @@ const ProductDetailPage: React.FC = () => {
                 <button
                   onClick={() => addToCart(1)}
                   className="flex-1 min-w-[140px] h-[48px] rounded-[16px] flex justify-center items-center gap-[12px] bg-[#004D7A]"
+                  disabled={!hasInventory}
                 >
                   <Image
                     width={24}
                     height={24}
                     src="/addbasket.svg"
-                    className="w-[24px] h-[24px]"
                     alt="خرید تکی"
                   />
                   <div className="text-[14px] text-[#FCFCFD] font-yekanRegular">
@@ -270,12 +245,12 @@ const ProductDetailPage: React.FC = () => {
                 <button
                   onClick={() => addToCart(quantity)}
                   className="flex-1 min-w-[140px] h-[48px] rounded-[16px] flex justify-center items-center gap-[12px] bg-[#FCFCFD] border border-[#006FB4]"
+                  disabled={!hasInventory}
                 >
                   <Image
                     width={24}
                     height={24}
                     src="/addbasketB.svg"
-                    className="w-[24px] h-[24px]"
                     alt="خرید عمده"
                   />
                   <div className="text-[14px] text-[#006FB4] font-yekanRegular">

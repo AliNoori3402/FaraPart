@@ -14,7 +14,7 @@ interface ApiResponse {
 const Page = () => {
   const params = useParams<{ id: string; subid: string }>();
   const car_name = params.id ? decodeURIComponent(params.id) : "";
-  const section_name = params.subid ? decodeURIComponent(params.subid) : "";
+  const part_category = params.subid ? decodeURIComponent(params.subid) : "";
 
   const [data, setData] = useState<any[]>([]);
   const [nextPage, setNextPage] = useState<string | null>(null);
@@ -27,15 +27,15 @@ const Page = () => {
   const API_BASE = "http://194.5.175.107:8000/api/products/carlog-pics/";
 
   const fetchData = async (pageNumber: number) => {
-    if (!car_name || !section_name) return;
+    if (!car_name || !part_category) return;
     try {
       setLoading(true);
       setError(null);
 
       const url = `${API_BASE}?car_name=${encodeURIComponent(
         car_name
-      )}&section_name=${encodeURIComponent(
-        section_name
+      )}&part_category=${encodeURIComponent(
+        part_category
       )}&page_size=${page_size}&pagenumber=${pageNumber}`;
 
       const res = await fetch(url);
@@ -55,18 +55,23 @@ const Page = () => {
 
   useEffect(() => {
     fetchData(1);
-  }, [car_name, section_name]);
+  }, [car_name, part_category]);
 
   return (
     <div className="w-full bg-[#F9F9FB] max-w-[1440px] flex flex-col gap-12 mx-auto px-4 pb-16">
       {/* عنوان صفحه */}
       <div className="text-[28px] text-[#1C2024] font-yekanBold text-center mt-8">
-        قطعات {section_name} {car_name}
+        قطعات {part_category} {car_name}
       </div>
 
       {/* وضعیت بارگذاری / خطا */}
       {loading && (
-        <p className="text-center text-gray-500">در حال بارگذاری...</p>
+        <div className="flex flex-col items-center justify-center gap-2">
+          <div className="w-10 h-10 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
+          <div className="text-[#1C2024] font-yekanRegular mt-2">
+            در حال بارگذاری ...
+          </div>
+        </div>
       )}
       {error && <p className="text-center text-red-500">{error}</p>}
       {!loading && !error && data.length === 0 && (
@@ -123,7 +128,7 @@ const Page = () => {
                   {[
                     { key: "car_name_fa", label: "خودرو" },
                     { key: "brand_name_fa", label: "برند" },
-                    { key: "section_name", label: "بخش" },
+                    { key: "part_category", label: "بخش" },
                     { key: "part_category", label: "دسته قطعه" },
                     { key: "part_name", label: "نام قطعه" },
                     { key: "part_code", label: "کد قطعه" },

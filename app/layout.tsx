@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import LayoutWrapper from "./components/LayoutWrapper";
+import { Toaster } from "sonner"; // 🆕 اضافه شد
 
 export const metadata: Metadata = {
   title: "فراپارت",
@@ -19,6 +20,18 @@ export default function RootLayout({
       <body suppressHydrationWarning>
         {/* صفحات عادی */}
         <LayoutWrapper>{children}</LayoutWrapper>
+
+        <Toaster
+          position="top-center"
+          richColors
+          closeButton
+          dir="rtl"
+          toastOptions={{
+            style: {
+              fontFamily: "yekanRegular, sans-serif",
+            },
+          }}
+        />
       </body>
     </html>
   );

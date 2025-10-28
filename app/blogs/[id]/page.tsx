@@ -31,7 +31,14 @@ export default function BlogDetailsPage() {
   }, [id]);
 
   if (loading) {
-    return <p className="text-center text-lg py-10">در حال بارگذاری...</p>;
+    return (
+      <div className="flex flex-col items-center justify-center gap-2">
+        <div className="w-10 h-10 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
+        <div className="text-[#1C2024] font-yekanRegular mt-2">
+          در حال بارگذاری ...
+        </div>
+      </div>
+    );
   }
 
   if (!data) {
