@@ -17,9 +17,9 @@ function Page() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [products, setProducts] = useState<any[]>([]);
   const [totalCount, setTotalCount] = useState(0);
-  const [selectedCategory, setSelectedCategory] = useState<number | undefined>(
-    2
-  );
+  const [selectedCategory, setSelectedCategory] = useState<
+    number | undefined
+  >();
   const [filtersActive, setFiltersActive] = useState(false); // برای تشخیص حالت فیلتر
 
   const resetPage = () => setCurrentPage(1);
@@ -35,6 +35,7 @@ function Page() {
       try {
         const response = await axios.get("/api/AllProduct", {
           params: {
+            category_id: selectedCategory,
             car_id: carId,
             pagenumber: currentPage,
             pagesize: PAGE_SIZE,
@@ -61,7 +62,7 @@ function Page() {
   }, [carId, currentPage, filtersActive]);
 
   return (
-    <div className="w-full  bg-[#F9F9FB] px-4 md:px-8 lg:px-0 max-w-[1440px] mx-auto">
+    <div className="w-full   px-4 md:px-8 lg:px-0 max-w-[1440px] mx-auto">
       <div className="w-full flex flex-col justify-center items-center gap-6 md:gap-[58px] pt-8 pb-20 ">
         <div className="w-full flex flex-col items-center gap-10">
           <div className="text-[16px] text-[#8B8D98] font-yekanBold">

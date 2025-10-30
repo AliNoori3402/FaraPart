@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import axios from "axios";
-import OfferList from "../components/OfferList";
+import OfferList from "../../components/OfferList";
 import Image from "next/image";
 
 async function getOffers() {
@@ -70,7 +70,7 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="w-full bg-[#F9F9FB] max-w-[1440px] mx-auto px-4 md:px-8">
+    <div className="w-full  max-w-[1440px] mx-auto px-4 md:px-8">
       <div className="w-full max-w-[1280px] flex flex-col gap-[40px] justify-center items-center px-4">
         {/* breadcrumb */}
         <div className="flex flex-wrap gap-[4px] w-full justify-center">

@@ -79,7 +79,7 @@ export default function Header() {
     <header className="h-[169px] flex flex-col items-center justify-between gap-4 font-yekanDemiBold py-4 relative">
       <Link href={"/"}>
         <div className="relative w-[152px] h-[44px]">
-          <Image fill src={"/banner/headerIcon.png"} alt="logo" />
+          <Image fill src={"/banner/header.svg"} alt="logo" />
         </div>
       </Link>
 

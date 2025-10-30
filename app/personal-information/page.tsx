@@ -142,7 +142,7 @@ export default function RegisterPage() {
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
-    router.push("/login-register");
+    router.push("/login-rigister");
   };
 
   return (

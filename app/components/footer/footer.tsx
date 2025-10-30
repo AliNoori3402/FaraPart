@@ -29,9 +29,10 @@ export default function Footer() {
         <div className="flex flex-col gap-8 max-w-[376px] mx-auto lg:mx-0">
           <div className="flex items-center gap-6 justify-center lg:justify-start">
             <Link href={"/"}>
-              <div className="w-[126px] h-[65px] bg-[#D9D9D9]" />
+              <div className="relative w-[126px] h-[65px]">
+                <Image fill src={"/banner/footer.svg"} alt="logo" />
+              </div>
             </Link>
-            <div className="w-[126px] h-[65px] bg-[#D9D9D9]" />
           </div>
           <p className="text-[14px] text-white font-yekanRegular leading-7 text-justify">
             فراپارت برندی ایرانی در حوزه تأمین و فروش قطعات خودرو است که با شعار

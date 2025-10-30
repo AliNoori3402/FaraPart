@@ -2,111 +2,76 @@
 
 import React from "react";
 
-type DetailItem = {
-  label: string;
-  value: string;
+type Car = {
+  name: string;
+  brand: { display_name: string };
 };
 
-type Product = {
-  title: string;
-  rows: DetailItem[][];
-  price: string;
-  currency: string;
+type Part = {
+  name: string;
+  price: number;
+  currency?: string;
+  cars: Car[];
+  category_title: string;
+  warranty_name?: string | null;
 };
 
-export default function PackDetails(): React.ReactElement {
-  const products: Product[] = [
-    {
-      title: "پوسته سپر جلو سراتو قدیم",
-      rows: [
-        [
-          { label: "برند", value: "کیا" },
-          { label: "مدل خودرو", value: "سراتو" },
-          { label: "کد فنی", value: "۸۶۶۹۵۱M۰۰۰" },
-        ],
-        [
-          { label: "کشور سازنده", value: "ایران" },
-          { label: "گارانتی سلامت فیزیکی", value: "دارد" },
-          { label: "برند تولید کننده", value: "نیرومحرکه" },
-        ],
-      ],
-      price: "2،250،000",
-      currency: "تومان",
-    },
-    {
-      title: "پوسته سپر جلو سراتو قدیم",
-      rows: [
-        [
-          { label: "برند", value: "کیا" },
-          { label: "مدل خودرو", value: "سراتو" },
-          { label: "کد فنی", value: "۸۶۶۹۵۱M۰۰۰" },
-        ],
-        [
-          { label: "کشور سازنده", value: "ایران" },
-          { label: "گارانتی سلامت فیزیکی", value: "دارد" },
-          { label: "برند تولید کننده", value: "نیرومحرکه" },
-        ],
-      ],
-      price: "2،250،000",
-      currency: "تومان",
-    },
-    {
-      title: "پوسته سپر جلو سراتو قدیم",
-      rows: [
-        [
-          { label: "برند", value: "کیا" },
-          { label: "مدل خودرو", value: "سراتو" },
-          { label: "کد فنی", value: "۸۶۶۹۵۱M۰۰۰" },
-        ],
-        [
-          { label: "کشور سازنده", value: "ایران" },
-          { label: "گارانتی سلامت فیزیکی", value: "دارد" },
-          { label: "برند تولید کننده", value: "نیرومحرکه" },
-        ],
-      ],
-      price: "2،250،000",
-      currency: "تومان",
-    },
-  ];
+type Props = {
+  parts: Part[];
+};
 
+export default function PackDetails({ parts }: Props): React.ReactElement {
   return (
-    <div className="w-full max-w-[638px] flex flex-col gap-[32px]">
-      {products.map((product, productIndex) => (
-        <div key={productIndex} className="w-full flex flex-col gap-[16px]">
+    <div className="w-full justify-center items-center flex flex-col gap-[32px]">
+      {parts.map((part, index) => (
+        <div
+          key={index}
+          className="w-full flex  justify-center items-center flex-col gap-[16px]"
+        >
           {/* عنوان */}
-          <div className="text-[20px] sm:text-[24px] md:text-[28px] text-[#1C2024] font-yekanBold text-center sm:text-center md:text-right">
-            {product.title}
+          <div className="text-[20px] sm:text-[24px] md:text-[28px] text-[#1C2024] font-yekanBold text-center ">
+            {part.name}
           </div>
 
-          {/* ردیف‌های مشخصات */}
-          {product.rows.map((row, rowIndex) => (
-            <div
-              key={rowIndex}
-              className="w-full rounded-[24px] bg-[#FCFCFD] border border-[#E8E8EC] flex flex-col sm:flex-row divide-y sm:divide-y-0 sm:divide-x divide-[#E8E8EC]"
-            >
-              {row.map((item, itemIndex) => (
-                <div
-                  key={itemIndex}
-                  className="flex-1 flex flex-col gap-[16px] justify-center p-4"
-                >
-                  <div className="text-[#8B8D98] text-[14px] font-yekanRegular">
-                    {item.label}
-                  </div>
-                  <div className="text-[#1C2024] text-[14px] font-yekanDemiBold">
-                    {item.value}
-                  </div>
-                </div>
-              ))}
+          {/* ردیف مشخصات */}
+          <div className="w-full rounded-[24px] bg-[#FCFCFD] border border-[#E8E8EC] flex flex-col sm:flex-row divide-y sm:divide-y-0 sm:divide-x divide-[#E8E8EC]">
+            <div className="flex-1 flex flex-col gap-[16px] justify-center p-4">
+              <div className="text-[#8B8D98] text-[14px] font-yekanRegular">
+                دسته‌بندی
+              </div>
+              <div className="text-[#1C2024] text-[14px] font-yekanDemiBold">
+                {part.category_title}
+              </div>
             </div>
-          ))}
+            <div className="flex-1 flex flex-col gap-[16px] justify-center p-4">
+              <div className="text-[#8B8D98] text-[14px] font-yekanRegular">
+                ماشین‌ها
+              </div>
+              <div className="text-[#1C2024] text-[14px] font-yekanDemiBold">
+                {part.cars
+                  .map((car) => `${car.brand.display_name} ${car.name}`)
+                  .join(", ")}
+              </div>
+            </div>
+            {part.warranty_name && (
+              <div className="flex-1 flex flex-col gap-[16px] justify-center p-4">
+                <div className="text-[#8B8D98] text-[14px] font-yekanRegular">
+                  گارانتی
+                </div>
+                <div className="text-[#1C2024] text-[14px] font-yekanDemiBold">
+                  {part.warranty_name}
+                </div>
+              </div>
+            )}
+          </div>
 
           {/* قیمت */}
           <div className="flex gap-[4px] items-center justify-center md:justify-start">
             <div className="text-[20px] md:text-[24px] text-[#004D7A] font-yekanDemiBold leading-[26px]">
-              {product.price}
+              {part.price.toLocaleString()}
             </div>
             <div className="text-[12px] md:text-[14px] text-[#004D7A] font-yekanDemiBold leading-[16px]">
-              {product.currency}
+              تومان
             </div>
           </div>
         </div>

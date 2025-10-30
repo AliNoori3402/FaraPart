@@ -65,7 +65,7 @@ export default function FilterProduct() {
         sm:w-[770px] sm:h-[316px]
         w-[377px] h-[484px]
         flex flex-col justify-center items-center gap-[32px]
-        border border-[#E0E1E6] bg-[#F9F9FB] rounded-[32px]
+        border border-[#E0E1E6]  rounded-[32px]
         p-4
       "
     >

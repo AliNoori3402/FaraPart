@@ -3,10 +3,14 @@
 import Image from "next/image";
 import { useState } from "react";
 
-const images = ["/Light.svg", "/Light.svg", "/Light.svg", "/Light.svg"];
+type Props = {
+  images: string[]; // آدرس تصاویر قطعه
+};
 
-export default function PackImages() {
+export default function PackImages({ images }: Props) {
   const [selectedIndex, setSelectedIndex] = useState(0);
+
+  if (!images || images.length === 0) return null;
 
   return (
     <div className="w-full max-w-[1200px] flex flex-col gap-[48px] md:gap-[67px] mx-auto px-4">
@@ -14,15 +18,15 @@ export default function PackImages() {
         {/* تصویر بزرگ */}
         <div className="w-full max-w-[586px] h-[300px] md:h-[432px] rounded-[40px] bg-[#FCFCFD] border border-[#E0E1E6] flex items-center justify-center mx-auto">
           <Image
-            width={200}
-            height={20}
+            width={290}
+            height={234}
             src={images[selectedIndex]}
             className="w-[200px] h-[160px] md:w-[290px] md:h-[234px] object-contain"
             alt="selected"
           />
         </div>
 
-        {/* تصاویر کوچک - ریسپانسیو */}
+        {/* تصاویر کوچک */}
         <div className="w-full flex flex-wrap md:flex-wrap gap-[7px] overflow-x-auto scrollbar-hide md:overflow-visible">
           {images.map((img, index) => (
             <div
@@ -35,8 +39,8 @@ export default function PackImages() {
               }`}
             >
               <Image
-                width={70}
-                height={55}
+                width={90}
+                height={73}
                 src={img}
                 className="w-[70px] h-[55px] md:w-[90px] md:h-[73px] object-contain"
                 alt={`img-${index}`}

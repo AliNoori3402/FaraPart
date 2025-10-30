@@ -1,18 +1,35 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import Image from "next/image";
+import { useRouter } from "next/navigation"; // ✅ اضافه شد
 
+interface Car {
+  id: number;
+  name: string;
+}
 interface Part {
   id: number;
   name: string;
   price: number;
   image_urls?: string[];
+  cars?: Car[];
 }
-
-interface Offer {
+interface Pack {
+  id: number;
+  title: string;
+  description: string;
+  start_time: string;
+  end_time: string;
+  is_active: boolean;
+  parts: Part[];
+  final_discounted_price: number;
+  total_original_price: number;
+  discount_percent: number;
+}
+interface SpecialOffer {
   id: number;
   title: string;
   description: string;
@@ -21,224 +38,245 @@ interface Offer {
   is_active: boolean;
   parts: Part[];
 }
+type SliderItem = { type: "pack" | "offers"; data: Pack | SpecialOffer };
 
-export default function AmazingSlider() {
-  const [offer, setOffer] = useState<Offer | null>(null);
-  const [index, setIndex] = useState<number>(0);
-  const [timeLeft, setTimeLeft] = useState<string>("00:00:00");
+export default function CombinedSlider() {
+  const router = useRouter(); // ✅ اضافه شد
+  const [items, setItems] = useState<SliderItem[]>([]);
+  const [index, setIndex] = useState(0);
+  const [timeLeftMap, setTimeLeftMap] = useState<Record<number, string>>({});
   const cardRef = useRef<HTMLDivElement>(null);
-  const [cardWidth, setCardWidth] = useState<number>(0);
+  const [cardWidth, setCardWidth] = useState(0);
+  const visibleCards = 3;
 
-  const visibleCards = 5;
-  const maxIndex = offer ? Math.max(offer.parts.length - visibleCards, 0) : 0;
-
-  // دریافت پیشنهاد
   useEffect(() => {
-    const fetchOffer = async () => {
+    const fetchData = async () => {
       try {
-        const res = await axios.get("/api/special-offers");
-        const data = res.data;
+        const [packsRes, offersRes] = await Promise.all([
+          axios.get<Pack[]>(
+            "http://194.5.175.107:8000/api/admin/discount-pack/"
+          ),
+          axios.get<SpecialOffer[]>("/api/special-offers"),
+        ]);
 
-        if (Array.isArray(data)) {
-          const now = new Date().getTime();
-          const activeOffer = data.find(
-            (o: Offer) =>
+        const packsData = Array.isArray(packsRes.data) ? packsRes.data : [];
+        const offersData = Array.isArray(offersRes.data)
+          ? offersRes.data
+          : offersRes.data.results
+          ? offersRes.data.results
+          : [offersRes.data];
+
+        const now = Date.now();
+
+        const packs: SliderItem[] = packsData
+          .filter(
+            (p) =>
+              p.is_active &&
+              new Date(p.start_time).getTime() <= now &&
+              now <= new Date(p.end_time).getTime()
+          )
+          .map((p) => ({ type: "pack", data: p }));
+
+        const offers: SliderItem[] = offersData
+          .filter(
+            (o) =>
               o.is_active &&
               new Date(o.start_time).getTime() <= now &&
               now <= new Date(o.end_time).getTime()
+          )
+          .flatMap((o) =>
+            o.parts.map((p) => ({
+              type: "offers",
+              data: { ...o, parts: [p] },
+            }))
           );
-          setOffer(activeOffer || null);
-        } else if (data && data.is_active) {
-          setOffer(data);
-        } else {
-          setOffer(null);
-        }
+
+        setItems([...packs, ...offers]);
       } catch (err) {
-        console.error("Error fetching offer:", err);
-        setOffer(null);
+        console.error(err);
       }
     };
-    fetchOffer();
+
+    fetchData();
   }, []);
 
   // تایمر
   useEffect(() => {
-    if (!offer) return;
-
     const interval = setInterval(() => {
-      const now = new Date().getTime();
-      const end = new Date(offer.end_time).getTime();
-      const diff = end - now;
-
-      if (diff <= 0) {
-        setTimeLeft("00:00:00");
-        clearInterval(interval);
-        setOffer(null);
-        return;
-      }
-
-      const hours = Math.floor(diff / (1000 * 60 * 60));
-      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-      setTimeLeft(
-        `${hours.toString().padStart(2, "0")}:${minutes
-          .toString()
-          .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
-      );
+      const now = Date.now();
+      const newTimeLeft: Record<number, string> = {};
+      items.forEach((item, i) => {
+        const endTime = new Date(item.data.end_time).getTime();
+        const diff = endTime - now;
+        if (diff <= 0) newTimeLeft[i] = "00:00:00";
+        else {
+          const h = Math.floor(diff / (1000 * 60 * 60));
+          const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+          const s = Math.floor((diff % (1000 * 60)) / 1000);
+          newTimeLeft[i] = `${h.toString().padStart(2, "0")}:${m
+            .toString()
+            .padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
+        }
+      });
+      setTimeLeftMap(newTimeLeft);
     }, 1000);
-
     return () => clearInterval(interval);
-  }, [offer]);
+  }, [items]);
 
-  // اندازه کارت
   useEffect(() => {
     if (cardRef.current) {
       const style = getComputedStyle(cardRef.current);
-      const width = cardRef.current.offsetWidth + parseInt(style.marginRight);
+      const width =
+        cardRef.current.offsetWidth + parseInt(style.marginRight || "0");
       setCardWidth(width);
     }
-  }, [offer]);
+  }, [items]);
 
-  const nextSlide = () => {
-    if (index < maxIndex) setIndex((prev) => prev + 1);
-  };
+  const maxIndex = Math.max(items.length - visibleCards, 0);
+  const nextSlide = () => setIndex((prev) => Math.min(prev + 1, maxIndex));
+  const prevSlide = () => setIndex((prev) => Math.max(prev - 1, 0));
 
-  const prevSlide = () => {
-    if (index > 0) setIndex((prev) => prev - 1);
-  };
-
-  if (!offer) {
+  if (!items.length)
     return (
-      <div className="w-full text-center py-10 text-lg font-yekanDemiBold">
-        پیشنهادی وجود ندارد
+      <div className="w-full text-center py-10 font-bold text-white">
+        موردی برای نمایش وجود ندارد
       </div>
     );
-  }
-
-  const parts = offer.parts;
 
   return (
-    <div
-      dir="rtl"
-      className="w-full max-w-[1280px] bg-[#004D7A] rounded-[32px] flex flex-col pt-8 pr-8 gap-8 overflow-hidden mx-auto"
+    <section
+      className="w-full py-12 rounded-3xl"
+      style={{ background: "#004D7A" }}
     >
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-center gap-4 px-4">
-        <h2 className="text-white text-xl sm:text-2xl font-yekanDemiBold text-center sm:text-right">
-          {offer.title}
+      <div className="max-w-[1280px] mx-auto flex flex-col gap-6">
+        <h2 className="text-white text-3xl font-yekanExtraBold mb-6 text-center">
+          پیشنهادهای ویژه و پک‌های تخفیفی
         </h2>
-        <div className="text-[#D9D9E0] font-yekanDemiBold">
-          {offer.description}
-        </div>
-        <div className="text-white font-yekanDemiBold mt-2 sm:mt-0">
-          {timeLeft} باقی مانده
-        </div>
-      </div>
 
-      {/* اسلایدر موبایل */}
-      <div className="sm:hidden overflow-hidden px-4">
-        <motion.div
-          className="flex gap-4 cursor-grab active:cursor-grabbing"
-          drag="x"
-          dragConstraints={{
-            left: 0,
-            right: (parts.length - 1) * (145 + 16),
-          }}
-          style={{ width: "max-content", touchAction: "pan-y" }}
-        >
-          {parts.map((p) => (
-            <div
-              key={p.id}
-              className="w-[145px] h-[212px] bg-white rounded-[20px] flex-shrink-0 flex flex-col items-center justify-center gap-4"
+        <motion.div className="overflow-hidden relative">
+          <motion.div
+            className="flex gap-6"
+            animate={{ x: -index * cardWidth }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+          >
+            {items.map((item, idx) => {
+              const timeLeft = timeLeftMap[idx] || "00:00:00";
+
+              const handleClick = () => {
+                const id = item.data.id;
+                router.push(`/${item.type}/${id}`); // ✅ هدایت به مسیر مناسب
+              };
+
+              if (item.type === "pack") {
+                const pack = item.data as Pack;
+                return (
+                  <div
+                    onClick={handleClick}
+                    ref={idx === 0 ? cardRef : null}
+                    key={`pack-${pack.id}`}
+                    className="cursor-pointer w-[300px] h-[440px] bg-white rounded-3xl flex-shrink-0 flex flex-col p-5 gap-3 shadow-xl hover:scale-105 transition-transform duration-300"
+                  >
+                    <div className="text-lg font-yekanExtraBold text-[#004D7A]">
+                      {pack.title}
+                    </div>
+                    <div className="text-sm font-yekanRegular text-gray-700 line-clamp-2">
+                      {pack.description}
+                    </div>
+                    <div className="text-xs font-yekanRegular text-gray-500">
+                      تایمر: {timeLeft}
+                    </div>
+                    <div className="mt-2 flex-1 flex flex-col gap-2 overflow-y-auto">
+                      {pack.parts.map((p) => (
+                        <div key={p.id} className="flex items-center gap-3">
+                          <div className="w-12 h-12 relative rounded-lg overflow-hidden border border-gray-200">
+                            <Image
+                              src={p.image_urls?.[0] || "/no-image.svg"}
+                              alt={p.name}
+                              fill
+                              className="object-contain"
+                            />
+                          </div>
+                          <div className="text-xs font-yekanRegular line-clamp-1">
+                            {p.name}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="flex items-center justify-between mt-3">
+                      <div className="text-sm font-yekanExtraBold text-[#004D7A]">
+                        {pack.final_discounted_price.toLocaleString()} تومان
+                      </div>
+                      <div className="text-xs font-yekanRegular line-through text-gray-400">
+                        {pack.total_original_price.toLocaleString()} تومان
+                      </div>
+                    </div>
+                    <div className="text-xs font-yekanBold text-[#FFD700] mt-1 border-t border-gray-200 pt-1 text-center">
+                      {pack.discount_percent}% تخفیف
+                    </div>
+                  </div>
+                );
+              } else {
+                const offer = item.data as SpecialOffer;
+                const part = offer.parts[0];
+                return (
+                  <div
+                    onClick={handleClick}
+                    ref={idx === 0 ? cardRef : null}
+                    key={`offer-${offer.id}-${part.id}`}
+                    className="cursor-pointer w-[300px]  bg-white rounded-3xl flex-shrink-0 flex flex-col p-5 gap-4 shadow-xl hover:scale-105 transition-transform duration-300"
+                  >
+                    <div className="text-lg font-yekanExtraBold text-[#004D7A] text-center">
+                      {offer.title}
+                    </div>
+                    <p className="text-sm font-yekanRegular text-gray-700 text-center line-clamp-2">
+                      {part.name}
+                    </p>
+                    <div className="relative w-full h-[160px] rounded-xl overflow-hidden border border-gray-200">
+                      <Image
+                        src={part.image_urls?.[0] || "/no-image.svg"}
+                        alt={part.name}
+                        fill
+                        className="object-contain"
+                      />
+                    </div>
+                    <p className="text-[#004D7A] font-yekanExtraBold text-lg text-center">
+                      {part.price.toLocaleString()}{" "}
+                      <span className="text-xs font-yekanRegular">تومان</span>
+                    </p>
+                    <div className="text-xs font-yekanRegular text-gray-500 text-center mt-auto">
+                      تایمر: {timeLeft}
+                    </div>
+                  </div>
+                );
+              }
+            })}
+          </motion.div>
+
+          {/* کنترل‌ها */}
+          <div className="absolute top-1/2 transform -translate-y-1/2 left-2 flex gap-2">
+            <button
+              onClick={prevSlide}
+              disabled={index === 0}
+              className={`w-10 h-10 rounded-full flex items-center justify-center border ${
+                index === 0 ? "bg-gray-400 cursor-not-allowed" : "bg-white"
+              }`}
             >
-              <div className="relative w-[136px] h-[109px]">
-                <Image
-                  width={136}
-                  height={109}
-                  src={p.image_urls?.[0] || "/no-image.svg"}
-                  className="w-full h-full object-contain"
-                  alt={p.name}
-                />
-              </div>
-              <div className="w-[125px] text-center text-xs flex flex-col gap-1">
-                <p className="font-yekanDemiBold text-[#1C2024] line-clamp-2">
-                  {p.name}
-                </p>
-                <div className="text-[#004D7A] font-yekanDemiBold">
-                  {p.price?.toLocaleString() || 0}{" "}
-                  <span className="text-[8px]">تومان</span>
-                </div>
-              </div>
-            </div>
-          ))}
+              <Image src="/Arrow-rightB.svg" alt="" width={16} height={16} />
+            </button>
+            <button
+              onClick={nextSlide}
+              disabled={index >= maxIndex}
+              className={`w-10 h-10 rounded-full flex items-center justify-center border ${
+                index >= maxIndex
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-white"
+              }`}
+            >
+              <Image src="/Arrow-leftB.svg" alt="" width={16} height={16} />
+            </button>
+          </div>
         </motion.div>
       </div>
-
-      {/* اسلایدر دسکتاپ */}
-      <div className="hidden sm:block relative px-4">
-        <motion.div
-          className="flex gap-4"
-          style={{ direction: "ltr" }}
-          animate={{ x: -index * cardWidth }}
-          transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        >
-          {parts.map((p, idx) => (
-            <div
-              ref={idx === 0 ? cardRef : null}
-              key={p.id}
-              className="w-[236px] h-[344px] bg-white rounded-[20px] flex-shrink-0 flex flex-col items-center justify-center gap-4"
-            >
-              <div className="relative w-[221px] h-[178px]">
-                <Image
-                  width={221}
-                  height={178}
-                  src={p.image_urls?.[0] || "/no-image.svg"}
-                  className="w-full h-full object-contain"
-                  alt={p.name}
-                />
-              </div>
-              <div className="w-[218px] text-center flex flex-col gap-2">
-                <p className="text-[#1C2024] font-yekanDemiBold text-base line-clamp-2">
-                  {p.name}
-                </p>
-                <div className="text-[#004D7A] font-yekanDemiBold text-lg">
-                  {p.price?.toLocaleString() || 0}{" "}
-                  <span className="text-sm">تومان</span>
-                </div>
-              </div>
-            </div>
-          ))}
-        </motion.div>
-
-        <div className="absolute top-0 left-0 w-[80px] h-full bg-gradient-to-r from-[#004D7A] to-transparent z-10 pointer-events-none rounded-r-[32px]" />
-      </div>
-
-      {/* کنترل‌ها */}
-      <div className="w-full flex justify-center items-center gap-6 pb-4">
-        <div className="hidden sm:flex gap-4">
-          <button
-            onClick={prevSlide}
-            disabled={index === 0}
-            className={`w-12 h-12 rounded-full flex items-center justify-center border ${
-              index === 0 ? "bg-[#d9d9d980] cursor-not-allowed" : "bg-white"
-            }`}
-          >
-            <Image src="/Arrow-rightB.svg" alt="" width={20} height={20} />
-          </button>
-          <button
-            onClick={nextSlide}
-            disabled={index >= maxIndex}
-            className={`w-12 h-12 rounded-full flex items-center justify-center border ${
-              index >= maxIndex
-                ? "bg-[#d9d9d980] cursor-not-allowed"
-                : "bg-[#004D7A]"
-            }`}
-          >
-            <Image src="/Arrow-leftW.svg" width={20} height={20} alt="" />
-          </button>
-        </div>
-      </div>
-    </div>
+    </section>
   );
 }

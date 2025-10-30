@@ -6,6 +6,7 @@ import axios from "axios";
 import ProductImages from "../../components/DeatilPartImage";
 import TextDetails from "../../components/TextDetails";
 import Image from "next/image";
+import { toast } from "sonner";
 
 type ProductDetail = {
   id: number;
@@ -21,12 +22,15 @@ type ProductDetail = {
   inventory_warning: string;
   has_warranty: boolean;
   warranty_name: string | null;
+  inventory?: number;
 };
 
 const ProductDetailPage: React.FC = () => {
   const params = useParams();
   const id = params?.id;
-
+  const [activeTab, setActiveTab] = useState<"description" | "specs">(
+    "description"
+  );
   const [product, setProduct] = useState<ProductDetail | null>(null);
   const [hasInventory, setHasInventory] = useState<boolean | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -41,21 +45,17 @@ const ProductDetailPage: React.FC = () => {
       setError(null);
 
       try {
-        // دریافت جزئیات محصول
         const res = await fetch(`/api/AllProduct/${id}`);
         if (!res.ok) throw new Error("خطا در دریافت اطلاعات محصول");
         const data = await res.json();
         setProduct(data);
 
-        // دریافت موجودی محصول از API خارجی
         try {
-          const inventoryRes = await axios({
-            method: "post",
-            url: "http://194.5.175.107:8000/api/products/inventory/",
-            data: { id: Number(id) }, // body شامل id
-            headers: { "Content-Type": "application/json" },
-          });
-
+          const inventoryRes = await axios.post(
+            "http://194.5.175.107:8000/api/products/inventory/",
+            { id: Number(id) },
+            { headers: { "Content-Type": "application/json" } }
+          );
           setHasInventory(inventoryRes.data?.has_inventory ?? false);
         } catch (invErr) {
           console.error("خطا در دریافت موجودی:", invErr);
@@ -63,6 +63,7 @@ const ProductDetailPage: React.FC = () => {
         }
       } catch (err) {
         setError((err as Error).message);
+        toast.error("خطایی در دریافت اطلاعات محصول رخ داد");
       } finally {
         setLoading(false);
       }
@@ -72,19 +73,24 @@ const ProductDetailPage: React.FC = () => {
   }, [id]);
 
   const addToCart = async (quantityToAdd: number) => {
-    if (!id) return alert("شناسه محصول نامشخص است");
+    if (!id) return toast.error("شناسه محصول نامشخص است");
 
     const rawAccessToken = localStorage.getItem("accessToken");
     const accessToken = rawAccessToken
       ? rawAccessToken.replace(/^"(.*)"$/, "$1")
       : null;
-    if (!accessToken) return alert("لطفا ابتدا وارد شوید");
+    if (!accessToken) return toast.error("لطفا ابتدا وارد شوید");
 
-    await axios.post(
-      "/api/Addcart",
-      { part_id: Number(id), quantity: quantityToAdd },
-      { headers: { Authorization: `Bearer ${accessToken}` } }
-    );
+    try {
+      await axios.post(
+        "/api/Addcart",
+        { part_id: Number(id), quantity: quantityToAdd },
+        { headers: { Authorization: `Bearer ${accessToken}` } }
+      );
+      toast.success("محصول با موفقیت به سبد خرید اضافه شد ✅");
+    } catch (err) {
+      toast.error("خطا در افزودن به سبد خرید ❌");
+    }
   };
 
   if (loading)
@@ -192,78 +198,168 @@ const ProductDetailPage: React.FC = () => {
               </div>
             </div>
 
-            {/* قیمت */}
-            <div className="flex gap-[4px] items-center justify-center md:justify-start">
-              <div className="text-[24px] text-[#004D7A] font-yekanDemiBold leading-[26px]">
-                {product.price.toLocaleString("fa-IR")}
+            {/* قیمت و خرید */}
+            {product.inventory === 0 || !hasInventory ? (
+              <div className="w-full text-center md:text-right text-[16px] text-[#D32F2F] font-yekanDemiBold mt-4">
+                {product.inventory_warning ||
+                  "این محصول در حال حاضر موجود نیست"}
               </div>
-              <div className="text-[14px] text-[#004D7A] font-yekanDemiBold leading-[16px]">
-                تومان
-              </div>
-            </div>
-
-            {/* کنترل تعداد و خرید */}
-            <div className="flex flex-col sm:flex-row gap-[16px]">
-              <div className="flex items-center gap-[16px] justify-center sm:justify-start">
-                <button
-                  onClick={() =>
-                    setQuantity((q) => Math.min(q + 1, hasInventory ? 1000 : 1))
-                  }
-                  className="w-[48px] h-[48px] rounded-[20px] bg-[#006FB4] flex justify-center items-center"
-                  disabled={!hasInventory}
-                >
-                  <Image src="/Add.svg" width={24} height={24} alt="+" />
-                </button>
-                <div className="text-[20px] text-[#000000] font-yekanDemiBold">
-                  {quantity}
+            ) : (
+              <>
+                {/* قیمت */}
+                <div className="flex gap-[4px] items-center justify-center md:justify-start">
+                  <div className="text-[24px] text-[#004D7A] font-yekanDemiBold leading-[26px]">
+                    {product.price.toLocaleString("fa-IR")}
+                  </div>
+                  <div className="text-[14px] text-[#004D7A] font-yekanDemiBold leading-[16px]">
+                    تومان
+                  </div>
                 </div>
-                <button
-                  onClick={() => setQuantity((q) => Math.max(q - 1, 1))}
-                  className="w-[48px] h-[48px] rounded-[20px] bg-[#FCFCFD] border border-[#E0E1E6] flex justify-center items-center"
-                  disabled={!hasInventory}
-                >
-                  <Image src="/negative.svg" width={24} height={24} alt="-" />
-                </button>
-              </div>
 
-              <div className="flex-1 flex gap-[16px]">
-                <button
-                  onClick={() => addToCart(1)}
-                  className="flex-1 min-w-[140px] h-[48px] rounded-[16px] flex justify-center items-center gap-[12px] bg-[#004D7A]"
-                  disabled={!hasInventory}
-                >
-                  <Image
-                    width={24}
-                    height={24}
-                    src="/addbasket.svg"
-                    alt="خرید تکی"
-                  />
-                  <div className="text-[14px] text-[#FCFCFD] font-yekanRegular">
-                    خرید تکی
+                {/* کنترل تعداد و خرید */}
+                <div className="flex flex-col sm:flex-row gap-[16px]">
+                  <div className="flex items-center gap-[16px] justify-center sm:justify-start">
+                    <button
+                      onClick={() => {
+                        if (
+                          product.inventory &&
+                          quantity >= product.inventory
+                        ) {
+                          toast.error(
+                            `حداکثر موجودی ${product.inventory} عدد است`
+                          );
+                          return;
+                        }
+                        setQuantity((q) => q + 1);
+                      }}
+                      className="w-[48px] h-[48px] rounded-[20px] bg-[#006FB4] flex justify-center items-center"
+                      disabled={!hasInventory}
+                    >
+                      <Image src="/Add.svg" width={24} height={24} alt="+" />
+                    </button>
+                    <div className="text-[20px] text-[#000000] font-yekanDemiBold">
+                      {quantity}
+                    </div>
+                    <button
+                      onClick={() => setQuantity((q) => Math.max(q - 1, 1))}
+                      className="w-[48px] h-[48px] rounded-[20px] bg-[#FCFCFD] border border-[#E0E1E6] flex justify-center items-center"
+                      disabled={!hasInventory}
+                    >
+                      <Image
+                        src="/negative.svg"
+                        width={24}
+                        height={24}
+                        alt="-"
+                      />
+                    </button>
                   </div>
-                </button>
-                <button
-                  onClick={() => addToCart(quantity)}
-                  className="flex-1 min-w-[140px] h-[48px] rounded-[16px] flex justify-center items-center gap-[12px] bg-[#FCFCFD] border border-[#006FB4]"
-                  disabled={!hasInventory}
-                >
-                  <Image
-                    width={24}
-                    height={24}
-                    src="/addbasketB.svg"
-                    alt="خرید عمده"
-                  />
-                  <div className="text-[14px] text-[#006FB4] font-yekanRegular">
-                    خرید عمده
+
+                  <div className="flex-1 flex gap-[16px]">
+                    <button
+                      onClick={() => addToCart(quantity)}
+                      className="flex-1 min-w-[140px] h-[48px] rounded-[16px] flex justify-center items-center gap-[12px] bg-[#004D7A]"
+                      disabled={!hasInventory}
+                    >
+                      <Image
+                        width={24}
+                        height={24}
+                        src="/addbasket.svg"
+                        alt="خرید تکی"
+                      />
+                      <div className="text-[14px] text-[#FCFCFD] font-yekanRegular">
+                        خرید تکی
+                      </div>
+                    </button>
                   </div>
-                </button>
-              </div>
-            </div>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
 
       <TextDetails />
+      <div className="w-full px-10 pb-10  mt-8">
+        {/* تب‌ها */}
+        <div className="flex bg-[#F5F5F7] rounded-xl shadow-sm overflow-hidden border border-[#E0E1E6]">
+          <button
+            className={`flex-1 py-3 font-yekanDemiBold transition-colors duration-200 ${
+              activeTab === "description"
+                ? "bg-[#004D7A] text-white"
+                : "text-[#8B8D98] hover:bg-[#E0E1E6]"
+            }`}
+            onClick={() => setActiveTab("description")}
+          >
+            معرفی محصول
+          </button>
+          <button
+            className={`flex-1 py-3 font-yekanDemiBold transition-colors duration-200 ${
+              activeTab === "specs"
+                ? "bg-[#004D7A] text-white"
+                : "text-[#8B8D98] hover:bg-[#E0E1E6]"
+            }`}
+            onClick={() => setActiveTab("specs")}
+          >
+            مشخصات فنی
+          </button>
+        </div>
+
+        {/* محتوای تب‌ها */}
+        <div className="mt-6 bg-white rounded-xl shadow-sm p-6 text-[#1C2024] font-yekanRegular text-[14px]">
+          {activeTab === "description" ? (
+            product.description ? (
+              <p className="leading-relaxed">{product.description}</p>
+            ) : (
+              <p className="text-[#8B8D98]">این محصول توضیحی ندارد.</p>
+            )
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="flex justify-between border-b pb-2">
+                <span className="font-yekanDemiBold text-[#004D7A]">
+                  کد داخلی
+                </span>
+                <span>{product.internal_code}</span>
+              </div>
+              <div className="flex justify-between border-b pb-2">
+                <span className="font-yekanDemiBold text-[#004D7A]">
+                  کد تجاری
+                </span>
+                <span>{product.commercial_code}</span>
+              </div>
+              <div className="flex justify-between border-b pb-2">
+                <span className="font-yekanDemiBold text-[#004D7A]">
+                  نوع قطعه
+                </span>
+                <span>
+                  {product.part_type === "spare" ? "مصرفی" : "غیر مصرفی"}
+                </span>
+              </div>
+              <div className="flex justify-between border-b pb-2">
+                <span className="font-yekanDemiBold text-[#004D7A]">
+                  دسته بندی
+                </span>
+                <span>{product.category.name}</span>
+              </div>
+              <div className="flex justify-between border-b pb-2">
+                <span className="font-yekanDemiBold text-[#004D7A]">
+                  خودروهای سازگار
+                </span>
+                <span>{product.car_names.join(", ")}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="font-yekanDemiBold text-[#004D7A]">
+                  گارانتی
+                </span>
+                <span>
+                  {product.has_warranty
+                    ? product.warranty_name || "دارد"
+                    : "ندارد"}
+                </span>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

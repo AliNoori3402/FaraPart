@@ -5,10 +5,11 @@ import FilterProduct from "./components/FilterProduct";
 import BrandGrid from "./components/BrandGrid";
 import NewsSlider from "./components/BlogSlider";
 import Link from "next/link";
+import DiscountPackSlider from "./components/packSlider";
 
 export default function Home() {
   return (
-    <div className="w-full bg-[#F9F9FB] flex flex-col gap-[96px] px-4 sm:px-6 lg:px-0 max-w-[1440px] mx-auto">
+    <div className="w-full  flex flex-col gap-[96px] px-4 sm:px-6 lg:px-0 max-w-[1440px] mx-auto">
       {/* 🔹 اسلایدر اصلی */}
       <Slider />
 

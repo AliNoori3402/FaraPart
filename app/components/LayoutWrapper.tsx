@@ -29,8 +29,10 @@ export default function LayoutWrapper({
   return (
     <>
       {!showNothing && <Header />}
-      <main>{children}</main>
-      {!showNothing && !showHeaderOnly && <Footer />}
+      <main className="bg-[#FCFCFD]">{children}</main>
+      <div className="bg-[#FCFCFD]">
+        {!showNothing && !showHeaderOnly && <Footer />}
+      </div>
     </>
   );
 }

@@ -85,7 +85,7 @@ export default function CarSectionsPage() {
       </h1>
 
       {/* اسلایدر دسته‌بندی‌ها */}
-      <div className="flex gap-4 overflow-x-auto scrollbar-hide pb-4">
+      <div className="flex gap-4 bg-[#005E95]  rounded-3xl overflow-x-auto scrollbar-hide p-6">
         {sections.map((section, index) => (
           <div
             key={index}

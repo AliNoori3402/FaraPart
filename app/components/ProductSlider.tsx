@@ -24,8 +24,14 @@ export default function ProductSlider({ onCategoryClick }: ProductSliderProps) {
       try {
         const res = await fetch("/api/categorylist");
         if (!res.ok) throw new Error("Failed to fetch");
-        const data: Category[] = await res.json();
-        setCategories(data);
+        const data: any[] = await res.json();
+
+        // استخراج فقط فرزندان از تمام والدها
+        const childCategories = data
+          .flatMap((cat) => cat.child || []) // همه child ها را یکی می‌کنیم
+          .filter((child) => child !== null); // حذف موارد null
+
+        setCategories(childCategories);
       } catch (error) {
         console.error(error);
       } finally {
@@ -38,7 +44,7 @@ export default function ProductSlider({ onCategoryClick }: ProductSliderProps) {
 
   const scroll = (direction: "left" | "right") => {
     if (containerRef.current) {
-      const amount = 220;
+      const amount = 260;
       containerRef.current.scrollBy({
         left: direction === "left" ? -amount : amount,
         behavior: "smooth",
@@ -59,7 +65,7 @@ export default function ProductSlider({ onCategoryClick }: ProductSliderProps) {
   const defaultImage = "/lent.svg";
 
   return (
-    <div className="relative flex flex-col items-center gap-4 w-full">
+    <div className="relative flex flex-col items-center px-4 gap-4 w-full">
       <motion.div
         ref={containerRef}
         className="w-full flex gap-4 justify-center items-center overflow-x-hidden overflow-y-hidden scroll-smooth hide-scrollbar"

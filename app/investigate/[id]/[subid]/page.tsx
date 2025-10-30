@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
+import ProductsModal from "../../../components/product-modal";
 
 interface ApiResponse {
   results: any[];
@@ -39,8 +40,9 @@ const Page = () => {
       )}&page_size=${page_size}&pagenumber=${pageNumber}`;
 
       const res = await fetch(url);
+      console.log(res);
       const json: ApiResponse = await res.json();
-
+      console.log(json);
       setData(json.results || []);
       setNextPage(json.next);
       setPrevPage(json.previous);
@@ -58,7 +60,7 @@ const Page = () => {
   }, [car_name, part_category]);
 
   return (
-    <div className="w-full bg-[#F9F9FB] max-w-[1440px] flex flex-col gap-12 mx-auto px-4 pb-16">
+    <div className="w-full  max-w-[1440px] flex flex-col gap-12 mx-auto px-4 pb-16">
       {/* عنوان صفحه */}
       <div className="text-[28px] text-[#1C2024] font-yekanBold text-center mt-8">
         قطعات {part_category} {car_name}
@@ -128,10 +130,13 @@ const Page = () => {
                   {[
                     { key: "car_name_fa", label: "خودرو" },
                     { key: "brand_name_fa", label: "برند" },
+                    { key: "section_name", label: "دسته بندی" },
                     { key: "part_category", label: "بخش" },
-                    { key: "part_category", label: "دسته قطعه" },
+
                     { key: "part_name", label: "نام قطعه" },
                     { key: "part_code", label: "کد قطعه" },
+
+                    { key: "row_order", label: "شماره" },
                   ].map(({ key, label }, idx) => (
                     <tr
                       key={idx}
@@ -147,6 +152,9 @@ const Page = () => {
                   ))}
                 </tbody>
               </table>
+              <div className="mt-4">
+                <ProductsModal partCode={item.part_code} />
+              </div>
             </div>
           </div>
         ))}

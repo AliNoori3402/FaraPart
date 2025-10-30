@@ -298,7 +298,7 @@ export default function FilterProductCar({
       </div>
 
       {/* فیلتر دسکتاپ */}
-      <div className="hidden md:flex w-full max-w-[281px] border border-[#E0E1E6] bg-[#F9F9FB] rounded-[24px] flex-col gap-4 px-4 py-6">
+      <div className="hidden md:flex w-full max-w-[281px] border border-[#E0E1E6] rounded-[24px] flex-col gap-4 px-4 py-6">
         <div className="flex justify-between items-center">
           <span className="text-[18px] font-medium">فیلترها</span>
           {(selectedCategories.length > 0 ||

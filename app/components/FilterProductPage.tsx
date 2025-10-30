@@ -129,15 +129,21 @@ export default function FilterProductPage({
   ]);
 
   // --------------------- توگل‌ها ---------------------
-  const toggleCategory = (id: number) => {
+  const toggleCategory = (id: number, childIds: number[] = []) => {
     setSelectedCategories((prev) => {
-      const updated = prev.includes(id)
-        ? prev.filter((c) => c !== id)
-        : [...prev, id];
+      let updated: number[] = [...prev];
+      if (updated.includes(id)) {
+        // اگر والد تیک خورده بود، حذفش کنیم + حذف فرزندان
+        updated = updated.filter((c) => c !== id && !childIds.includes(c));
+      } else {
+        // افزودن والد + تمام فرزندان
+        updated = [...new Set([...updated, id, ...childIds])];
+      }
       resetPage();
       return updated;
     });
   };
+
   const toggleBrand = (id: number) => {
     setSelectedBrands((prev) => {
       const updated = prev.includes(id)
@@ -177,15 +183,24 @@ export default function FilterProductPage({
     const hasChild = category.child && category.child.length > 0;
     const isOpen = openCategories[category.id];
 
+    // تمام شناسه‌های فرزندان
+    const childIds: number[] = hasChild
+      ? category.child!.flatMap((child) => [
+          child.id,
+          ...(child.child?.map((c) => c.id) || []),
+        ])
+      : [];
+
+    // بررسی اینکه والد باید تیک بخورد
+    const isChecked =
+      selectedCategories.includes(category.id) ||
+      (hasChild && childIds.every((id) => selectedCategories.includes(id)));
+
     return (
       <div key={category.id} className="flex flex-col gap-1">
         <div
           className={`flex items-center justify-between gap-2 py-2 px-3 rounded-lg cursor-pointer select-none transition-colors
-          ${
-            selectedCategories.includes(category.id)
-              ? "bg-blue-50"
-              : "hover:bg-gray-50"
-          }`}
+          ${isChecked ? "bg-blue-50" : "hover:bg-gray-50"}`}
           style={{ paddingLeft: `${level * 16}px` }}
           onClick={() => hasChild && toggleNestedCategory(category.id)}
         >
@@ -205,12 +220,12 @@ export default function FilterProductPage({
           )}
           <input
             type="checkbox"
-            checked={selectedCategories.includes(category.id)}
+            checked={isChecked}
             onChange={(e) => {
               e.stopPropagation();
-              toggleCategory(category.id);
+              toggleCategory(category.id, childIds);
             }}
-            className="w-4 h-4 accent-blue-500  rounded"
+            className="w-4 h-4 accent-blue-500 rounded"
           />
         </div>
 
@@ -316,8 +331,11 @@ export default function FilterProductPage({
               {items.length > 0 ? (
                 items
               ) : (
-                <div className="text-center py-4 text-gray-400 text-sm">
-                  داده‌ای وجود ندارد
+                <div className="flex flex-col items-center justify-center gap-2">
+                  <div className="w-10 h-10 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
+                  <div className="text-[#1C2024] font-yekanRegular mt-2">
+                    در حال بارگذاری ...
+                  </div>
                 </div>
               )}
             </div>
