@@ -217,13 +217,13 @@ export default function CombinedSlider() {
                 );
               } else {
                 const offer = item.data as SpecialOffer;
-                const part = offer.parts[0];
-                return (
+
+                return offer.parts.map((part, idx) => (
                   <div
                     onClick={handleClick}
                     ref={idx === 0 ? cardRef : null}
                     key={`offer-${offer.id}-${part.id}`}
-                    className="cursor-pointer w-[300px]  bg-white rounded-3xl flex-shrink-0 flex flex-col p-5 gap-4 shadow-xl hover:scale-105 transition-transform duration-300"
+                    className="cursor-pointer w-[300px] bg-white rounded-3xl flex-shrink-0 flex flex-col p-5 gap-4 shadow-xl hover:scale-105 transition-transform duration-300"
                   >
                     <div className="text-lg font-yekanExtraBold text-[#004D7A] text-center">
                       {offer.title}
@@ -247,7 +247,7 @@ export default function CombinedSlider() {
                       تایمر: {timeLeft}
                     </div>
                   </div>
-                );
+                ));
               }
             })}
           </motion.div>

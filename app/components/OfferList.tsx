@@ -44,7 +44,7 @@ export default function OfferList({ offers }: { offers: Offer[] }) {
               <div className="w-[221px] h-[178px] relative overflow-hidden">
                 <Image
                   fill
-                  src="/Light.svg"
+                  src={part.image_urls?.[0] || "/no-image.svg"}
                   alt={part.name}
                   className="w-full h-full object-contain"
                 />
