@@ -11,7 +11,7 @@ export async function GET(req: Request) {
 
     // درخواست به سرور اصلی
     const res = await axios.get(
-      "http://194.5.175.107:8000/api/cart/list-cart/",
+      "http://130.185.74.137:8000/api/cart/list-cart/",
       {
         headers: {
           Authorization: authHeader,

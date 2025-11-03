@@ -46,7 +46,7 @@ export default function PackPage() {
     const fetchPack = async () => {
       try {
         const res = await axios.get(
-          `http://194.5.175.107:8000/api/admin/discount-pack/${id}/`
+          `http://130.185.74.137:8000/api/admin/discount-pack/${id}/`
         );
         setPack(res.data);
       } catch (err) {

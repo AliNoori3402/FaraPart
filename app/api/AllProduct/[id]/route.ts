@@ -12,7 +12,7 @@ export async function GET(request: NextRequest, context: any) {
 
   try {
     const res = await fetch(
-      `http://194.5.175.107:8000/api/products/part/${id}/`,
+      `http://130.185.74.137:8000/api/products/part/${id}/`,
       {
         cache: "no-store",
       }

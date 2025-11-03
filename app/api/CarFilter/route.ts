@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const response = await axios.get(
-      "http://194.5.175.107:8000/products/filter-parts/",
+      "http://130.185.74.137:8000/products/filter-parts/",
       {
         params: {
           car_id: carId,

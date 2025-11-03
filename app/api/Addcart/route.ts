@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
     }
 
     // External API URL
-    const apiUrl = "http://194.5.175.107:8000/api/cart/add/";
+    const apiUrl = "http://130.185.74.137:8000/api/cart/add/";
 
     // Forward the request to the external API using Axios
     const response = await axios.post(apiUrl, body, {

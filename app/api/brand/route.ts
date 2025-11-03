@@ -5,7 +5,7 @@ export async function GET(request: NextRequest) {
   try {
     console.log(request);
     const res = await axios.get(
-      "http://194.5.175.107:8000/api/products/list-brands/"
+      "http://130.185.74.137:8000/api/products/list-brands/"
     );
     return new Response(JSON.stringify(res.data), {
       status: 200,

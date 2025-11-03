@@ -8,7 +8,7 @@ export async function GET(req: NextRequest, context: any) {
 
     // بعد encode تا برای API امن بشه
     const response = await fetch(
-      `http://194.5.175.107:8000/api/products/section-list-cars/?car_name=${encodeURIComponent(
+      `http://130.185.74.137:8000/api/products/section-list-cars/?car_name=${encodeURIComponent(
         car_name
       )}`
     );

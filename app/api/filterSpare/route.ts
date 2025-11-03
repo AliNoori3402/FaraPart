@@ -6,7 +6,7 @@ export async function POST(request: NextRequest) {
     const { part_type, pageNumber = 1, pageSize = 20 } = await request.json();
 
     const response = await axios.post(
-      "http://194.5.175.107:8000/api/products/filter-by-type/",
+      "http://130.185.74.137:8000/api/products/filter-by-type/",
       { part_type },
       {
         params: {

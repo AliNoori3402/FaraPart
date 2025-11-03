@@ -25,7 +25,7 @@ export default function Header() {
     const getBrands = async () => {
       try {
         const res = await axios.get(
-          "http://194.5.175.107:8000/api/products/list-brands/"
+          "http://130.185.74.137:8000/api/products/list-brands/"
         );
         if (Array.isArray(res.data.results)) {
           setBrands(res.data.results);
@@ -38,7 +38,7 @@ export default function Header() {
     const getCategories = async () => {
       try {
         const res = await axios.get(
-          "http://194.5.175.107:8000/api/products/categories/"
+          "http://130.185.74.137:8000/api/products/categories/"
         );
         setCategories(res.data);
       } catch (err) {

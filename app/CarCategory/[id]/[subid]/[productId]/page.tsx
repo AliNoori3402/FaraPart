@@ -54,7 +54,7 @@ const ProductDetailPage: React.FC = () => {
 
         try {
           const inventoryRes = await axios.post(
-            "http://194.5.175.107:8000/api/products/inventory/",
+            "http://130.185.74.137:8000/api/products/inventory/",
             { id: Number(productId) },
             { headers: { "Content-Type": "application/json" } }
           );

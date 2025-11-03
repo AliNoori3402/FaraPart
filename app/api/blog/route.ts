@@ -3,7 +3,7 @@ import axios from "axios";
 
 export async function GET() {
   try {
-    const res = await axios.get("http://194.5.175.107:8000/api/blog/posts/", {
+    const res = await axios.get("http://130.185.74.137:8000/api/blog/posts/", {
       headers: {
         "Content-Type": "application/json",
       },

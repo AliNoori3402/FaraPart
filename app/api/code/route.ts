@@ -6,7 +6,7 @@ export async function POST(req: NextRequest) {
     const { codes } = body;
 
     const res = await fetch(
-      "http://194.5.175.107:8000/api/products/search-by-codes/",
+      "http://130.185.74.137:8000/api/products/search-by-codes/",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
