@@ -3,11 +3,14 @@ import axios from "axios";
 
 export async function GET() {
   try {
-    const res = await axios.get("http://130.185.74.137:8000/api/blog/posts/", {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const res = await axios.get(
+      "https://www.django.farapartmotor.com/api/blog/posts/",
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     return NextResponse.json(res.data, { status: 200 });
   } catch (error: any) {

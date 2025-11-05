@@ -4,7 +4,7 @@ import axios from "axios";
 export async function GET() {
   try {
     const res = await axios.get(
-      "http://130.185.74.137:8000/api/admin/list-special-offer-box/",
+      "https://www.django.farapartmotor.com/api/admin/list-special-offer-box/",
       {
         // جلوگیری از کش شدن
         headers: {

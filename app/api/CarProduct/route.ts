@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
 
     // درخواست به API خارجی
     const response = await fetch(
-      "http://130.185.74.137:8000/api/products/list-car-products/",
+      "https://www.django.farapartmotor.com/api/products/list-car-products/",
       {
         method: "POST",
         headers: {

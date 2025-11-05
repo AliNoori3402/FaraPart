@@ -43,7 +43,7 @@ const ContactPage = () => {
       }
 
       const response = await axios.post(
-        "http://130.185.74.137:8000/api/admin/call/create/",
+        "https://www.django.farapartmotor.com/api/admin/call/create/",
         formData,
         {
           headers: {

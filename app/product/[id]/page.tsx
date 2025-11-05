@@ -52,7 +52,7 @@ const ProductDetailPage: React.FC = () => {
 
         try {
           const inventoryRes = await axios.post(
-            "http://130.185.74.137:8000/api/products/inventory/",
+            "https://www.django.farapartmotor.com/api/products/inventory/",
             { id: Number(id) },
             { headers: { "Content-Type": "application/json" } }
           );

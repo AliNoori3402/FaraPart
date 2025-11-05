@@ -16,7 +16,7 @@ export default function BlogDetailsPage() {
     const fetchData = async () => {
       try {
         const res = await axios.get(
-          `http://130.185.74.137:8000/api/blog/posts/${id}/`
+          `https://www.django.farapartmotor.com/api/blog/posts/${id}/`
         );
         setData(res.data);
       } catch (err) {

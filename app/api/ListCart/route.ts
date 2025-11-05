@@ -11,7 +11,7 @@ export async function GET(req: Request) {
 
     // درخواست به سرور اصلی
     const res = await axios.get(
-      "http://130.185.74.137:8000/api/cart/list-cart/",
+      "https://www.django.farapartmotor.com/api/cart/list-cart/",
       {
         headers: {
           Authorization: authHeader,

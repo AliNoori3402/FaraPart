@@ -46,7 +46,7 @@ export default function CarSectionsPage() {
       setLoading(true);
       try {
         const res = await fetch(
-          "http://130.185.74.137:8000/api/products/parts-by-section/",
+          "https://www.django.farapartmotor.com/api/products/parts-by-section/",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },

@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     }
 
     const response = await axios.post(
-      "http://130.185.74.137:8000/api/users/send-otp/",
+      "https://www.django.farapartmotor.com/api/users/send-otp/",
       {
         phone_number,
       }

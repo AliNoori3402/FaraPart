@@ -11,13 +11,13 @@ export async function POST(req: NextRequest) {
     if (!parentId) {
       // اگر کاربر نوع کالا انتخاب نکرده بود، کل دسته بندی ها را بده
       const res = await axios.get(
-        "http://130.185.74.137:8000/api/products/categories/"
+        "https://www.django.farapartmotor.com/api/products/categories/"
       );
       categories = res.data;
     } else {
       // اگر parent_id ارسال شده بود، فقط بچه‌های آن دسته بندی را بده
       const res = await axios.post(
-        "http://130.185.74.137:8000/api/products/categories/",
+        "https://www.django.farapartmotor.com/api/products/categories/",
         {
           c_id: parentId,
         }

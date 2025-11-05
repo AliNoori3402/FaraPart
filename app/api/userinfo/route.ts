@@ -24,7 +24,7 @@ export async function POST(request: Request) {
     const accessToken = authHeader.slice(7);
 
     const response = await axios.post(
-      "http://130.185.74.137:8000/api/users/register/",
+      "https://www.django.farapartmotor.com/api/users/register/",
       {
         first_name,
         last_name,

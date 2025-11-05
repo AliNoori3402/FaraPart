@@ -25,7 +25,8 @@ const Page = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const page_size = 1;
-  const API_BASE = "http://130.185.74.137:8000/api/products/carlog-pics/";
+  const API_BASE =
+    "https://www.django.farapartmotor.com/api/products/carlog-pics/";
 
   const fetchData = async (pageNumber: number) => {
     if (!car_name || !part_category) return;

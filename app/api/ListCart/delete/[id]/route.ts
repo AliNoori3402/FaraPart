@@ -18,7 +18,7 @@ export async function DELETE(req: NextRequest, context: any) {
       );
     }
 
-    const url = `http://130.185.74.137:8000/cart/delete/${id}/`;
+    const url = `https://www.django.farapartmotor.com/cart/delete/${id}/`;
 
     const response = await axios.delete(url, {
       headers: {

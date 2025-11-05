@@ -5,7 +5,7 @@ import axios from "axios";
 export async function GET() {
   try {
     const response = await axios.get(
-      "http://130.185.74.137:8000/api/products/categories/"
+      "https://www.django.farapartmotor.com/api/products/categories/"
     );
     return NextResponse.json(response.data);
   } catch (error) {
