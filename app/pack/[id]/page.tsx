@@ -45,9 +45,7 @@ export default function PackPage() {
   useEffect(() => {
     const fetchPack = async () => {
       try {
-        const res = await axios.get(
-          `https://www.django.farapartmotor.com/api/admin/discount-pack/${id}/`
-        );
+        const res = await axios.get(`/api/pack/${id}`);
         setPack(res.data);
       } catch (err) {
         console.error("Error fetching pack:", err);

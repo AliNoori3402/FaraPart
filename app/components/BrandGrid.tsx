@@ -28,9 +28,7 @@ export default function BrandGrid() {
   useEffect(() => {
     const fetchBrands = async () => {
       try {
-        const res = await axios.get(
-          "https://www.django.farapartmotor.com/api/products/list-brands/"
-        );
+        const res = await axios.get("/api/brand");
         console.log("✅ پاسخ سرور:", res.data);
         if (Array.isArray(res.data.results)) {
           setBrands(res.data.results);

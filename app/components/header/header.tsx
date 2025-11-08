@@ -24,9 +24,7 @@ export default function Header() {
   useEffect(() => {
     const getBrands = async () => {
       try {
-        const res = await axios.get(
-          "https://www.django.farapartmotor.com/api/products/list-brands/"
-        );
+        const res = await axios.get("/api/brand");
         if (Array.isArray(res.data.results)) {
           setBrands(res.data.results);
         }
@@ -37,9 +35,7 @@ export default function Header() {
 
     const getCategories = async () => {
       try {
-        const res = await axios.get(
-          "https://www.django.farapartmotor.com/api/products/categories/"
-        );
+        const res = await axios.get("/api/categorylist");
         setCategories(res.data);
       } catch (err) {
         console.error(err);

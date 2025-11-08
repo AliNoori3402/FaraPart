@@ -42,16 +42,12 @@ const ContactPage = () => {
         Array.from(images).forEach((file) => formData.append("images", file));
       }
 
-      const response = await axios.post(
-        "https://www.django.farapartmotor.com/api/admin/call/create/",
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const response = await axios.post("/api/call", formData, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       if (response.status === 201 || response.status === 200) {
         toast.success("پیام شما با موفقیت ارسال شد ✅");

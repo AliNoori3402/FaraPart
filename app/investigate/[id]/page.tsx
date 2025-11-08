@@ -45,16 +45,13 @@ export default function CarSectionsPage() {
     const fetchParts = async () => {
       setLoading(true);
       try {
-        const res = await fetch(
-          "https://www.django.farapartmotor.com/api/products/parts-by-section/",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              sections: [selectedSection.section_name.trim()],
-            }),
-          }
-        );
+        const res = await fetch("/api/part-by-section", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            sections: [selectedSection.section_name.trim()],
+          }),
+        });
 
         const data = await res.json();
         setPartsData(data || {});

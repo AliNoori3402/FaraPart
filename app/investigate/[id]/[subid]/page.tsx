@@ -25,31 +25,36 @@ const Page = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const page_size = 1;
-  const API_BASE =
-    "https://www.django.farapartmotor.com/api/products/carlog-pics/";
 
   const fetchData = async (pageNumber: number) => {
     if (!car_name || !part_category) return;
+
     try {
       setLoading(true);
       setError(null);
 
-      const url = `${API_BASE}?car_name=${encodeURIComponent(
+      // به‌جای آدرس مستقیم Django، از route داخلی Next استفاده کن
+      const url = `/api/carlog-pic?car_name=${encodeURIComponent(
         car_name
       )}&part_category=${encodeURIComponent(
         part_category
       )}&page_size=${page_size}&pagenumber=${pageNumber}`;
 
-      const res = await fetch(url);
-      console.log(res);
+      const res = await fetch(url, { cache: "no-store" });
+
+      if (!res.ok) {
+        throw new Error(`خطا در پاسخ سرور (${res.status})`);
+      }
+
       const json: ApiResponse = await res.json();
-      console.log(json);
+      console.log("✅ پاسخ:", json);
+
       setData(json.results || []);
       setNextPage(json.next);
       setPrevPage(json.previous);
       setCurrentPage(pageNumber);
     } catch (err) {
-      console.error("خطا در دریافت داده‌ها:", err);
+      console.error("❌ خطا در دریافت داده‌ها:", err);
       setError("خطا در دریافت داده‌ها از سرور.");
     } finally {
       setLoading(false);

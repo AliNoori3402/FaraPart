@@ -60,9 +60,7 @@ export default function CombinedSlider() {
     const fetchData = async () => {
       try {
         const [packsRes, offersRes] = await Promise.all([
-          axios.get<Pack[]>(
-            "https://www.django.farapartmotor.com/api/admin/discount-pack/"
-          ),
+          axios.get<Pack[]>("/api/pack"),
           axios.get<SpecialOffer[]>("/api/special-offers"),
         ]);
 

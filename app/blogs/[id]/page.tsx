@@ -15,9 +15,7 @@ export default function BlogDetailsPage() {
 
     const fetchData = async () => {
       try {
-        const res = await axios.get(
-          `https://www.django.farapartmotor.com/api/blog/posts/${id}/`
-        );
+        const res = await axios.get(`/api/blog/${id}`);
         setData(res.data);
       } catch (err) {
         console.error("Error fetching blog details:", err);
