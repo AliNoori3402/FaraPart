@@ -4,6 +4,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner"; // ✅ اضافه شد
+import Link from "next/link";
+import Image from "next/image";
 
 function VerifyCodePage() {
   const [code, setCode] = useState("");
@@ -88,7 +90,11 @@ function VerifyCodePage() {
       <div className="w-[377px] max-w-full px-4 mx-auto flex flex-col items-center mt-[24px]">
         {/* هدر */}
         <div className="w-[377px] h-[64px] flex flex-col gap-[24px] items-center">
-          <div className="w-[152px] h-[44px] bg-[#D9D9D9]"></div>
+          <Link href={"/"} className="flex justify-center md:justify-start">
+            <div className="relative w-[152px] h-[64px] ">
+              <Image fill src={"/banner/header.svg"} alt="logo" />
+            </div>
+          </Link>
           <div className="w-[377px] h-[1px] bg-[#E8E8EC]"></div>
         </div>
 
@@ -108,7 +114,7 @@ function VerifyCodePage() {
             <div className="w-[100px] h-[20px] flex flex-row gap-[8px]">
               <div className="w-[20px] h-[20px]">
                 <img
-                  src="/code.svg"
+                  src="/phone.svg"
                   className="w-full h-full object-contain"
                   alt="کد تایید"
                 />

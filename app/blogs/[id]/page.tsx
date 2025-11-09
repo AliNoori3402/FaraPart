@@ -62,8 +62,8 @@ export default function BlogDetailsPage() {
           </span>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-[40px] lg:gap-[65px] w-full">
-          <div className=" relative w-full lg:w-[642px] h-auto">
+        <div className="flex flex-col  lg:flex-row gap-[40px] lg:gap-[65px] w-full">
+          <div className="  relative w-[242px] sm:w-[642px]   mx-auto xl:mx-0 h-50 xl:h-auto">
             <Image
               fill
               src={
@@ -72,12 +72,12 @@ export default function BlogDetailsPage() {
                   : "/car-logo.svg"
               }
               alt={data.title}
-              className="w-full h-full object-contain"
+              className="w-full h-full  object-contain"
             />
           </div>
 
-          <div className="w-full lg:w-[591px] flex flex-col gap-[40px]">
-            <h1 className="text-[24px] md:text-[28px] text-[#1C2024] font-yekanBold leading-[1.4]">
+          <div className="w-full lg:w-[591px]   flex flex-col gap-[40px]">
+            <h1 className="text-[24px] text-center md:text-[28px] text-[#1C2024] font-yekanBold leading-[1.4]">
               {data.title}
             </h1>
 
@@ -101,13 +101,13 @@ export default function BlogDetailsPage() {
               </div>
             </div>
 
-            <p className="text-[14px] text-[#1C2024] font-yekanRegular leading-[2]">
+            <p className="text-[14px] text-center text-[#1C2024] font-yekanRegular leading-[2]">
               {data.excerpt || "بدون توضیح"}
             </p>
           </div>
         </div>
 
-        <div className="w-full flex flex-col gap-[40px]">
+        <div className="w-full flex text-center flex-col gap-[40px]">
           <p className="text-[14px] text-[#1C2024] font-yekanRegular leading-[2]">
             {data.body || "محتوای کامل خبر در دسترس نیست."}
           </p>

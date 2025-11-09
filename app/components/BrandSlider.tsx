@@ -41,7 +41,7 @@ export default function CarBrandSlider({ onSelectBrand }: CarBrandSliderProps) {
   };
 
   return (
-    <div className="w-full max-w-[1280px] flex flex-col gap-[32px] justify-center items-center bg-[#004D7A] rounded-[32px] overflow-hidden px-4 py-6">
+    <div className="w-full mb-4 max-w-[1280px] flex flex-col gap-[32px] justify-center items-center bg-[#004D7A] rounded-[32px] overflow-hidden px-4 py-6">
       <div className="text-[14px] text-white font-yekanDemiBold">
         برند خودرو را انتخاب کنید
       </div>

@@ -348,7 +348,7 @@ export default function FilterProductPage({
   return (
     <>
       {/* دکمه موبایل */}
-      <div className="md:hidden w-full flex justify-start px-4 mb-4">
+      <div className="xl:hidden w-full flex justify-start px-4 mb-4">
         <button
           onClick={() => setIsOpen(true)}
           className="bg-gray-200 text-gray-900 px-4 py-2 rounded-xl font-medium text-sm flex items-center gap-2"
@@ -359,7 +359,7 @@ export default function FilterProductPage({
       </div>
 
       {/* فیلتر دسکتاپ */}
-      <div className="hidden md:flex w-full max-w-[281px] border border-gray-300 bg-gray-50 rounded-2xl flex-col gap-4 px-4 py-6">
+      <div className="hidden xl:flex w-full max-w-[281px] border border-gray-300 bg-gray-50 rounded-2xl flex-col gap-4 px-4 py-6">
         <div className="flex justify-between items-center">
           <div className="text-lg text-gray-900 font-semibold">فیلترها</div>
           {(selectedCategories.length > 0 ||
@@ -428,6 +428,116 @@ export default function FilterProductPage({
           categories.map((cat) => renderNestedCategory(cat))
         )}
       </div>
+      {/* مودال فیلتر موبایل */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/40 z-50 flex items-end xl:hidden"
+            onClick={() => setIsOpen(false)}
+          >
+            {/* محتوای مودال */}
+            <motion.div
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "tween", duration: 0.3 }}
+              onClick={(e) => e.stopPropagation()}
+              className="w-full bg-white rounded-t-3xl p-5 max-h-[90vh] overflow-y-auto shadow-lg"
+            >
+              {/* نوار بالای مودال */}
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-semibold text-gray-800">فیلترها</h2>
+                <div className="flex items-center gap-3">
+                  {(selectedCategories.length > 0 ||
+                    selectedBrands.length > 0 ||
+                    selectedCars.length > 0 ||
+                    selectedProductType !== "") && (
+                    <button
+                      onClick={clearFilters}
+                      className="text-sm text-red-500 hover:underline"
+                    >
+                      حذف فیلترها
+                    </button>
+                  )}
+                  <button
+                    onClick={() => setIsOpen(false)}
+                    className="text-gray-600 text-sm px-3 py-1 rounded-lg hover:bg-gray-100"
+                  >
+                    بستن
+                  </button>
+                </div>
+              </div>
+
+              {/* فیلترها (همانند دسکتاپ) */}
+              <div className="flex flex-col gap-4">
+                {renderAccordion(
+                  "برند خودرو",
+                  brandAccordionOpen,
+                  setBrandAccordionOpen,
+                  brands.map((brand) =>
+                    renderCheckboxItem(
+                      brand.display_name,
+                      selectedBrands.includes(brand.id),
+                      () => toggleBrand(brand.id)
+                    )
+                  )
+                )}
+
+                {renderAccordion(
+                  "خودروها",
+                  carAccordionOpen,
+                  setCarAccordionOpen,
+                  (selectedBrands.length > 0
+                    ? brands.filter((b) => selectedBrands.includes(b.id))
+                    : brands
+                  )
+                    .flatMap((b) => b.cars)
+                    .map((car) =>
+                      renderCheckboxItem(
+                        car.name,
+                        selectedCars.includes(car.id),
+                        () => toggleCar(car.id)
+                      )
+                    )
+                )}
+
+                {renderAccordion(
+                  "نوع کالا",
+                  typeAccordionOpen,
+                  setTypeAccordionOpen,
+                  productTypes.map((type) =>
+                    renderRadioItem(
+                      type === "spare" ? "قطعات یدکی" : "مصرفی",
+                      selectedProductType === type,
+                      () => handleSelectProductType(type)
+                    )
+                  )
+                )}
+
+                {renderAccordion(
+                  "دسته‌بندی",
+                  categoryAccordionOpen,
+                  setCategoryAccordionOpen,
+                  categories.map((cat) => renderNestedCategory(cat))
+                )}
+              </div>
+
+              {/* دکمه اعمال فیلتر */}
+              <div className="mt-6">
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="w-full bg-blue-600 text-white py-3 rounded-xl font-medium text-sm"
+                >
+                  اعمال فیلتر
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

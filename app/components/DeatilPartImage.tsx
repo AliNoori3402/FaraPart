@@ -19,8 +19,8 @@ export default function ProductImages({ images }: ProductImagesProps) {
   }
 
   return (
-    <div className="w-[1200px] flex flex-row gap-[67px] mx-auto">
-      <div className="w-[622px] flex md:flex-row sm:flex-row flex-col gap-[16px]">
+    <div className="  flex flex-row gap-[67px] mx-auto">
+      <div className="w-[622px]  justify-center items-start flex md:flex-row sm:flex-row flex-col gap-[16px]">
         {/* تصویر بزرگ */}
         <div className="w-[361px] md:w-[466px] sm:w-[466px] h-[432px] rounded-[40px] bg-[#FCFCFD] border border-[#E0E1E6] flex items-center justify-center">
           <Image

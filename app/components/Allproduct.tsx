@@ -155,7 +155,7 @@ const AllProductList: React.FC<ProductListProps> = ({
                   <div className="flex flex-col gap-2">
                     <div className="flex flex-row gap-2 items-center">
                       <div className="text-[18px] sm:text-[20px] text-[#004D7A] font-yekanDemiBold leading-[26px]">
-                        {product.price}
+                        {Number(product.price).toLocaleString("fa-IR")}
                       </div>
                       <div className="text-[12px] text-[#004D7A] font-yekanDemiBold leading-[16px]">
                         تومان
@@ -183,19 +183,19 @@ const AllProductList: React.FC<ProductListProps> = ({
             <button
               disabled={page <= 1}
               onClick={() => changePage(page - 1)}
-              className="px-4 py-2 rounded bg-[#004D7A] text-white font-yekanDemiBold disabled:bg-gray-400"
+              className="px-4 py-2 text-xs md:text-sm lg:text-base rounded bg-[#004D7A] text-white font-yekanDemiBold disabled:bg-gray-400"
             >
               صفحه قبلی
             </button>
 
-            <span className="text-[#004D7A] font-yekanDemiBold">
+            <span className="text-[#004D7A] text-xs md:text-sm lg:text-base font-yekanDemiBold">
               صفحه {page} از {totalPages}
             </span>
 
             <button
               disabled={page >= totalPages}
               onClick={() => changePage(page + 1)}
-              className="px-4 py-2 rounded bg-[#004D7A] text-white font-yekanDemiBold disabled:bg-gray-400"
+              className="px-4 py-2 text-xs md:text-sm lg:text-base rounded bg-[#004D7A] text-white font-yekanDemiBold disabled:bg-gray-400"
             >
               صفحه بعدی
             </button>

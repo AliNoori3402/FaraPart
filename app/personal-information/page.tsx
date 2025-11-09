@@ -4,7 +4,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { toast } from "sonner"; // ✅ اضافه شد
+import { toast } from "sonner";
+import Link from "next/link";
 
 function cleanToken(token: string | null) {
   if (!token) return "";
@@ -92,7 +93,6 @@ export default function RegisterPage() {
 
           try {
             const response = await sendRegisterRequest(accessToken);
-
             const newToken = response.headers["x-new-access-token"];
             if (newToken) localStorage.setItem("accessToken", newToken);
 
@@ -146,14 +146,20 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="w-full h-screen flex justify-center items-start overflow-y-auto">
-      <div className="w-[377px] max-w-full px-4 mx-auto flex flex-col items-center gap-[24px] mt-[24px]">
-        <div className="w-[377px] h-[64px] flex flex-col gap-[24px] items-center">
-          <div className="w-[152px] h-[44px] bg-[#D9D9D9]" />
-          <div className="w-[377px] h-[1px] bg-[#E8E8EC]" />
+    <div className="min-h-screen w-full flex justify-center items-start sm:items-center bg-white px-4 py-8 overflow-y-auto">
+      <div className="w-full max-w-md flex flex-col items-center gap-8">
+        {/* لوگو */}
+        <div className="flex flex-col items-center gap-6 w-full">
+          <Link href={"/"} className="flex justify-center md:justify-start">
+            <div className="relative w-[152px] h-[64px] ">
+              <Image fill src={"/banner/header.svg"} alt="logo" />
+            </div>
+          </Link>
+          <div className="w-full h-px bg-[#E8E8EC]" />
         </div>
 
-        <div className="w-[377px] flex flex-col gap-[16px] mt-[24px]">
+        {/* فرم ثبت‌نام */}
+        <div className="w-full flex flex-col gap-5">
           {[
             {
               label: "نام و نام خانوادگی",
@@ -169,52 +175,53 @@ export default function RegisterPage() {
             { label: "ایمیل", value: email, setter: setEmail },
             { label: "کد پستی", value: postalCode, setter: setPostalCode },
           ].map((f, i) => (
-            <div className="flex flex-col gap-[8px]" key={i}>
-              <div className="text-[14px] text-[#1C2024] font-yekanDemiBold">
+            <div className="flex flex-col gap-2" key={i}>
+              <label className="text-sm sm:text-base text-[#1C2024] font-yekanDemiBold">
                 {f.label}
-              </div>
+              </label>
               <input
                 type="text"
                 value={f.value}
                 onChange={(e) => f.setter(e.target.value)}
-                className="w-full h-[48px] bg-[#E8E8EC] rounded-[20px] text-right px-2 outline-none font-yekanDemiBold"
+                className="w-full h-[48px] bg-[#E8E8EC] rounded-[16px] px-3 text-right outline-none font-yekanDemiBold"
               />
             </div>
           ))}
 
-          <div className="flex flex-col gap-[8px]">
-            <div className="text-[14px] text-[#1C2024] font-yekanDemiBold">
+          {/* فیلد آدرس */}
+          <div className="flex flex-col gap-2">
+            <label className="text-sm sm:text-base text-[#1C2024] font-yekanDemiBold">
               آدرس
-            </div>
+            </label>
             <textarea
               value={address}
               onChange={(e) => setAddress(e.target.value)}
-              className="w-full h-[95px] bg-[#E8E8EC] rounded-[20px] text-right px-2 outline-none font-yekanDemiBold resize-none"
+              className="w-full h-[90px] bg-[#E8E8EC] rounded-[16px] p-3 text-right outline-none font-yekanDemiBold resize-none"
             />
           </div>
 
+          {/* دکمه‌ها */}
           <button
             onClick={handleSubmit}
             disabled={loading}
-            className="w-full h-[48px] mt-4 rounded-[16px] bg-gradient-to-r from-[#008BDF] to-[#006FB4] text-[14px] text-[#FCFCFD] font-yekanRegular disabled:opacity-50"
+            className="w-full h-[48px] mt-4 rounded-[16px] bg-gradient-to-r from-[#008BDF] to-[#006FB4] text-white text-[14px] font-yekanRegular disabled:opacity-50 transition-all hover:opacity-90"
           >
             {loading ? "در حال ارسال..." : "ثبت تغییرات"}
           </button>
 
           <button
             onClick={handleLogout}
-            className="w-full h-[48px] rounded-[16px] border border-[#D93629] text-[14px] text-[#D93629] font-yekanRegular"
+            className="w-full h-[48px] rounded-[16px] border border-[#D93629] text-[14px] text-[#D93629] font-yekanRegular hover:bg-[#ffeaea] transition-all"
           >
             خروج از حساب
           </button>
 
-          <div
-            className="w-[70px] h-[20px] flex flex-row gap-[4px] cursor-pointer self-start"
+          {/* بازگشت */}
+          <button
             onClick={() => router.back()}
+            className="flex items-center gap-2 text-[#006FB4] font-yekanDemiBold text-sm mt-2"
           >
-            <div className="w-[48px] text-[14px] text-[#006FB4] font-yekanDemiBold">
-              بازگشت
-            </div>
+            <span>بازگشت</span>
             <Image
               width={20}
               height={20}
@@ -222,7 +229,7 @@ export default function RegisterPage() {
               alt="Arrow Icon"
               className="object-contain"
             />
-          </div>
+          </button>
         </div>
       </div>
     </div>

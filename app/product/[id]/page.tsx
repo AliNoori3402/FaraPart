@@ -128,7 +128,7 @@ const ProductDetailPage: React.FC = () => {
         </div>
 
         {/* تصاویر و جزئیات */}
-        <div className="w-full flex flex-col sm:flex-col md:flex-row gap-[32px] sm:gap-[32px] md:gap-[67px] items-center md:items-start">
+        <div className="w-full flex flex-col lg:flex-row gap-[32px] sm:gap-[32px] md:gap-[67px] items-center lg:items-start">
           <ProductImages images={product.image_urls} />
 
           <div className="w-full max-w-[591px] flex flex-col gap-[40px]">

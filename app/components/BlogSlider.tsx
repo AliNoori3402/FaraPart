@@ -46,16 +46,16 @@ export default function NewsSlider() {
   }, []);
 
   return (
-    <div className="md:w-full md:h-auto sm:w-[770px] sm:h-[600px] w-[406px] flex flex-col gap-[35px] px-2.5 sm:px-4">
+    <div className="md:w-full  md:h-auto sm:w-[770px] sm:h-[600px] w-[406px] flex flex-col gap-[35px] ">
       {/* تیتر */}
-      <div className="text-[20px] text-[#1C2024] font-yekanDemiBold">
+      <div className="text-base lg:text-[20px] text-[#1C2024] font-yekanDemiBold">
         اخبار و مقالات
       </div>
 
       {/* اسلایدر */}
       <div
         ref={sliderRef}
-        className="flex gap-[28px] md:h-[421px] sm:h-[834px] h-[421px] overflow-x-auto scroll-smooth no-scrollbar items-start justify-start"
+        className="flex gap-[28px] md:h-[421px] px-0 lg:px-10 sm:h-[834px] h-[421px] overflow-x-hidden scroll-smooth no-scrollbar  items-start justify-start"
         style={{ scrollSnapType: "x mandatory" }}
       >
         {loading ? (
@@ -86,7 +86,7 @@ export default function NewsSlider() {
           posts.map((post) => (
             <div
               key={post.id}
-              className="flex-shrink-0 md:w-[385px] sm:w-[365px] w-[365px] flex flex-col gap-[20px]"
+              className="flex-shrink-0 md:w-[385px] sm:w-[365px] w-[365px] px-10 sm:px-0 flex flex-col gap-2 lg:gap-[20px]"
               style={{ scrollSnapAlign: "start" }}
             >
               <div className="w-full relative h-[257px] rounded-[16px] overflow-hidden">
@@ -102,10 +102,10 @@ export default function NewsSlider() {
                 />
               </div>
               <div className="flex flex-col gap-[16px]">
-                <div className="text-[20px] text-[#1C2024] font-yekanDemiBold line-clamp-2">
+                <div className=" text-base lg:text-[20px] text-[#1C2024] font-yekanDemiBold line-clamp-2">
                   {post.title}
                 </div>
-                <div className="text-[16px] text-[#8B8D98] font-yekanDemiBold line-clamp-3">
+                <div className="text-sm lg:text-[16px] text-[#8B8D98] font-yekanDemiBold line-clamp-3">
                   {post.excerpt}
                 </div>
                 <div className="flex justify-between items-center">
@@ -117,13 +117,13 @@ export default function NewsSlider() {
                       width={24}
                       height={24}
                     />
-                    <span className="text-[14px] text-[#8B8D98] font-yekanDemiBold">
+                    <span className="text-xs lg:text-[14px] text-[#8B8D98] font-yekanDemiBold">
                       {new Date(post.publish).toLocaleDateString("fa-IR")}
                     </span>
                   </div>
                   <Link href={`/blogs/${post.id}`}>
                     <div className="flex flex-row gap-[4px] items-center">
-                      <span className="text-[14px] text-[#006FB4] font-yekanDemiBold">
+                      <span className="text-xs lg:text-[14px] text-[#006FB4] font-yekanDemiBold">
                         بیشتر بخوانید
                       </span>
                       <Image

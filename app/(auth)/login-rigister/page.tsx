@@ -3,18 +3,16 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner"; // ✅ اضافه شد
+import { toast } from "sonner";
 import Link from "next/link";
+import Image from "next/image";
 
 function Page() {
   const router = useRouter();
-
   const [phoneNumber, setPhoneNumber] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
-    console.log("Sending POST request to /api/sendotp", phoneNumber);
-
     if (!/^09\d{9}$/.test(phoneNumber)) {
       toast.error("❌ لطفاً شماره تلفن معتبر وارد کنید. مثال: 09120000000");
       return;
@@ -31,7 +29,6 @@ function Page() {
         router.push(`/verify-code?phone=${encodeURIComponent(phoneNumber)}`);
       } else {
         toast.error("⚠️ خطا در ارسال کد تایید. لطفاً دوباره تلاش کنید.");
-        console.log(res);
       }
     } catch (err) {
       toast.error("⚠️ خطا در برقراری ارتباط با سرور.");
@@ -41,83 +38,80 @@ function Page() {
   };
 
   return (
-    <div className="w-full h-screen flex justify-center items-start overflow-hidden">
-      <div className="w-[377px] max-w-full px-4 mx-auto flex flex-col items-center mt-[24px]">
-        <div className="w-[377px] h-[64px] flex flex-col gap-[24px] items-center">
-          <div className="w-[152px] h-[44px] bg-[#D9D9D9]"></div>
-          <div className="w-[377px] h-[1px] bg-[#E8E8EC]"></div>
+    <div className="min-h-screen flex justify-center items-start sm:items-center bg-white px-4 py-6">
+      <div className="w-full max-w-sm flex flex-col items-center">
+        {/* لوگو و خط بالا */}
+        <div className="w-full flex flex-col items-center gap-6">
+          <Link href={"/"} className="flex justify-center md:justify-start">
+            <div className="relative w-[152px] h-[64px] ">
+              <Image fill src={"/banner/header.svg"} alt="logo" />
+            </div>
+          </Link>
+          <div className="w-full h-[1px] bg-[#E8E8EC]"></div>
         </div>
 
-        <div className="w-[377px] h-[243px] flex flex-col gap-[56px] items-center mt-[24px]">
-          <div className="w-[307px] h-[83px] flex flex-col gap-[16px] justify-center items-center">
-            <div className="w-[307px] h-[31px] text-[24px] text-center text-[#000000] font-yekanDemiBold">
+        {/* تیتر */}
+        <div className="w-full flex flex-col gap-6 items-center mt-8 text-center">
+          <div>
+            <h1 className="text-xl sm:text-2xl text-[#000] font-yekanDemiBold">
               ورود و ثبت نام
-            </div>
-            <div className="w-[307px] h-[36px] text-[14px] text-center text-[#8B8D98] font-yekanDemiBold">
+            </h1>
+            <p className="text-sm sm:text-base text-[#8B8D98] font-yekanDemiBold mt-2 leading-relaxed">
               برای ورود یا ثبت نام شماره همراه خود را وارد کنید تا به شماره شما
-              کد تایید ارسال شود
-            </div>
+              کد تایید ارسال شود.
+            </p>
           </div>
 
-          <div className="w-[377px] h-[104px] flex flex-col gap-[8px]">
-            <div className="w-[100px] h-[20px] flex flex-row gap-[8px]">
-              <div className="w-[20px] h-[20px]">
-                <img
-                  src="/phone.svg"
-                  className="w-full h-full object-contain"
-                  alt="phone icon"
-                />
-              </div>
-              <div className="w-[72px] h-[18px] text-[14px] text-[#1C2024] font-yekanDemiBold">
-                شماره همراه
-              </div>
-            </div>
+          {/* فیلد شماره */}
+          <div className="w-full flex flex-col gap-2 text-right">
+            <label className="flex items-center gap-2 text-[#1C2024] font-yekanDemiBold text-sm sm:text-base">
+              <img
+                src="/phone.svg"
+                alt="phone"
+                className="w-[20px] h-[20px] object-contain"
+              />
+              شماره همراه
+            </label>
 
             <input
               type="text"
               placeholder="شماره همراه خود را وارد کنید"
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
-              className="flex-grow w-[377px] h-[48px] bg-[#E8E8EC] rounded-[20px] text-right px-2 placeholder:text-[#80838D] outline-none font-yekanDemiBold"
+              className="w-full h-[48px] bg-[#E8E8EC] rounded-[16px] px-3 text-right placeholder:text-[#80838D] outline-none font-yekanDemiBold"
             />
 
-            <div className="w-[136px] h-[20px] flex flex-row gap-[8px]">
-              <div className="w-[20px] h-[20px]">
-                <img
-                  src="/info.svg"
-                  className="w-full h-full object-contain"
-                  alt="info icon"
-                />
-              </div>
-              <div className="w-[108px] h-[18px] text-[14px] text-[#80838D] font-yekanDemiBold">
-                مثال: 09120000000
-              </div>
+            <div className="flex items-center gap-2 text-[#80838D] font-yekanDemiBold text-sm mt-1">
+              <img
+                src="/info.svg"
+                alt="info"
+                className="w-[18px] h-[18px] object-contain"
+              />
+              مثال: 09120000000
             </div>
           </div>
         </div>
 
-        <div className="w-[377px] h-[92px] flex flex-col gap-[24px] mt-[24px] justify-center items-center">
+        {/* دکمه ارسال */}
+        <div className="w-full flex flex-col gap-6 mt-8 items-center">
           <button
             onClick={handleSubmit}
             disabled={loading}
-            className="w-[377px] h-[48px] rounded-[16px] bg-gradient-to-r from-[#008BDF] to-[#006FB4] text-[14px] text-[#FCFCFD] font-yekanRegular disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full h-[48px] rounded-[16px] bg-gradient-to-r from-[#008BDF] to-[#006FB4] text-white text-[14px] font-yekanRegular transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-90"
           >
             {loading ? "در حال ارسال..." : "ارسال کد تایید"}
           </button>
 
-          <Link href={"/"}>
-            <div className="w-[160px] h-[20px] flex flex-row gap-[4px] cursor-pointer">
-              <div className="w-[136px] h-[18px] text-[14px] text-[#006FB4] font-yekanDemiBold">
-                بازگشت به صفحه اصلی
-              </div>
-              <div className="w-[20px] h-[20px]">
-                <img
-                  src="/Arrow-leftB.svg"
-                  alt="Arrow Icon"
-                  className="w-full h-full object-contain"
-                />
-              </div>
-            </div>
+          {/* بازگشت */}
+          <Link href="/" className="flex items-center gap-2 text-[#006FB4]">
+            <span className="text-sm sm:text-base font-yekanDemiBold">
+              بازگشت به صفحه اصلی
+            </span>
+            <img
+              src="/Arrow-leftB.svg"
+              alt="arrow"
+              className="w-[20px] h-[20px] object-contain"
+            />
           </Link>
         </div>
       </div>
