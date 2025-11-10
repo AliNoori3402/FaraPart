@@ -15,7 +15,7 @@ export async function GET(req: Request) {
     }
 
     const response = await axios.get(
-      `https://www.django.farapartmotor.com/api/products/carlog-cars/?brand=${encodeURIComponent(
+      `https://www.django.farapartco.com/api/products/carlog-cars/?brand=${encodeURIComponent(
         brand
       )}`
     );

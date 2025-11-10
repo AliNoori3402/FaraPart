@@ -4,7 +4,7 @@ import axios from "axios";
 export async function GET() {
   try {
     const res = await axios.get(
-      "https://www.django.farapartmotor.com/api/blog/posts/",
+      "https://www.django.farapartco.com/api/blog/posts/",
       {
         headers: {
           "Content-Type": "application/json",

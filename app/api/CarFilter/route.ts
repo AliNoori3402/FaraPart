@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const response = await axios.get(
-      "https://www.django.farapartmotor.com/products/filter-parts/",
+      "https://www.django.farapartco.com/products/filter-parts/",
       {
         params: {
           car_id: carId,

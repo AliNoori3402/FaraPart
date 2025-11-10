@@ -12,7 +12,7 @@ export async function GET(request: NextRequest, context: any) {
 
   try {
     const res = await fetch(
-      `https://www.django.farapartmotor.com/api/products/part/${id}/`,
+      `https://www.django.farapartco.com/api/products/part/${id}/`,
       {
         cache: "no-store",
       }

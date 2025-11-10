@@ -5,7 +5,7 @@ export async function GET(request: NextRequest) {
   try {
     console.log(request);
     const res = await axios.get(
-      "https://www.django.farapartmotor.com/api/products/list-brands/"
+      "https://www.django.farapartco.com/api/products/list-brands/"
     );
     return new Response(JSON.stringify(res.data), {
       status: 200,

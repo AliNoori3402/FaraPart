@@ -17,7 +17,7 @@ export async function GET(request: Request) {
     if (!params.pagesize) params.pagesize = "12";
 
     const response = await axios.get(
-      "https://www.django.farapartmotor.com/api/products/filter-parts/",
+      "https://www.django.farapartco.com/api/products/filter-parts/",
       { params }
     );
 

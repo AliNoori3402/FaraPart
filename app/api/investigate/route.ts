@@ -5,7 +5,7 @@ import axios from "axios";
 export async function GET() {
   try {
     const response = await axios.get(
-      "https://www.django.farapartmotor.com/api/products/carlog-brands/"
+      "https://www.django.farapartco.com/api/products/carlog-brands/"
     );
 
     return NextResponse.json(response.data, { status: 200 });

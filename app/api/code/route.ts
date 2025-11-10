@@ -6,7 +6,7 @@ export async function POST(req: NextRequest) {
     const { codes } = body;
 
     const res = await fetch(
-      "https://www.django.farapartmotor.com/api/products/search-by-codes/",
+      "https://www.django.farapartco.com/api/products/search-by-codes/",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
