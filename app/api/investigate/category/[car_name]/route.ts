@@ -8,7 +8,7 @@ export async function GET(req: NextRequest, context: any) {
 
     // بعد encode تا برای API امن بشه
     const response = await fetch(
-      `https://www.django.farapartmotor.com/api/products/section-list-cars/?car_name=${encodeURIComponent(
+      `https://www.django.farapartco.com/api/products/section-list-cars/?car_name=${encodeURIComponent(
         car_name
       )}`
     );

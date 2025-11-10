@@ -4,7 +4,7 @@ import axios from "axios";
 export async function GET() {
   try {
     const res = await axios.get(
-      "https://www.django.farapartmotor.com/api/admin/list-special-offer-box/"
+      "https://www.django.farapartco.com/api/admin/list-special-offer-box/"
     );
     const offers = res.data || [];
 

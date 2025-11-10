@@ -18,7 +18,7 @@ export async function DELETE(req: NextRequest, context: any) {
       );
     }
 
-    const url = `https://www.django.farapartmotor.com/cart/delete/${id}/`;
+    const url = `https://www.django.farapartco.com/cart/delete/${id}/`;
 
     const response = await axios.delete(url, {
       headers: {
