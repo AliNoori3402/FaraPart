@@ -1,8 +1,9 @@
+// app/api/part-by-section/route.ts
 import { NextResponse } from "next/server";
+import axios from "axios";
 
 export async function POST(req: Request) {
   try {
-    // دریافت داده از درخواست فرانت‌اند
     const body = await req.json();
 
     // بررسی مقدار sections
@@ -13,38 +14,47 @@ export async function POST(req: Request) {
       );
     }
 
-    // ارسال درخواست به سرور Django
-    const res = await fetch(
-      "https://django.farapartmotor.com/api/products/parts-by-section/",
+    // ارسال درخواست به Django با Axios
+    const response = await axios.post(
+      "https://django.farapartco.com/api/products/parts-by-section/",
       {
-        method: "POST",
+        sections: body.sections.map((s: string) => s.trim()),
+      },
+      {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
         },
-        body: JSON.stringify({
-          sections: body.sections.map((s: string) => s.trim()),
-        }),
-        cache: "no-store",
       }
     );
 
-    // اگر پاسخ سرور خطا داد
-    if (!res.ok) {
-      const text = await res.text();
-      return NextResponse.json(
-        { error: `خطا از سرور Django: ${res.status}`, details: text },
-        { status: res.status }
-      );
-    }
+    const data = response.data;
 
-    // پاسخ موفقیت‌آمیز
-    const data = await res.json();
-    return NextResponse.json(data);
-  } catch (error: any) {
-    console.error("خطا در route parts-by-section:", error);
+    // normalize خروجی: اطمینان از اینکه همه مقادیر آرایه هستند
+    const normalized: Record<string, string[]> = {};
+    Object.entries(data).forEach(([key, value]) => {
+      if (Array.isArray(value)) {
+        normalized[key] = value;
+      } else if (typeof value === "string") {
+        normalized[key] = [value];
+      } else if (value == null) {
+        normalized[key] = [];
+      } else {
+        normalized[key] = [String(value)];
+      }
+    });
+
+    return NextResponse.json(normalized);
+  } catch (err: any) {
+    console.error(
+      "خطا در route parts-by-section:",
+      err.response?.data || err.message
+    );
     return NextResponse.json(
-      { error: "مشکلی در پردازش درخواست پیش آمد." },
+      {
+        error: "خطا از سرور Django",
+        details: err.response?.data || err.message,
+      },
       { status: 500 }
     );
   }

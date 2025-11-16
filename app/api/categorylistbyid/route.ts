@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
     } else {
       // اگر parent_id ارسال شده بود، فقط بچه‌های آن دسته بندی را بده
       const res = await axios.post(
-        "https://www.django.farapartco.com/api/products/categories/",
+        "https://django.farapartco.com/api/products/categories/",
         {
           c_id: parentId,
         }

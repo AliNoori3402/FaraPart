@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
 
     // درخواست به API خارجی
     const response = await fetch(
-      "https://www.django.farapartco.com/api/products/list-car-products/",
+      "https:/django.farapartco.com/api/products/list-car-products/",
       {
         method: "POST",
         headers: {

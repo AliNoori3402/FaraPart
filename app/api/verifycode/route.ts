@@ -7,7 +7,7 @@ export async function POST(request: Request) {
     const { phone_number, code } = body;
 
     const response = await axios.post(
-      "https://www.django.farapartco.com/api/users/verify-otp/",
+      "https://django.farapartco.com/api/users/verify-otp/",
       { phone_number, code }
     );
 

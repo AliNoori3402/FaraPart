@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
     }
 
     // External API URL
-    const apiUrl = "https://www.django.farapartco.com/api/cart/add/";
+    const apiUrl = "https://django.farapartco.com/api/cart/add/";
 
     // Forward the request to the external API using Axios
     const response = await axios.post(apiUrl, body, {

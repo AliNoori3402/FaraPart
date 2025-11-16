@@ -12,7 +12,7 @@ export async function POST(req: Request) {
 
     // درخواست به سرور Django
     const res = await fetch(
-      "https://django.farapartmotor.com/api/products/inventory/",
+      "https://django.farapartco.com/api/products/inventory/",
       {
         method: "POST",
         headers: {

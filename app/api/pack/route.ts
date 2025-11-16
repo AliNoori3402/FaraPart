@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 export async function GET() {
   try {
     const response = await axios.get(
-      "https://django.farapartmotor.com/api/admin/discount-pack/"
+      "https://www.django.farapartco.com/api/admin/discount-pack/"
     );
 
     // اگه سرور درست جواب بده، داده‌ها برگردونده می‌شن

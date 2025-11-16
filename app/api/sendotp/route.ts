@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     }
 
     const response = await axios.post(
-      "https://www.django.farapartco.com/api/users/send-otp/",
+      "https://django.farapartco.com/api/users/send-otp/",
       {
         phone_number,
       }

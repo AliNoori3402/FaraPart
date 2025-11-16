@@ -5,7 +5,7 @@ export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
 
   // ساخت URL نهایی برای API Django
-  const url = `https://django.farapartmotor.com/api/products/carlog-pics/?${searchParams.toString()}`;
+  const url = `https://www.django.farapartco.com/api/products/carlog-pics/?${searchParams.toString()}`;
 
   try {
     // درخواست به API اصلی

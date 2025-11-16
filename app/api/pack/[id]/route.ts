@@ -13,7 +13,7 @@ export async function GET(req: Request, { params }: Params) {
 
   try {
     const res = await fetch(
-      `https://django.farapartmotor.com/api/admin/discount-pack/${id}/`,
+      `https://www.django.farapartco.com/api/admin/discount-pack/${id}/`,
       {
         method: "GET",
         headers: {

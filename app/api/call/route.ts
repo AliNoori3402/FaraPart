@@ -16,7 +16,7 @@ export async function POST(req: Request) {
 
     // ارسال به سرور Django
     const res = await fetch(
-      "https://django.farapartmotor.com/api/admin/call/create/",
+      "https://django.farapartco.com/api/admin/call/create/",
       {
         method: "POST",
         headers: {
