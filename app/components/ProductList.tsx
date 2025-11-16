@@ -65,7 +65,7 @@ export default function ProductList({
               <div className="flex flex-col gap-2">
                 <div className="flex flex-row gap-2 items-center">
                   <div className="text-[18px] sm:text-[20px] text-[#004D7A] font-yekanDemiBold leading-[26px]">
-                    {product.price}
+                    {product.price.toLocaleString("fa-IR")}
                   </div>
                   <div className="text-[12px] text-[#004D7A] font-yekanDemiBold leading-[16px]">
                     تومان
