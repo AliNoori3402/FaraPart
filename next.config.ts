@@ -31,6 +31,11 @@ const nextConfig = {
         hostname: "media.isaco.ir", // در صورت داشتن دامنه دیگر
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "trustseal.enamad.ir",
+        pathname: "/**",
+      },
     ],
     // ✅ در صورت نیاز می‌تونی سایزهای پیش‌فرض رو محدود یا افزایش بدی
     deviceSizes: [360, 640, 768, 1024, 1280, 1536],

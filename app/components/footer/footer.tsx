@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import Enamad from "../Enamad";
 
 export default function Footer() {
   const socialLinks = [
@@ -119,9 +120,7 @@ export default function Footer() {
                 ))}
               </div>
             </div>
-            <Link href={"/"}>
-              <div className="w-[158px] h-[108px] bg-[#D9D9D9]" />
-            </Link>
+            <Enamad />
           </div>
         </div>
       </div>
