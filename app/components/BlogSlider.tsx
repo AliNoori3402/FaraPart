@@ -4,6 +4,7 @@ import { useRef, useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 interface BlogPost {
   id: number;
@@ -53,10 +54,19 @@ export default function NewsSlider() {
       </div>
 
       {/* اسلایدر */}
-      <div
+      <motion.div
         ref={sliderRef}
-        className="flex gap-[28px] md:h-[421px] px-0 lg:px-10 sm:h-[834px] h-[421px] overflow-x-hidden scroll-smooth no-scrollbar  items-start justify-start"
+        className="flex gap-[28px] md:h-[421px] px-0 lg:px-10 sm:h-[834px] h-[421px] 
+             overflow-x-hidden scroll-smooth no-scrollbar items-start justify-start"
         style={{ scrollSnapType: "x mandatory" }}
+        drag="x"
+        dragConstraints={{ left: 0, right: 0 }}
+        dragElastic={0.15}
+        onDrag={(e, info) => {
+          if (sliderRef.current) {
+            sliderRef.current.scrollLeft -= info.delta.x;
+          }
+        }}
       >
         {loading ? (
           // اسکلتون
@@ -140,7 +150,7 @@ export default function NewsSlider() {
             </div>
           ))
         )}
-      </div>
+      </motion.div>
 
       {/* دکمه‌ها فقط وقتی پست وجود دارد */}
       {!loading && posts.length > 0 && (

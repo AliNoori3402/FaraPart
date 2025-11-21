@@ -69,6 +69,14 @@ export default function ProductSlider({ onCategoryClick }: ProductSliderProps) {
       <motion.div
         ref={containerRef}
         className="w-full flex gap-4 justify-center items-center overflow-x-hidden overflow-y-hidden scroll-smooth hide-scrollbar"
+        drag="x"
+        dragConstraints={{ left: 0, right: 0 }}
+        dragElastic={0.2}
+        onDrag={(e, info) => {
+          if (containerRef.current) {
+            containerRef.current.scrollLeft -= info.delta.x; // حرکت طبیعی اسکرول
+          }
+        }}
       >
         {categories.map((category) => (
           <motion.div
