@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import "../font.css";
+import { BiSearch } from "react-icons/bi";
 
 export default function Header() {
   const [brands, setBrands] = useState<any[]>([]);
@@ -248,18 +249,7 @@ export default function Header() {
             onClick={handleSearch}
             className="p-1 flex items-center justify-center text-gray-500 hover:text-gray-700"
           >
-            <svg
-              width="20"
-              height="20"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <circle cx="9" cy="9" r="7" />
-              <line x1="16" y1="16" x2="12" y2="12" />
-            </svg>
+            <BiSearch className="w-6 h-6" />
           </button>
         </div>
 

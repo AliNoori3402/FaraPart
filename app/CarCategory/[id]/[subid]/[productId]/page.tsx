@@ -8,6 +8,7 @@ import Image from "next/image";
 import { toast } from "sonner";
 import ProductImages from "../../../../components/DeatilPartImage";
 import TextDetails from "../../../../components/TextDetails";
+import Link from "next/link";
 
 type ProductDetail = {
   id: number;
@@ -112,17 +113,13 @@ const ProductDetailPage: React.FC = () => {
       <div className="w-full flex flex-col gap-[48px] items-center">
         {/* مسیر دسته‌بندی */}
         <div className="w-full max-w-[454px] flex flex-wrap gap-[4px] justify-center sm:justify-center md:justify-start">
-          <div className="text-[14px] text-[#1C2024] font-yekanDemiBold">
-            لوازم یدکی
-          </div>
-          <Image width={16} height={16} src="/Arrow-leftG.svg" alt="arrow" />
-          <div className="text-[14px] text-[#1C2024] font-yekanDemiBold">
-            {product.category.name}
-          </div>
-          <Image width={16} height={16} src="/Arrow-leftG.svg" alt="arrow" />
-          <div className="text-[14px] text-[#1C2024] font-yekanDemiBold">
-            {product.car_names.join(", ")}
-          </div>
+          <Link href={"/product"}>
+            {" "}
+            <div className="text-[14px] text-[#1C2024] font-yekanDemiBold">
+              {product.category.name}
+            </div>
+          </Link>
+
           <Image width={16} height={16} src="/Arrow-leftG.svg" alt="arrow" />
           <div className="text-[14px] text-[#1C2024] font-yekanDemiBold">
             {product.name}
@@ -180,22 +177,24 @@ const ProductDetailPage: React.FC = () => {
                     : "ندارد"}
                 </div>
               </div>
-              <div className="flex-1 flex flex-col gap-[16px] justify-center p-4">
-                <div className="text-[#8B8D98] text-[14px] font-yekanRegular">
-                  گارانتی
-                </div>
-                <div className="text-[#1C2024] text-[14px] font-yekanDemiBold">
-                  {product.has_warranty
-                    ? product.warranty_name || "دارد"
-                    : "ندارد"}
-                </div>
-              </div>
+
               <div className="flex-1 flex flex-col gap-[16px] justify-center p-4">
                 <div className="text-[#8B8D98] text-[14px] font-yekanRegular">
                   دسته بندی
                 </div>
-                <div className="text-[#1C2024] text-[14px] font-yekanDemiBold">
+                <h2 className="text-[#1C2024] text-[14px] font-yekanDemiBold">
                   {product.category.name}
+                </h2>
+              </div>
+              <div className="flex-1 flex flex-col gap-[16px] justify-center p-4">
+                <div className="text-[#8B8D98] text-[14px] font-yekanRegular">
+                  خودروهای سازگار
+                </div>
+                <div
+                  className="text-[#1C2024] truncate
+                 text-[14px] font-yekanDemiBold"
+                >
+                  {product.car_names.join(", ")}
                 </div>
               </div>
             </div>

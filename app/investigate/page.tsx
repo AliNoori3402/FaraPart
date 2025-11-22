@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import CarBrandSlider from "../components/BrandSlider";
 import InvestigateCar from "../components/InvestigateCar";
 import Image from "next/image";
+import Link from "next/link";
 
 function Page() {
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
@@ -13,9 +14,12 @@ function Page() {
       <div className="w-full max-w-[1280px] flex flex-col justify-center items-center gap-[40px] mx-auto">
         {/* عنوان مسیر */}
         <div className="w-full flex flex-wrap gap-[4px] justify-center items-center">
-          <div className="text-[14px] text-[#1C2024] font-yekanDemiBold">
-            بررسی تخصصی
-          </div>
+          <Link href={"/investigate"}>
+            {" "}
+            <div className="text-[14px] text-[#1C2024] font-yekanDemiBold">
+              بررسی تخصصی
+            </div>
+          </Link>
           {selectedBrand && (
             <>
               <div className="w-[16px] h-[16px]">
