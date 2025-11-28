@@ -62,7 +62,7 @@ function Page() {
   }, [carId, currentPage, filtersActive]);
 
   return (
-    <div className="w-full   px-4 md:px-8 lg:px-0 max-w-[1440px] mx-auto">
+    <div className="w-full   px-4 md:px-8 lg:px-0 container mx-auto">
       <div className="w-full flex flex-col justify-center items-center gap-6 md:gap-[58px] pt-8 pb-20 ">
         <div className="w-full flex flex-col items-center gap-10">
           <div className="text-[16px] text-[#8B8D98] font-yekanBold">

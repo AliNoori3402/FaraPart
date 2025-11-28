@@ -109,7 +109,7 @@ const ProductDetailPage: React.FC = () => {
   if (!product) return <div>محصول یافت نشد</div>;
 
   return (
-    <div className="w-full max-w-[1440px] flex flex-col gap-[64px] mx-auto px-4 md:px-[10px]">
+    <div className="w-full container flex flex-col gap-[64px] mx-auto px-4 md:px-[10px]">
       <div className="w-full flex flex-col gap-[48px] items-center">
         {/* مسیر دسته‌بندی */}
         <div className="w-full max-w-[454px] flex flex-wrap gap-[4px] justify-center sm:justify-center md:justify-start">

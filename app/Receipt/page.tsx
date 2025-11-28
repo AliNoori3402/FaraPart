@@ -3,7 +3,7 @@ import React from "react";
 
 function page() {
   return (
-    <div className="w-[1300px] mx-auto ">
+    <div className="container mx-auto ">
       <div className="w-[508px] flex flex-col gap-[42px] justify-center items-center  mx-auto">
         <div className="w-[200px] flex flex-col gap-[20px]">
           <div className="w-[200px] h-[26px] text-[20px] text-[#008BDF] font-yekanBold">

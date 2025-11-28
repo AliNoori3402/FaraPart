@@ -9,7 +9,7 @@ import DiscountPackSlider from "./components/packSlider";
 
 export default function Home() {
   return (
-    <div className="w-full  flex flex-col gap-[96px] px-4 sm:px-6 lg:px-0 max-w-[1440px] mx-auto">
+    <div className="w-full  flex flex-col gap-[96px] px-4 sm:px-6 lg:px-0 container` mx-auto">
       {/* 🔹 اسلایدر اصلی */}
       <Slider />
 
@@ -22,9 +22,8 @@ export default function Home() {
       </div>
 
       {/* 🔹 گرید برندها */}
-      <div className="w-full flex justify-center items-center">
-        <BrandGrid />
-      </div>
+
+      <BrandGrid />
 
       {/* 🔹 باکس بررسی تخصصی قطعات */}
       <div className="relative w-full flex justify-center items-center">
@@ -81,7 +80,7 @@ export default function Home() {
       </div>
 
       {/* 🔹 اسلایدر اخبار و مقالات */}
-      <div className="w-full">
+      <div className="w-full container mx-auto">
         <NewsSlider />
       </div>
     </div>

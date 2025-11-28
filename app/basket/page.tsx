@@ -96,7 +96,7 @@ function Page() {
 
   return (
     <div className="w-full flex justify-center px-4 py-8">
-      <div className="w-full max-w-[1440px] flex flex-col lg:flex-row gap-10 lg:gap-[87px]">
+      <div className="w-full container mx-auto flex flex-col lg:flex-row gap-10 lg:gap-[87px]">
         {/* سبد خرید */}
         <div className="w-full max-w-[1000px] flex flex-col gap-6">
           <div className="text-[14px] text-[#8B8D98] font-yekanDemiBold">

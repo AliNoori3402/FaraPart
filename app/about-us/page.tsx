@@ -2,7 +2,7 @@ import React from "react";
 
 function page() {
   return (
-    <div className="w-full  max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-12 py-16 flex flex-col gap-12">
+    <div className="w-full  container mx-auto px-4 sm:px-6 lg:px-12 py-16 flex flex-col gap-12">
       {/* عنوان صفحه */}
       <div className="text-center">
         <h1 className="text-[36px] sm:text-[48px] font-yekanBold text-[#1C2024]">

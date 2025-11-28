@@ -68,7 +68,7 @@ export default function PackPage() {
   const allImages = pack.parts.flatMap((p) => p.image_urls || []);
 
   return (
-    <div className="w-full min-h-screen bg-[#F7F8FA] py-10 px-4 md:px-8">
+    <div className="w-full container mx-auto min-h-screen bg-[#F7F8FA] py-10 px-4 md:px-8">
       {/* مسیر نان‌بری */}
       <div className="w-full max-w-6xl mx-auto flex items-center gap-2 text-[#444] mb-6">
         <span className="font-yekanDemiBold text-[14px]">لوازم یدکی</span>

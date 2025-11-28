@@ -24,7 +24,7 @@ export default function Footer() {
   ];
 
   return (
-    <div className="bg-[#005E95] rounded-0 sm:rounded-[32px] px-4 py-10 sm:px-6 lg:px-12 max-w-[1280px] mx-auto">
+    <div className="bg-[#005E95] rounded-0 sm:rounded-[32px] px-4 py-10 sm:px-6 lg:px-12 container mx-auto">
       <div className="flex flex-col-reverse lg:flex-row lg:justify-between gap-12">
         {/* توضیحات برند */}
         <div className="flex flex-col gap-8 max-w-[376px] mx-auto lg:mx-0">

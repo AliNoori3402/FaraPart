@@ -4,29 +4,61 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 
-const slides = [
-  { src: "/banner/banner4.jpeg", alt: "اسلاید 1" },
-  { src: "/banner/banner3.jpeg", alt: "اسلاید 2" },
-  { src: "/banner/banner2.jpeg", alt: "اسلاید 3" },
-  { src: "/banner/banner.jpeg", alt: "اسلاید 4" },
+// عکس‌های جدا برای موبایل، تبلت و دسکتاپ
+const slidesMobile = [
+  { src: "/banner/mobile/mobile-banner1.jpg", alt: "موبایل 1" },
+  { src: "/banner/mobile/mobile-banner2.jpg", alt: "موبایل 2" },
+  { src: "/banner/mobile/mobile-banner-3.jpg", alt: "موبایل 3" },
+  { src: "/banner/mobile/mobile-banner4.jpg", alt: "موبایل 4" },
+];
+
+const slidesTablet = [
+  { src: "/banner/tablet/tablet-banner1.jpg", alt: "تبلت 1" },
+  { src: "/banner/tablet/tablet-banner2.jpg", alt: "تبلت 2" },
+  { src: "/banner/tablet/tablet-banner3.jpg", alt: "تبلت 3" },
+  { src: "/banner/tablet/tablet-banner4.jpg", alt: "تبلت 4" },
+];
+
+const slidesDesktop = [
+  { src: "/banner/banner4.jpeg", alt: "دسکتاپ 1" },
+  { src: "/banner/banner3.jpeg", alt: "دسکتاپ 2" },
+  { src: "/banner/banner2.jpeg", alt: "دسکتاپ 3" },
+  { src: "/banner/banner.jpeg", alt: "دسکتاپ 4" },
 ];
 
 export default function Slider() {
   const [current, setCurrent] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [slides, setSlides] = useState(slidesDesktop);
   const autoplayRef = useRef(null);
+
+  // انتخاب عکس‌ها بر اساس اندازه صفحه
+  useEffect(() => {
+    const updateSlides = () => {
+      const width = window.innerWidth;
+
+      if (width < 640) {
+        setSlides(slidesMobile);
+      } else if (width < 1024) {
+        setSlides(slidesTablet);
+      } else {
+        setSlides(slidesDesktop);
+      }
+      setCurrent(0);
+    };
+
+    updateSlides();
+    window.addEventListener("resize", updateSlides);
+    return () => window.removeEventListener("resize", updateSlides);
+  }, []);
 
   const slidesCount = slides.length;
 
-  const prevSlide = () => {
+  const prevSlide = () =>
     setCurrent((prev) => (prev === 0 ? slidesCount - 1 : prev - 1));
-  };
+  const nextSlide = () => setCurrent((prev) => (prev + 1) % slidesCount);
 
-  const nextSlide = () => {
-    setCurrent((prev) => (prev + 1) % slidesCount);
-  };
-
-  // Auto-play every 5s, but respects isPaused
+  // Auto-play
   useEffect(() => {
     if (autoplayRef.current) clearInterval(autoplayRef.current);
     if (!isPaused) {
@@ -34,31 +66,16 @@ export default function Slider() {
         setCurrent((prev) => (prev + 1) % slidesCount);
       }, 5000);
     }
-    return () => {
-      if (autoplayRef.current) clearInterval(autoplayRef.current);
-    };
+    return () => autoplayRef.current && clearInterval(autoplayRef.current);
   }, [isPaused, slidesCount]);
 
-  // Drag end handler: uses both offset and velocity for reliability
   const handleDragEnd = (event, info) => {
     const offsetX = info.offset.x;
     const velocityX = info.velocity.x;
-    const SWIPE_OFFSET_THRESHOLD = 80; // پیکسل
-    const SWIPE_VELOCITY_THRESHOLD = 800; // سرعت
 
-    // اگر کشیده به چپ (یعنی offset منفی) و کافی بزرگ یا سریع بود → بعدی
-    if (
-      offsetX < -SWIPE_OFFSET_THRESHOLD ||
-      velocityX < -SWIPE_VELOCITY_THRESHOLD
-    ) {
-      nextSlide();
-    } else if (
-      offsetX > SWIPE_OFFSET_THRESHOLD ||
-      velocityX > SWIPE_VELOCITY_THRESHOLD
-    ) {
-      prevSlide();
-    }
-    // بعد از اتمام درگ، autoplay را فعال می‌کنیم
+    if (offsetX < -80 || velocityX < -800) nextSlide();
+    else if (offsetX > 80 || velocityX > 800) prevSlide();
+
     setIsPaused(false);
   };
 
@@ -68,7 +85,6 @@ export default function Slider() {
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      {/* Wrapper که خودِ wrapper درگ می‌پذیرد و key ندارد (تا remount نشود) */}
       <motion.div
         className="absolute inset-0"
         drag="x"
@@ -78,7 +94,6 @@ export default function Slider() {
         onDragEnd={handleDragEnd}
         whileTap={{ cursor: "grabbing" }}
       >
-        {/* این قسمت فقط برای انیمیت fade هنگام تغییر اسلاید است */}
         <AnimatePresence mode="wait">
           <motion.div
             key={current}
@@ -100,9 +115,8 @@ export default function Slider() {
         </AnimatePresence>
       </motion.div>
 
-      {/* Controls (dots) */}
-      <div className="absolute bottom-6 left-0 right-0 flex flex-col sm:flex-row items-center justify-between px-6 pointer-events-none">
-        <ul className="flex gap-2 items-center mt-4 sm:mt-0 pointer-events-auto">
+      <div className="absolute bottom-6 left-0 right-0 flex items-center justify-center px-6 pointer-events-none">
+        <ul className="flex gap-2 items-center pointer-events-auto">
           {slides.map((_, index) => (
             <button
               key={index}
@@ -112,7 +126,6 @@ export default function Slider() {
                   ? "w-[32px] h-[8px] bg-white"
                   : "w-[8px] h-[8px] bg-white/60"
               }`}
-              aria-label={`اسلاید ${index + 1}`}
             />
           ))}
         </ul>

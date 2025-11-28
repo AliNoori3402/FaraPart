@@ -65,7 +65,7 @@ export default function ProductSlider({ onCategoryClick }: ProductSliderProps) {
   const defaultImage = "/lent.svg";
 
   return (
-    <div className="relative flex flex-col items-center px-4 gap-4 w-full">
+    <div className="relative container flex flex-col items-center px-4 gap-4 w-full">
       <motion.div
         ref={containerRef}
         className="w-full flex gap-4 justify-center items-center overflow-x-hidden overflow-y-hidden scroll-smooth hide-scrollbar"

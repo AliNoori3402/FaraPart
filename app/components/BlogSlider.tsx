@@ -4,7 +4,6 @@ import { useRef, useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
 
 interface BlogPost {
   id: number;
@@ -32,6 +31,45 @@ export default function NewsSlider() {
     sliderRef.current?.scrollBy({ left: scrollAmount, behavior: "smooth" });
   };
 
+  /* ---------------------- درگ لمسی دست‌ساز ---------------------- */
+  useEffect(() => {
+    const slider = sliderRef.current;
+    if (!slider) return;
+
+    let startX = 0;
+    let scrollLeftStart = 0;
+    let isDown = false;
+
+    const touchStart = (e: TouchEvent) => {
+      isDown = true;
+      startX = e.touches[0].pageX;
+      scrollLeftStart = slider.scrollLeft;
+    };
+
+    const touchMove = (e: TouchEvent) => {
+      if (!isDown) return;
+      const x = e.touches[0].pageX;
+      const walk = startX - x; // حرکت دست
+      slider.scrollLeft = scrollLeftStart + walk;
+    };
+
+    const touchEnd = () => {
+      isDown = false;
+    };
+
+    slider.addEventListener("touchstart", touchStart, { passive: true });
+    slider.addEventListener("touchmove", touchMove, { passive: true });
+    slider.addEventListener("touchend", touchEnd);
+
+    return () => {
+      slider.removeEventListener("touchstart", touchStart);
+      slider.removeEventListener("touchmove", touchMove);
+      slider.removeEventListener("touchend", touchEnd);
+    };
+  }, []);
+
+  /* -------------------------------------------------------------- */
+
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -47,29 +85,19 @@ export default function NewsSlider() {
   }, []);
 
   return (
-    <div className="md:w-full  md:h-auto sm:w-[770px] sm:h-[600px] w-[406px] flex flex-col gap-[35px] ">
-      {/* تیتر */}
+    <div className="md:w-full md:h-auto sm:w-[770px] sm:h-[600px] w-[406px] flex flex-col gap-[35px]">
       <div className="text-base lg:text-[20px] text-[#1C2024] font-yekanDemiBold">
         اخبار و مقالات
       </div>
 
       {/* اسلایدر */}
-      <motion.div
+      <div
         ref={sliderRef}
-        className="flex gap-[28px] md:h-[421px] px-0 lg:px-10 sm:h-[834px] h-[421px] 
-             overflow-x-hidden scroll-smooth no-scrollbar items-start justify-start"
+        className="flex gap-[28px] md:h-[421px] px-0 lg:px-10 sm:h-[834px] h-[421px]
+        overflow-x-auto scroll-smooth no-scrollbar items-start"
         style={{ scrollSnapType: "x mandatory" }}
-        drag="x"
-        dragConstraints={{ left: 0, right: 0 }}
-        dragElastic={0.15}
-        onDrag={(e, info) => {
-          if (sliderRef.current) {
-            sliderRef.current.scrollLeft -= info.delta.x;
-          }
-        }}
       >
         {loading ? (
-          // اسکلتون
           Array(3)
             .fill(null)
             .map((_, idx) => (
@@ -87,12 +115,10 @@ export default function NewsSlider() {
               </div>
             ))
         ) : posts.length === 0 ? (
-          // پیام خالی بودن دیتا
           <div className="w-full flex items-center justify-center h-[257px] text-gray-500 text-lg font-yekanDemiBold">
             اخباری برای نمایش وجود ندارد
           </div>
         ) : (
-          // نمایش پست‌ها
           posts.map((post) => (
             <div
               key={post.id}
@@ -104,7 +130,7 @@ export default function NewsSlider() {
                   fill
                   src={
                     post.images_binary[0].content
-                      ? `data:image/png;base64,${post.images_binary[0].content}` // اضافه کردن MIME type
+                      ? `data:image/png;base64,${post.images_binary[0].content}`
                       : "/car-logo.svg"
                   }
                   alt={post.title}
@@ -141,7 +167,7 @@ export default function NewsSlider() {
                         height={18}
                         src="/Arrow-leftB.svg"
                         alt="arrow"
-                        className="w-[18px] h-[18px] object-contain"
+                        className="w-[18px] h-[18px]"
                       />
                     </div>
                   </Link>
@@ -150,9 +176,8 @@ export default function NewsSlider() {
             </div>
           ))
         )}
-      </motion.div>
+      </div>
 
-      {/* دکمه‌ها فقط وقتی پست وجود دارد */}
       {!loading && posts.length > 0 && (
         <div className="w-[245px] h-[48px] mb-4 flex gap-[14px] mx-auto">
           <button
@@ -162,11 +187,11 @@ export default function NewsSlider() {
             <Image
               src="/Arrow-rightB.svg"
               alt="Arrow Left"
-              className="w-[24px] h-[24px]"
               width={24}
               height={24}
             />
           </button>
+
           <button
             onClick={scrollLeft}
             className="w-[48px] h-[48px] rounded-[24px] bg-[#004D7A] flex justify-center items-center"
@@ -174,7 +199,6 @@ export default function NewsSlider() {
             <Image
               src="/Arrow-leftW.svg"
               alt="Arrow Right"
-              className="w-[24px] h-[24px]"
               width={24}
               height={24}
             />
