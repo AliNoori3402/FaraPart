@@ -114,7 +114,7 @@ export default function Slider() {
 
   return (
     <div
-      className="w-full h-[440px] sm:h-[440px] md:h-[440px] container mx-auto rounded-[32px] overflow-hidden relative"
+      className="w-full h-[380px] sm:h-[440px] md:h-[440px] container mx-auto rounded-[32px] overflow-hidden relative"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
