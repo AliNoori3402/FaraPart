@@ -3,27 +3,60 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 
 // عکس‌های جدا برای موبایل، تبلت و دسکتاپ
 const slidesMobile = [
-  { src: "/banner/mobile/mobile-banner1.jpg", alt: "موبایل 1" },
-  { src: "/banner/mobile/mobile-banner2.jpg", alt: "موبایل 2" },
-  { src: "/banner/mobile/mobile-banner-3.jpg", alt: "موبایل 3" },
-  { src: "/banner/mobile/mobile-banner4.jpg", alt: "موبایل 4" },
+  {
+    src: "/banner/mobile/mobile-banner1.jpg",
+    alt: "موبایل 1",
+    link: "/",
+  },
+  {
+    src: "/banner/mobile/mobile-banner2.jpg",
+    alt: "موبایل 2",
+    link: "/offers",
+  },
+  {
+    src: "/banner/mobile/mobile-banner-3.jpg",
+    alt: "موبایل 3",
+    link: "/blogs",
+  },
+  {
+    src: "/banner/mobile/mobile-banner4.jpg",
+    alt: "موبایل 4",
+    link: "/investigate",
+  },
 ];
 
 const slidesTablet = [
-  { src: "/banner/tablet/tablet-banner1.jpg", alt: "تبلت 1" },
-  { src: "/banner/tablet/tablet-banner2.jpg", alt: "تبلت 2" },
-  { src: "/banner/tablet/tablet-banner3.jpg", alt: "تبلت 3" },
-  { src: "/banner/tablet/tablet-banner4.jpg", alt: "تبلت 4" },
+  {
+    src: "/banner/tablet/tablet-banner1.jpg",
+    alt: "تبلت 1",
+    link: "/",
+  },
+  {
+    src: "/banner/tablet/tablet-banner2.jpg",
+    alt: "تبلت 2",
+    link: "/offers",
+  },
+  {
+    src: "/banner/tablet/tablet-banner3.jpg",
+    alt: "تبلت 3",
+    link: "/blogs",
+  },
+  {
+    src: "/banner/tablet/tablet-banner4.jpg",
+    alt: "تبلت 4",
+    link: "/investigate",
+  },
 ];
 
 const slidesDesktop = [
-  { src: "/banner/banner4.jpeg", alt: "دسکتاپ 1" },
-  { src: "/banner/banner3.jpeg", alt: "دسکتاپ 2" },
-  { src: "/banner/banner2.jpeg", alt: "دسکتاپ 3" },
-  { src: "/banner/banner.jpeg", alt: "دسکتاپ 4" },
+  { src: "/banner/banner4.jpeg", alt: "دسکتاپ 1", link: "/" },
+  { src: "/banner/banner3.jpeg", alt: "دسکتاپ 2", link: "/offers" },
+  { src: "/banner/banner2.jpeg", alt: "دسکتاپ 3", link: "/blogs" },
+  { src: "/banner/banner.jpeg", alt: "دسکتاپ 4", link: "/investigate" },
 ];
 
 export default function Slider() {
@@ -81,7 +114,7 @@ export default function Slider() {
 
   return (
     <div
-      className="w-full h-[529px] sm:h-[440px] md:h-[440px] container mx-auto rounded-[32px] overflow-hidden relative"
+      className="w-full h-[440px] sm:h-[440px] md:h-[440px] container mx-auto rounded-[32px] overflow-hidden relative"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
@@ -103,14 +136,16 @@ export default function Slider() {
             transition={{ duration: 0.45 }}
             className="absolute inset-0"
           >
-            <Image
-              src={slides[current].src}
-              alt={slides[current].alt}
-              fill
-              className="object-cover select-none"
-              priority
-              draggable={false}
-            />
+            <Link href={slides[current].link}>
+              <Image
+                src={slides[current].src}
+                alt={slides[current].alt}
+                fill
+                className="object-cover select-none"
+                priority
+                draggable={false}
+              />
+            </Link>
           </motion.div>
         </AnimatePresence>
       </motion.div>
