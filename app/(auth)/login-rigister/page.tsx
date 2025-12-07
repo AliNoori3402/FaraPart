@@ -44,7 +44,7 @@ function Page() {
         <div className="w-full flex flex-col items-center gap-6">
           <Link href={"/"} className="flex justify-center md:justify-start">
             <div className="relative w-[152px] h-[64px] ">
-              <Image fill src={"/banner/header.svg"} alt="logo" />
+              <Image fill src={"/banner/header-logo.svg"} alt="logo" />
             </div>
           </Link>
           <div className="w-full h-[1px] bg-[#E8E8EC]"></div>

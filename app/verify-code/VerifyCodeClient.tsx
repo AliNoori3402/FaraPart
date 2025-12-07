@@ -92,7 +92,7 @@ function VerifyCodePage() {
         <div className="w-[377px] h-[64px] flex flex-col gap-[24px] items-center">
           <Link href={"/"} className="flex justify-center md:justify-start">
             <div className="relative w-[152px] h-[64px] ">
-              <Image fill src={"/banner/header.svg"} alt="logo" />
+              <Image fill src={"/banner/header-logo.svg"} alt="logo" />
             </div>
           </Link>
           <div className="w-[377px] h-[1px] bg-[#E8E8EC]"></div>

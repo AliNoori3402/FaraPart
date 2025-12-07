@@ -8,6 +8,7 @@ import Link from "next/link";
 import Image from "next/image";
 import "../font.css";
 import { BiSearch } from "react-icons/bi";
+import { LogIn } from "lucide-react";
 
 export default function Header() {
   const [brands, setBrands] = useState<any[]>([]);
@@ -19,8 +20,43 @@ export default function Header() {
   const [isConsumablesOpen, setIsConsumablesOpen] = useState(false);
   const [isSparePartsOpen, setIsSparePartsOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
-
+  const [user, setUser] = useState<any>(null);
+  const [loadingUser, setLoadingUser] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
+  useEffect(() => {
+    const token =
+      typeof window !== "undefined"
+        ? localStorage.getItem("accessToken")
+        : null;
+
+    if (!token) {
+      setLoadingUser(false);
+      return;
+    }
+
+    const getProfile = async () => {
+      try {
+        const token = localStorage.getItem("accessToken");
+
+        const res = await axios.get("/api/profile", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        console.log(res.data);
+        setUser(res.data);
+      } catch (err) {
+        console.error("خطا در گرفتن پروفایل:", err);
+        setUser(null);
+      } finally {
+        setLoadingUser(false);
+      }
+    };
+
+    getProfile();
+  }, []);
 
   useEffect(() => {
     const getBrands = async () => {
@@ -216,7 +252,7 @@ export default function Header() {
         </div>
 
         {/* ===== SEARCH BAR ===== */}
-        <div className="w-[323px] border border-[#E0E1E6] rounded-full h-[42px] px-4 flex justify-center items-center bg-white order-3 sm:order-none ">
+        <div className="w-[323px] border border-[#E0E1E6] rounded-full h-[42px] px-4 hidden lg:flex justify-center items-center bg-white order-3 sm:order-none ">
           <input
             type="text"
             placeholder="جستجو در فراپارت..."
@@ -252,11 +288,32 @@ export default function Header() {
             </div>
           </Link>
 
-          <Link href={"/login-rigister"}>
-            <button className="w-[115px] h-[42px] rounded-[16px] text-[14px] text-white bg-[#004D7A]">
-              ثبت نام / ورود
-            </button>
-          </Link>
+          {/* USER SECTION */}
+          {loadingUser ? (
+            <div className="w-[115px] h-[42px] rounded-[16px] bg-gray-200 animate-pulse" />
+          ) : user ? (
+            <Link href={"/user-panel"}>
+              <button className="w-[135px] h-[42px] rounded-[16px] text-[14px] text-white bg-[#004D7A] flex items-center justify-center gap-2">
+                <svg
+                  width="20"
+                  height="20"
+                  fill="none"
+                  stroke="white"
+                  strokeWidth="2"
+                >
+                  <circle cx="10" cy="6" r="3" />
+                  <path d="M2 18c0-4 3-6 8-6s8 2 8 6" />
+                </svg>
+                {user?.full_name || "پنل کاربری"}
+              </button>
+            </Link>
+          ) : (
+            <Link href={"/login-rigister"}>
+              <button className="w-[115px] h-[42px] rounded-[16px] text-[14px] text-white bg-[#004D7A]">
+                ثبت نام / ورود
+              </button>
+            </Link>
+          )}
         </div>
       </div>
       <div className="flex mt-2 justify-between items-center w-full">
@@ -281,6 +338,48 @@ export default function Header() {
             </svg>
           </button>
         </div>
+        <div className="flex lg:hidden">
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="w-[42px] h-[42px] rounded-full bg-white flex items-center justify-center border border-[#E0E1E6]"
+          >
+            <BiSearch className="w-6 h-6 text-gray-500" />
+          </button>
+
+          {/* MODAL */}
+          {isModalOpen && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+              <div className="bg-white rounded-lg w-11/12 max-w-md p-4 relative">
+                <button
+                  className="absolute top-3 right-3 text-gray-500 text-xl"
+                  onClick={() => setIsModalOpen(false)}
+                >
+                  ✕
+                </button>
+                <div className="flex items-center mt-8 border border-gray-300 rounded-full px-3 py-2">
+                  <input
+                    type="text"
+                    placeholder="جستجو در فراپارت..."
+                    className="flex-grow text-right px-2 placeholder:text-gray-400 outline-none font-yekanDemiBold bg-transparent"
+                    value={searchText}
+                    onChange={(e) => setSearchText(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    autoFocus
+                  />
+                  <button
+                    onClick={() => {
+                      handleSearch();
+                      setIsModalOpen(false);
+                    }}
+                    className="p-1 flex items-center justify-center text-gray-500 hover:text-gray-700"
+                  >
+                    <BiSearch className="w-6 h-6" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
         <div className="flex lg:hidden justify-center items-center gap-3">
           <Link href={"/basket"}>
             <div className="flex items-center gap-2">
@@ -299,11 +398,31 @@ export default function Header() {
             </div>
           </Link>
 
-          <Link href={"/login-rigister"}>
-            <button className="w-[115px] h-[42px] rounded-[16px] text-[14px] text-white bg-[#004D7A]">
-              ثبت نام / ورود
-            </button>
-          </Link>
+          {/* USER SECTION */}
+          {loadingUser ? (
+            <div className="w-[42px] h-[42px] rounded-[16px] bg-gray-200 animate-pulse" />
+          ) : user ? (
+            <Link href={"/user-panel"}>
+              <button className="w-[42px] h-[42px] rounded-[16px] bg-[#004D7A] flex items-center justify-center">
+                <svg
+                  width="20"
+                  height="20"
+                  fill="none"
+                  stroke="white"
+                  strokeWidth="2"
+                >
+                  <circle cx="10" cy="6" r="3" />
+                  <path d="M2 18c0-4 3-6 8-6s8 2 8 6" />
+                </svg>
+              </button>
+            </Link>
+          ) : (
+            <Link href={"/login-rigister"}>
+              <button className="w-[42px] h-[42px] rounded-[16px] bg-[#004D7A] flex items-center justify-center">
+                <LogIn className="text-white" />
+              </button>
+            </Link>
+          )}
         </div>
       </div>
       {/* ===== MOBILE BURGER MENU ===== */}

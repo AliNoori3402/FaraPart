@@ -105,7 +105,7 @@ export default function RegisterPage() {
           } catch (err: any) {
             if (err.response?.status === 401 && refreshToken) {
               const refreshResponse = await axios.post(
-                "http://isaco.liara.run/api/users/token/refresh/",
+                "https://django.farapartco.com/api/users/token/refresh/",
                 { refresh: refreshToken }
               );
 
@@ -152,7 +152,7 @@ export default function RegisterPage() {
         <div className="flex flex-col items-center gap-6 w-full">
           <Link href={"/"} className="flex justify-center md:justify-start">
             <div className="relative w-[152px] h-[64px] ">
-              <Image fill src={"/banner/header.svg"} alt="logo" />
+              <Image fill src={"/banner/header-logo.svg"} alt="logo" />
             </div>
           </Link>
           <div className="w-full h-px bg-[#E8E8EC]" />

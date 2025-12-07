@@ -17,7 +17,7 @@ export default function LayoutWrapper({
     "/verify-code",
   ];
 
-  const headerOnlyRoutes = ["/basket", "/Receipt"]; // ← مسیرهایی که فقط Header دارن
+  const headerOnlyRoutes = ["/basket", "/Receipt", "/user-panel"]; // ← مسیرهایی که فقط Header دارن
 
   const showNothing = noHeaderFooterRoutes.some((route) =>
     pathname.startsWith(route)
