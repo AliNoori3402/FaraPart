@@ -8,13 +8,13 @@ export const metadata: Metadata = {
   description:
     "فراپارت؛ مرجع تخصصی خرید آنلاین لوازم یدکی خودرو با ضمانت اصل بودن کالا و ارسال سریع. قطعات موتور، بدنه، جلوبندی، فیلترها، روغن و انواع برندهای معتبر.",
   icons: {
-    icon: "/banner/header-logo.svg", // مسیر لوگو
+    icon: "/banner/222-01.svg", // مسیر لوگو
   },
   openGraph: {
     title: "فراپارت | فروشگاه آنلاین لوازم یدکی خودرو",
     description:
       "خرید مطمئن لوازم یدکی خودرو با ضمانت اصالت و ارسال سریع از فروشگاه فراپارت.",
-    images: ["/banner/header-logo.svg"], // بهتره یه og-image جدا هم بزاری
+    images: ["/banner/222-01.svg"], // بهتره یه og-image جدا هم بزاری
     url: "https://farapartco.com", // اگر دامنه داری وارد کن
     siteName: "فراپارت",
     locale: "fa_IR",
