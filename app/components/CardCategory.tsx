@@ -18,8 +18,7 @@ const BrandCards: React.FC = () => {
     axios
       .get("/api/brand")
 
-      .then((res) => setBrands(res.data))
-      .catch((err) => console.error("خطا در گرفتن برندها:", err));
+      .then((res) => setBrands(res.data));
   }, []);
 
   return (

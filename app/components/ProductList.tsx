@@ -1,12 +1,13 @@
 "use client";
-import React from "react";
+
+import React, { useEffect, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
 
 type Product = {
   id: number;
-  name: string; // بجای title
-  price: number; // بجای string
+  name: string;
+  price: number;
   image_urls: string[];
 };
 
@@ -28,18 +29,33 @@ export default function ProductList({
   const router = useRouter();
   const { id, subid } = useParams() as { id: string; subid: string };
 
+  const listTopRef = useRef<HTMLDivElement | null>(null);
+
   const totalPages = Math.ceil(totalCount / PAGE_SIZE);
-  console.log(products);
+
   const changePage = (newPage: number) => {
     if (newPage < 1 || newPage > totalPages) return;
     onPageChange(newPage);
   };
+
+  // ✅ اسکرول خودکار به ابتدای لیست بعد از تغییر صفحه
+  useEffect(() => {
+    if (listTopRef.current) {
+      listTopRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, [currentPage]);
 
   if (!products || products.length === 0)
     return <div className="text-center py-8">محصولی یافت نشد</div>;
 
   return (
     <div>
+      {/* مرجع اسکرول */}
+      <div ref={listTopRef}></div>
+
       {/* محصولات */}
       <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {products.map((product, index) => (
@@ -58,10 +74,12 @@ export default function ProductList({
                 alt={product.name}
               />
             </div>
+
             <div className="w-full flex flex-col gap-6">
               <div className="text-[14px] text-[#1C2024] font-yekanDemiBold leading-[20px]">
                 {product.name}
               </div>
+
               <div className="flex flex-col gap-2">
                 <div className="flex flex-row gap-2 items-center">
                   <div className="text-[18px] sm:text-[20px] text-[#004D7A] font-yekanDemiBold leading-[26px]">
@@ -71,6 +89,7 @@ export default function ProductList({
                     تومان
                   </div>
                 </div>
+
                 <div className="flex flex-row gap-2 items-center cursor-pointer">
                   <span className="text-[14px] text-[#006FB4] font-yekanDemiBold">
                     مشاهده جزئیات و خرید

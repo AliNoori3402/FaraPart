@@ -30,7 +30,6 @@ export async function GET(req: Request) {
     const data = await res.json();
     return NextResponse.json(data);
   } catch (error: any) {
-    console.error("❌ خطا در route carlog-pics:", error);
     return NextResponse.json(
       { error: "مشکلی در ارتباط با سرور پیش آمد." },
       { status: 500 }

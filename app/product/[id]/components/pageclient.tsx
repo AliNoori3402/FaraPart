@@ -53,7 +53,6 @@ export default function ProductPageClient() {
         setFilteredProducts(res.data.results ?? []);
         setFilteredTotalCount(res.data.count ?? 0);
       } catch (error) {
-        console.error("Error fetching products:", error);
         setFilteredProducts([]);
         setFilteredTotalCount(0);
       }

@@ -29,7 +29,7 @@ type ProductDetail = {
 
 const ProductDetailPage: React.FC = () => {
   const params = useParams();
-  console.log(params);
+
   const productId = params?.productId;
   const [activeTab, setActiveTab] = useState<"description" | "specs">(
     "description"
@@ -61,7 +61,6 @@ const ProductDetailPage: React.FC = () => {
           );
           setHasInventory(inventoryRes.data?.has_inventory ?? false);
         } catch (invErr) {
-          console.error("خطا در دریافت موجودی:", invErr);
           setHasInventory(null);
         }
       } catch (err) {

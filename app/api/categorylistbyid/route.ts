@@ -27,7 +27,6 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(categories, { status: 200 });
   } catch (error: any) {
-    console.error("خطا در دریافت دسته‌بندی‌ها:", error.message || error);
     return NextResponse.json(
       { error: "خطا در دریافت دسته‌بندی‌ها" },
       { status: 500 }

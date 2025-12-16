@@ -22,9 +22,7 @@ export default function CarBrandSlider({ onSelectBrand }: CarBrandSliderProps) {
       try {
         const res = await axios.get("/api/investigate");
         setBrands(res.data);
-      } catch (err) {
-        console.error("Error fetching brands:", err);
-      }
+      } catch (err) {}
     };
     fetchBrands();
   }, []);

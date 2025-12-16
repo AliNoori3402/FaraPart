@@ -21,7 +21,6 @@ export async function GET(req: Request) {
 
     return NextResponse.json(res.data, { status: 200 });
   } catch (error: any) {
-    console.error("Error fetching cart:", error.message);
     return NextResponse.json(
       { error: "Failed to fetch cart" },
       { status: error.response?.status || 500 }

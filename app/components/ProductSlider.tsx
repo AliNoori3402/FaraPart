@@ -33,7 +33,6 @@ export default function ProductSlider({ onCategoryClick }: ProductSliderProps) {
 
         setCategories(childCategories);
       } catch (error) {
-        console.error(error);
       } finally {
         setLoading(false);
       }

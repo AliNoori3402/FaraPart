@@ -14,7 +14,6 @@ export default function CarCardList() {
         const res = await axios.get("/api/blog"); // از route.ts خودت استفاده می‌کنیم
         setCardData(res.data || []);
       } catch (error) {
-        console.error("Error fetching posts:", error);
         setCardData([]); // در صورت خطا، آرایه خالی
       } finally {
         setLoading(false);

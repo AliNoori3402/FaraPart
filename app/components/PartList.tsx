@@ -27,10 +27,9 @@ const PartsList = () => {
         const res = await axios.get(
           `/api/investigate/category/${encodeURIComponent(car_name)}`
         );
-        console.log(res);
+
         setSections(res.data.results);
       } catch (error) {
-        console.error("خطا در دریافت سکشن‌ها:", error);
       } finally {
         setLoading(false);
       }

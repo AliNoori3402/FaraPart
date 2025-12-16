@@ -11,7 +11,6 @@ export async function GET() {
     // اگه سرور درست جواب بده، داده‌ها برگردونده می‌شن
     return NextResponse.json(response.data);
   } catch (error: any) {
-    console.error("Error fetching discount packs:", error.message);
     return NextResponse.json(
       { error: "مشکلی در دریافت اطلاعات پیش آمد." },
       { status: 500 }

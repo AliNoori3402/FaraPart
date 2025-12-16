@@ -15,7 +15,6 @@ export async function GET() {
 
     return NextResponse.json(res.data);
   } catch (error: any) {
-    console.error("Error fetching offers:", error.message);
     return NextResponse.json(
       { error: "خطا در دریافت پیشنهادهای ویژه" },
       { status: 500 }

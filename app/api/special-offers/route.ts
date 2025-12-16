@@ -21,7 +21,6 @@ export async function GET() {
 
     return NextResponse.json(latestOffer, { status: 200 });
   } catch (error: any) {
-    console.error("Error fetching offers:", error.message);
     return NextResponse.json(
       { error: "Failed to fetch offers" },
       { status: 500 }

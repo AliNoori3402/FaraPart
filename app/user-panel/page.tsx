@@ -83,7 +83,7 @@ export default function UserPanelPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 font-yekanDemiBold p-6 lg:p-16">
-      <h1 className="text-4xl font-bold text-center text-blue-700 mb-10">
+      <h1 className="text-4xl font-bold text-center text-[#004D7A] mb-10">
         پنل کاربری
       </h1>
 

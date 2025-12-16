@@ -23,8 +23,6 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(response.data, { status: response.status });
   } catch (error: any) {
-    console.error("OTP API error:", error?.response?.data || error.message);
-
     return NextResponse.json(
       {
         error: "Failed to send OTP.",

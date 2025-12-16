@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
         body: JSON.stringify({ codes }),
       }
     );
-    console.log(res);
+
     if (!res.ok) {
       return NextResponse.json(
         { error: "خطا در دریافت داده‌ها از سرور خارجی" },
@@ -24,7 +24,6 @@ export async function POST(req: NextRequest) {
     const data = await res.json();
     return NextResponse.json(data);
   } catch (err) {
-    console.error(err);
     return NextResponse.json({ error: "خطا در سرور" }, { status: 500 });
   }
 }

@@ -34,7 +34,6 @@ export async function GET(req: Request, { params }: Params) {
     const data = await res.json();
     return NextResponse.json(data);
   } catch (error: any) {
-    console.error("❌ خطا در route discount-pack:", error);
     return NextResponse.json(
       { error: "مشکلی در ارتباط با سرور پیش آمد." },
       { status: 500 }

@@ -54,9 +54,7 @@ export default function FilterProductPage({
       try {
         const res = await axios.get("/api/brand");
         setBrands(res.data.results || []);
-      } catch (error) {
-        console.error("خطا در دریافت برندها");
-      }
+      } catch (error) {}
     };
     fetchBrands();
   }, []);
@@ -81,7 +79,6 @@ export default function FilterProductPage({
 
       setCategories(childCategories);
     } catch (error) {
-      console.error("خطا در دریافت دسته‌بندی‌ها:", error);
       setCategories([]);
     } finally {
       setLoading(false);
@@ -110,7 +107,6 @@ export default function FilterProductPage({
       const res = await axios.get("/api/AllProduct", { params });
       onFilter(res.data.results || [], res.data.count || 0);
     } catch (error) {
-      console.error("خطا در دریافت محصولات:", error);
       onFilter([], 0);
     } finally {
       setLoading(false);

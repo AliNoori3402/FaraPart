@@ -69,10 +69,8 @@ const CommentModal: React.FC<{
           },
         });
 
-        console.log(res.data);
         setUser(res.data);
       } catch (err) {
-        console.error("خطا در گرفتن پروفایل:", err);
         setUser(null);
       } finally {
         setLoadingUser(false);
@@ -110,7 +108,6 @@ const CommentModal: React.FC<{
       refreshComments();
       onClose();
     } catch (err) {
-      console.error(err);
       toast.error("خطا در ارسال کامنت");
     } finally {
       setLoading(false);
@@ -256,7 +253,6 @@ const ProductDetailPage: React.FC = () => {
         );
         setHasInventory(inventoryRes.data?.has_inventory ?? false);
       } catch (invErr) {
-        console.error("خطا در دریافت موجودی:", invErr);
         setHasInventory(null);
       }
     } catch (err) {
@@ -281,9 +277,7 @@ const ProductDetailPage: React.FC = () => {
         }));
 
       setComments(mapReplies(data.results || []));
-    } catch (err) {
-      console.error(err);
-    }
+    } catch (err) {}
   };
 
   useEffect(() => {

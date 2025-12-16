@@ -18,7 +18,6 @@ export default function BlogDetailsPage() {
         const res = await axios.get(`/api/blog/${id}`);
         setData(res.data);
       } catch (err) {
-        console.error("Error fetching blog details:", err);
         setData(null);
       } finally {
         setLoading(false);

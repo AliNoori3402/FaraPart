@@ -66,7 +66,6 @@ export default function FilterProductCar({
         const res = await axios.get("/api/brand");
         setBrands(res.data.results || []);
       } catch (err) {
-        console.error(err);
       } finally {
         setLoading((prev) => ({ ...prev, brands: false }));
       }
@@ -92,7 +91,6 @@ export default function FilterProductCar({
 
       setCategories(data);
     } catch (err) {
-      console.error(err);
     } finally {
       setLoading((prev) => ({ ...prev, categories: false }));
     }

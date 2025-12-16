@@ -36,7 +36,6 @@ export async function POST(req: NextRequest) {
     // Return the successful response
     return NextResponse.json(response.data, { status: 200 });
   } catch (error: any) {
-    console.error("Error in API route:", error);
     if (error.response) {
       // Forward the error from the external API
       return NextResponse.json(

@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { Product } from "../product/page";
+import { Product } from "../product/[id]/components/pageclient";
 
 const PAGE_SIZE = 10;
 
@@ -23,6 +23,9 @@ const AllProductList: React.FC<ProductListProps> = ({
   totalFilteredCount,
 }) => {
   const router = useRouter();
+
+  const listTopRef = useRef<HTMLDivElement | null>(null);
+
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -79,8 +82,10 @@ const AllProductList: React.FC<ProductListProps> = ({
             id: item.id,
             name: item.name,
             price: item.price.toLocaleString("fa-IR"),
-            image:
-              item.image_urls.length > 0 ? item.image_urls[0] : "/Light.svg",
+            image_urls:
+              item.image_urls && item.image_urls.length > 0
+                ? item.image_urls
+                : ["/Light.svg"],
           }));
 
           setProducts(apiProducts);
@@ -97,6 +102,16 @@ const AllProductList: React.FC<ProductListProps> = ({
       fetchProducts();
     }
   }, [page, filteredProducts]);
+
+  // ✅ اسکرول خودکار به ابتدای لیست بعد از تغییر صفحه
+  useEffect(() => {
+    if (listTopRef.current) {
+      listTopRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, [page]);
 
   const changePage = (newPage: number) => {
     if (newPage < 1 || newPage > totalPages) return;
@@ -128,6 +143,9 @@ const AllProductList: React.FC<ProductListProps> = ({
         </div>
       ) : (
         <>
+          {/* مرجع اسکرول */}
+          <div ref={listTopRef}></div>
+
           <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {products.map((product) => (
               <div
@@ -148,10 +166,12 @@ const AllProductList: React.FC<ProductListProps> = ({
                     alt={product.name}
                   />
                 </div>
+
                 <div className="w-full flex flex-col gap-6">
                   <div className="text-[14px] text-[#1C2024] font-yekanDemiBold leading-[20px]">
                     {product.name}
                   </div>
+
                   <div className="flex flex-col gap-2">
                     <div className="flex flex-row gap-2 items-center">
                       <div className="text-[18px] sm:text-[20px] text-[#004D7A] font-yekanDemiBold leading-[26px]">
@@ -161,6 +181,7 @@ const AllProductList: React.FC<ProductListProps> = ({
                         تومان
                       </div>
                     </div>
+
                     <div className="flex flex-row gap-2 items-center">
                       <span className="text-[14px] text-[#006FB4] font-yekanDemiBold">
                         مشاهده جزئیات و خرید

@@ -39,7 +39,6 @@ const ProductsModal: React.FC<Props> = ({ partCode }) => {
       const data = await res.json();
       setProducts(data.results || []);
     } catch (err: any) {
-      console.error(err);
       setError(err.message || "خطا در دریافت داده‌ها");
     } finally {
       setLoading(false);

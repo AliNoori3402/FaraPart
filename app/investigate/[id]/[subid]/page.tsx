@@ -47,14 +47,12 @@ const Page = () => {
       }
 
       const json: ApiResponse = await res.json();
-      console.log("✅ پاسخ:", json);
 
       setData(json.results || []);
       setNextPage(json.next);
       setPrevPage(json.previous);
       setCurrentPage(pageNumber);
     } catch (err) {
-      console.error("❌ خطا در دریافت داده‌ها:", err);
       setError("خطا در دریافت داده‌ها از سرور.");
     } finally {
       setLoading(false);

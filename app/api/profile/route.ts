@@ -23,7 +23,6 @@ export async function GET(request: Request) {
 
     return NextResponse.json(response.data);
   } catch (error: any) {
-    console.error("PROFILE GET ERROR:", error.response?.data || error);
     return NextResponse.json(
       {
         status: "error",
@@ -62,7 +61,6 @@ export async function PATCH(request: Request) {
 
     return NextResponse.json(response.data);
   } catch (error: any) {
-    console.error("PROFILE PATCH ERROR:", error.response?.data || error);
     return NextResponse.json(
       {
         status: "error",

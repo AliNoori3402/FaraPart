@@ -36,9 +36,7 @@ export default function FilterProduct() {
         const res = await axios.get("/api/brand");
         const brandList: Brand[] = res.data.results || [];
         setBrands(brandList);
-      } catch (err) {
-        console.error("خطا در دریافت برندها:", err);
-      }
+      } catch (err) {}
     };
 
     fetchBrands();

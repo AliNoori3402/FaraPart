@@ -17,7 +17,6 @@ async function getOffers() {
 
     return res.data;
   } catch (error: any) {
-    console.error("خطا در دریافت داده‌ها:", error.message);
     return [];
   }
 }

@@ -90,9 +90,7 @@ export default function CombinedSlider() {
           );
 
         setItems([...packs, ...offers]);
-      } catch (err) {
-        console.error(err);
-      }
+      } catch (err) {}
     };
 
     fetchData();

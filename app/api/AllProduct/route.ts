@@ -23,7 +23,6 @@ export async function GET(request: Request) {
 
     return NextResponse.json(response.data);
   } catch (error: any) {
-    console.error("Axios error:", error.message);
     const status = error.response?.status || 500;
     const message = error.response?.data || "Internal server error";
     return NextResponse.json({ error: message }, { status });

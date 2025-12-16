@@ -85,9 +85,7 @@ export default function CombinedSlider() {
           .map((o) => ({ type: "offer", data: o }));
 
         setItems([...packs, ...offers]);
-      } catch (err) {
-        console.error(err);
-      }
+      } catch (err) {}
     };
     fetchData();
   }, []);

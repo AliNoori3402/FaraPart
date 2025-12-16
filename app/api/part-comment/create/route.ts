@@ -26,7 +26,6 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(data);
   } catch (err) {
-    console.error("Error creating comment:", err);
     return NextResponse.json({ error: "خطا در ثبت کامنت" }, { status: 500 });
   }
 }

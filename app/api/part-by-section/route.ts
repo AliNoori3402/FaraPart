@@ -46,10 +46,6 @@ export async function POST(req: Request) {
 
     return NextResponse.json(normalized);
   } catch (err: any) {
-    console.error(
-      "خطا در route parts-by-section:",
-      err.response?.data || err.message
-    );
     return NextResponse.json(
       {
         error: "خطا از سرور Django",

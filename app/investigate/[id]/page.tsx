@@ -32,9 +32,7 @@ export default function CarSectionsPage() {
         );
         const data = await res.json();
         setSections(data.results || []);
-      } catch (error) {
-        console.error("Error fetching sections:", error);
-      }
+      } catch (error) {}
     };
     fetchSections();
   }, [id]);
@@ -59,7 +57,6 @@ export default function CarSectionsPage() {
         Object.keys(data).forEach((key) => (initialCounts[key] = 4));
         setVisibleCounts(initialCounts);
       } catch (error) {
-        console.error("Error fetching parts:", error);
       } finally {
         setLoading(false);
       }

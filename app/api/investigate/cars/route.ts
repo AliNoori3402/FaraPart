@@ -22,8 +22,6 @@ export async function GET(req: Request) {
 
     return NextResponse.json(response.data, { status: 200 });
   } catch (error: any) {
-    console.error("Error fetching carlog cars:", error.message);
-
     return NextResponse.json(
       { error: "Failed to fetch carlog cars" },
       { status: 500 }

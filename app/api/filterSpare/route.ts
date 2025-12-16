@@ -18,10 +18,6 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(response.data);
   } catch (error: any) {
-    console.error(
-      "Error in /api/filterSpare:",
-      error.response || error.message
-    );
     return NextResponse.json(
       { error: "خطا در دریافت محصولات" },
       { status: 500 }

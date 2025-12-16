@@ -133,7 +133,6 @@ export default function RegisterPage() {
         }
       );
     } catch (err) {
-      console.log(err);
     } finally {
       setLoading(false);
     }

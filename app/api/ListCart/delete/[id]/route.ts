@@ -28,10 +28,6 @@ export async function DELETE(req: NextRequest, context: any) {
 
     return NextResponse.json(response.data);
   } catch (error: any) {
-    console.error(
-      "Error deleting item:",
-      error.response?.data || error.message
-    );
     return NextResponse.json(
       { error: "Failed to delete item" },
       { status: error.response?.status || 500 }

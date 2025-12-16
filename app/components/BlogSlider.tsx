@@ -76,7 +76,6 @@ export default function NewsSlider() {
         const res = await axios.get("/api/blog");
         setPosts(res.data);
       } catch (error) {
-        console.error("خطا در گرفتن پست‌ها:", error);
       } finally {
         setLoading(false);
       }

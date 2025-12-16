@@ -60,7 +60,6 @@ const ContactPage = () => {
         if (fileInput) fileInput.value = "";
       }
     } catch (err: any) {
-      console.error(err);
       toast.error(
         err?.response?.data?.message ||
           "ارسال پیام با خطا مواجه شد. لطفاً دوباره تلاش کنید."

@@ -35,7 +35,6 @@ const BrandCarsPage: React.FC = () => {
         setLoading(false);
       })
       .catch((err) => {
-        console.error("خطا در گرفتن برندها:", err);
         setLoading(false);
       });
   }, [brandId]);

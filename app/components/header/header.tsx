@@ -45,10 +45,8 @@ export default function Header() {
           },
         });
 
-        console.log(res.data);
         setUser(res.data);
       } catch (err) {
-        console.error("خطا در گرفتن پروفایل:", err);
         setUser(null);
       } finally {
         setLoadingUser(false);
@@ -65,18 +63,14 @@ export default function Header() {
         if (Array.isArray(res.data.results)) {
           setBrands(res.data.results);
         }
-      } catch (err) {
-        console.error(err);
-      }
+      } catch (err) {}
     };
 
     const getCategories = async () => {
       try {
         const res = await axios.get("/api/categorylist");
         setCategories(res.data);
-      } catch (err) {
-        console.error(err);
-      }
+      } catch (err) {}
     };
 
     getBrands();

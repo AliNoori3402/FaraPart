@@ -27,7 +27,6 @@ export async function GET(request: NextRequest, context: any) {
 
     return NextResponse.json(data);
   } catch (err) {
-    console.error("Error fetching comments:", err);
     return NextResponse.json(
       { error: "خطا در دریافت کامنت‌ها" },
       { status: 500 }

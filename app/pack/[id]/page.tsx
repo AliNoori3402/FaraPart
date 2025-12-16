@@ -47,9 +47,7 @@ export default function PackPage() {
       try {
         const res = await axios.get(`/api/pack/${id}`);
         setPack(res.data);
-      } catch (err) {
-        console.error("Error fetching pack:", err);
-      }
+      } catch (err) {}
     };
     if (id) fetchPack();
   }, [id]);

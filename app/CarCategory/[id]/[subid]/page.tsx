@@ -11,7 +11,7 @@ const PAGE_SIZE = 12;
 
 function Page() {
   const params = useParams();
-  console.log(params);
+
   const carIdParam = params.subid;
   const carId = Array.isArray(carIdParam) ? carIdParam[0] : carIdParam || "1";
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -50,12 +50,9 @@ function Page() {
           image_urls: item.image_urls,
         }));
 
-        console.log(mappedProducts);
         setProducts(mappedProducts);
         setTotalCount(data.count || 0);
-      } catch (error) {
-        console.error("خطا در دریافت محصولات:", error);
-      }
+      } catch (error) {}
     };
 
     fetchProducts();

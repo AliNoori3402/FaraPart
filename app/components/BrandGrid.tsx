@@ -34,7 +34,6 @@ export default function BrandGrid() {
           setBrands(res.data.results);
         }
       } catch (err) {
-        console.error("خطا:", err);
       } finally {
         setLoading(false);
       }

@@ -33,7 +33,6 @@ export async function POST(req: Request) {
     const data = await res.json();
     return NextResponse.json(data);
   } catch (error: any) {
-    console.error("❌ خطا در route inventory:", error);
     return NextResponse.json(
       { error: "مشکلی در ارسال درخواست به سرور پیش آمد." },
       { status: 500 }

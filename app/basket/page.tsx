@@ -43,7 +43,6 @@ function Page() {
         });
         setCart(res.data);
       } catch (err: any) {
-        console.error("خطا در گرفتن اطلاعات سبد:", err);
         setError("خطا در دریافت اطلاعات سبد خرید");
       } finally {
         setLoading(false);
@@ -57,7 +56,6 @@ function Page() {
     try {
       const token = localStorage.getItem("accessToken");
       if (!token) {
-        alert("توکن پیدا نشد!");
         return;
       }
 
@@ -70,10 +68,7 @@ function Page() {
         ...prev,
         items: prev.items.filter((item: any) => item.id !== id),
       }));
-    } catch (err) {
-      console.error("خطا در حذف کالا:", err);
-      alert("خطا در حذف کالا");
-    }
+    } catch (err) {}
   };
   if (loading) {
     return (

@@ -38,7 +38,6 @@ export async function POST(req: Request) {
     const data = await res.json();
     return NextResponse.json(data, { status: 201 });
   } catch (error: any) {
-    console.error("❌ خطا در route create:", error);
     return NextResponse.json(
       { error: "مشکلی در ارسال درخواست پیش آمد." },
       { status: 500 }

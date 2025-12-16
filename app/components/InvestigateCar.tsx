@@ -32,9 +32,7 @@ const InvestigateCar: React.FC<Props> = ({ brand, id }) => {
         const data = await res.json();
 
         setCars(data.results);
-        console.log(data);
       } catch (error) {
-        console.error("خطا در گرفتن لیست ماشین‌ها:", error);
       } finally {
         setLoading(false);
       }
