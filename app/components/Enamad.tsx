@@ -25,8 +25,8 @@ export default function Enamad() {
       img: "https://trustseal.enamad.ir/logo.aspx?id=673138&Code=UcgUHxtBIRi7BnzYVhUzR7rd0jr9wZct",
     },
     com: {
-      href: "https://trustseal.enamad.ir/?id=674123&Code=JJ8m09r6PWKkYvCARBlWQ1oRCNJOTwm9",
-      img: "https://trustseal.enamad.ir/logo.aspx?id=674123&Code=JJ8m09r6PWKkYvCARBlWQ1oRCNJOTwm9",
+      href: "https://trustseal.enamad.ir/?id=687932&Code=0lRpVKmOzjzZTsNp5MC80LhOjU58Br2z",
+      img: "https://trustseal.enamad.ir/logo.aspx?id=687932&Code=0lRpVKmOzjzZTsNp5MC80LhOjU58Br2z",
     },
   };
 

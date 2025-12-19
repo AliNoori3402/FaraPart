@@ -47,7 +47,7 @@ export default function CarBrandSlider({ onSelectBrand }: CarBrandSliderProps) {
       {/* لیست برندها */}
       <div
         ref={sliderRef}
-        className="w-full flex flex-row gap-[16px] md:overflow-x-hidden overflow-x-auto scrollbar-hide scroll-smooth"
+        className="w-full flex flex-row gap-[16px] "
       >
         {brands.map((brand, index) => (
           <div

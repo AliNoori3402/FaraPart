@@ -1,11 +1,12 @@
 "use client";
 import Slider from "./components/slider";
-import AmazingSlider from "./components/RecSlider";
+
 import FilterProduct from "./components/FilterProduct";
 import BrandGrid from "./components/BrandGrid";
 import NewsSlider from "./components/BlogSlider";
 import Link from "next/link";
-import DiscountPackSlider from "./components/packSlider";
+
+import CombinedSlider from "./components/RecSlider";
 
 export default function Home() {
   return (
@@ -14,7 +15,7 @@ export default function Home() {
       <Slider />
 
       {/* 🔹 اسلایدر پیشنهاد شگفت‌انگیز */}
-      <AmazingSlider />
+      <CombinedSlider />
 
       {/* 🔹 فیلتر محصولات */}
       <div className="w-full flex justify-center items-center">
