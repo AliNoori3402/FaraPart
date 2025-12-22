@@ -12,7 +12,7 @@ interface Offer {
   start_time: string;
   end_time: string;
   is_active: boolean;
-  parts: { id: number; name: string }[];
+  parts: { id: number; name: string; price?: number }[];
 }
 
 const formatPersianTime = (diff: number) => {
@@ -34,20 +34,26 @@ export default function OfferSlider() {
   const [cw, setCw] = useState(0);
   const [tw, setTw] = useState(0);
 
+  // دریافت دیتا و فیلتر پیشنهادهای معتبر
   useEffect(() => {
-    axios.get("/api/special-offers").then((res) => {
+    axios.get("/api/offers").then((res) => {
       const now = Date.now();
-      const data = res.data.results || res.data || [];
-      const active = data.filter(
-        (o: Offer) =>
+      const data: Offer[] = res.data || res.data || [];
+      console.log(res);
+      // فقط پیشنهادهای معتبر با حداقل یک قطعه
+      const validOffers = data.filter(
+        (o) =>
           o.is_active &&
           new Date(o.start_time).getTime() <= now &&
-          now <= new Date(o.end_time).getTime()
+          now <= new Date(o.end_time).getTime() &&
+          o.parts.length > 0
       );
-      setOffers(active);
+
+      setOffers(validOffers);
     });
   }, []);
 
+  // تایمر هر پیشنهاد
   useEffect(() => {
     const t = setInterval(() => {
       const now = Date.now();
@@ -60,6 +66,7 @@ export default function OfferSlider() {
     return () => clearInterval(t);
   }, [offers]);
 
+  // محاسبه عرض کانتینر و track
   useEffect(() => {
     const update = () => {
       if (containerRef.current) setCw(containerRef.current.offsetWidth);
@@ -71,6 +78,10 @@ export default function OfferSlider() {
   }, [offers]);
 
   if (!offers.length) return null;
+
+  const maxTranslate = Math.max(tw - cw, 0);
+  const nextSlide = () => setIndex((i) => Math.min(i + 1, offers.length - 1));
+  const prevSlide = () => setIndex((i) => Math.max(i - 1, 0));
 
   return (
     <section
@@ -84,14 +95,23 @@ export default function OfferSlider() {
       <div className="relative overflow-hidden px-4">
         <motion.div
           ref={trackRef}
-          className="flex gap-6"
+          className="flex gap-6 cursor-grab"
           animate={{ x: -index * cw * 0.6 }}
           transition={{ type: "spring", stiffness: 220, damping: 28 }}
+          drag="x"
+          dragConstraints={{ left: -maxTranslate, right: 0 }}
+          dragElastic={0.15}
+          onDragEnd={(_, info) => {
+            if (info.offset.x > 100) prevSlide();
+            if (info.offset.x < -100) nextSlide();
+          }}
         >
-          {offers.flatMap((o, i) =>
-            o.parts.map((p) => (
+          {offers.map((o, i) => {
+            // نمایش فقط اولین قطعه بعنوان تصویر/نام
+            const firstPart = o.parts[0];
+            return (
               <div
-                key={`${o.id}-${p.id}`}
+                key={o.id}
                 onClick={() => router.push(`/offers/${o.id}`)}
                 className="cursor-pointer min-w-[260px] bg-white rounded-3xl p-5 shadow-xl"
               >
@@ -101,7 +121,7 @@ export default function OfferSlider() {
 
                 <Image
                   src="/car-blog.svg"
-                  alt={p.name}
+                  alt={firstPart.name}
                   width={220}
                   height={150}
                   className="mx-auto my-4"
@@ -111,21 +131,23 @@ export default function OfferSlider() {
                   زمان باقیمانده: {timeLeft[i]}
                 </div>
               </div>
-            ))
-          )}
+            );
+          })}
         </motion.div>
 
+        {/* دکمه‌های کنترل */}
         <button
-          onClick={() => setIndex((i) => Math.max(i - 1, 0))}
+          onClick={prevSlide}
           disabled={index === 0}
-          className="absolute left-2 top-1/2 -translate-y-1/2 bg-white w-10 h-10 rounded-full shadow"
+          className="absolute left-2 top-1/2 -translate-y-1/2 bg-white w-10 h-10 rounded-full shadow flex items-center justify-center"
         >
           ‹
         </button>
 
         <button
-          onClick={() => setIndex((i) => Math.min(i + 1, offers.length - 1))}
-          className="absolute right-2 top-1/2 -translate-y-1/2 bg-white w-10 h-10 rounded-full shadow"
+          onClick={nextSlide}
+          disabled={index >= offers.length - 1}
+          className="absolute right-2 top-1/2 -translate-y-1/2 bg-white w-10 h-10 rounded-full shadow flex items-center justify-center"
         >
           ›
         </button>

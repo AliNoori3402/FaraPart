@@ -6,7 +6,7 @@ import BrandGrid from "./components/BrandGrid";
 import NewsSlider from "./components/BlogSlider";
 import Link from "next/link";
 import PackSlider from "./components/Packslider";
-import OfferSlider from "./components/Offerslider";
+// import OfferSlider from "./components/Offerslider";
 
 export default function Home() {
   return (
@@ -15,7 +15,7 @@ export default function Home() {
       <Slider />
 
       {/* 🔹 اسلایدر پیشنهاد شگفت‌انگیز */}
-      <OfferSlider />
+      {/* <OfferSlider /> */}
 
       {/* 🔹 فیلتر محصولات */}
       <div className="w-full flex justify-center items-center">

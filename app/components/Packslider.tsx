@@ -32,12 +32,13 @@ export default function PackSlider() {
   const router = useRouter();
   const [packs, setPacks] = useState<Pack[]>([]);
   const [index, setIndex] = useState(0);
-  const [timeLeft, setTimeLeft] = useState<Record<number, string>>({});
+  const [timeLeft, setTimeLeft] = useState(""); // تایمر کلی
   const trackRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [cw, setCw] = useState(0);
-  const [tw, setTw] = useState(0);
+  const [trackWidth, setTrackWidth] = useState(0);
 
+  // گرفتن پک‌ها
   useEffect(() => {
     axios.get("/api/pack").then((res) => {
       const now = Date.now();
@@ -51,90 +52,105 @@ export default function PackSlider() {
     });
   }, []);
 
+  // تایمر کلی (بر اساس اولین پک)
   useEffect(() => {
-    const t = setInterval(() => {
+    if (!packs.length) return;
+    const interval = setInterval(() => {
       const now = Date.now();
-      const map: Record<number, string> = {};
-      packs.forEach((p, i) => {
-        map[i] = formatPersianTime(new Date(p.end_time).getTime() - now);
-      });
-      setTimeLeft(map);
+      const firstPackEnd = new Date(packs[0].end_time).getTime();
+      const diff = firstPackEnd - now;
+      setTimeLeft(formatPersianTime(diff));
     }, 1000);
-    return () => clearInterval(t);
+    return () => clearInterval(interval);
   }, [packs]);
 
+  // محاسبه عرض کانتینر و track
   useEffect(() => {
     const update = () => {
       if (containerRef.current) setCw(containerRef.current.offsetWidth);
-      if (trackRef.current) setTw(trackRef.current.scrollWidth);
+      if (trackRef.current) setTrackWidth(trackRef.current.scrollWidth);
     };
     update();
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
   }, [packs]);
 
+  const maxTranslate = Math.max(trackWidth - cw, 0);
+  const nextSlide = () => setIndex((i) => Math.min(i + 1, packs.length - 1));
+  const prevSlide = () => setIndex((i) => Math.max(i - 1, 0));
+
   if (!packs.length) return null;
 
   return (
-    <section
-      ref={containerRef}
-      className="container mx-auto py-12 rounded-3xl bg-[#004D7A]"
-    >
-      <h2 className="text-white text-2xl text-center font-yekanExtraBold mb-6">
-        پک‌های تخفیفی
-      </h2>
-
-      <div className="relative overflow-hidden px-4">
-        <motion.div
-          ref={trackRef}
-          className="flex gap-6"
-          animate={{ x: -index * cw * 0.6 }}
-          transition={{ type: "spring", stiffness: 220, damping: 28 }}
-        >
-          {packs.map((p, i) => (
-            <div
-              key={p.id}
-              onClick={() => router.push(`/pack/${p.id}`)}
-              className="cursor-pointer min-w-[260px] bg-white rounded-3xl p-5 shadow-xl"
-            >
-              <div className="font-yekanExtraBold text-center text-[#004D7A]">
-                {p.title}
-              </div>
-
-              <Image
-                src="/car-blog.svg"
-                alt={p.title}
-                width={220}
-                height={150}
-                className="mx-auto my-4"
-              />
-
-              <div className="text-xs text-center text-gray-500">
-                زمان باقیمانده: {timeLeft[i]}
-              </div>
-
-              <div className="text-center text-yellow-500 font-bold mt-2">
-                {p.discount_percent}% تخفیف
-              </div>
-            </div>
-          ))}
-        </motion.div>
-
-        <button
-          onClick={() => setIndex((i) => Math.max(i - 1, 0))}
-          disabled={index === 0}
-          className="absolute left-2 top-1/2 -translate-y-1/2 bg-white w-10 h-10 rounded-full shadow"
-        >
-          ‹
-        </button>
-
-        <button
-          onClick={() => setIndex((i) => Math.min(i + 1, packs.length - 1))}
-          className="absolute right-2 top-1/2 -translate-y-1/2 bg-white w-10 h-10 rounded-full shadow"
-        >
-          ›
-        </button>
+    <div className="container mx-auto p-3">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl text-[#008BDF] font-yekanExtraBold">
+          پک‌های تخفیفی
+        </h2>
+        {/* تایمر کلی */}
+        <div className="text-whi px-4 py-2 rounded-xl  font-yekanExtraBold ">
+          {timeLeft}
+        </div>
       </div>
-    </section>
+
+      <section ref={containerRef} className="rounded-3xl p-3 bg-[#004D7A]">
+        <div className="relative overflow-hidden">
+          <motion.div
+            ref={trackRef}
+            className="flex  gap-6 cursor-grab"
+            animate={{ x: -index * cw * 0.6 }}
+            transition={{ type: "spring", stiffness: 220, damping: 28 }}
+            drag="x"
+            dragConstraints={{ left: -maxTranslate, right: 0 }}
+            dragElastic={0.15}
+            onDragEnd={(_, info) => {
+              if (info.offset.x > 100) prevSlide();
+              if (info.offset.x < -100) nextSlide();
+            }}
+          >
+            {packs.map((p) => (
+              <div
+                key={p.id}
+                onClick={() => router.push(`/pack/${p.id}`)}
+                className="cursor-pointer relative min-w-[260px] bg-white rounded-3xl p-2 shadow-xl"
+              >
+                <div className="font-yekanExtraBold text-center text-[#004D7A]">
+                  {p.title}
+                </div>
+
+                <Image
+                  src="/car-blog.svg"
+                  alt={p.title}
+                  width={220}
+                  height={150}
+                  className="mx-auto my-4"
+                />
+
+                <div className="text-center w-10  font-yekanRegular rounded-3xl absolute top-10 left-5   text-white bg-red-500  mt-2">
+                  {p.discount_percent}%
+                </div>
+              </div>
+            ))}
+          </motion.div>
+
+          {/* کنترل‌ها */}
+          <button
+            onClick={prevSlide}
+            disabled={index === 0}
+            className="absolute left-2 top-1/2 -translate-y-1/2 flex justify-center items-center bg-white w-10 h-10 rounded-full shadow"
+          >
+            <Image src="/Arrow-leftB.svg" alt="" width={16} height={16} />
+          </button>
+
+          <button
+            onClick={nextSlide}
+            disabled={index >= packs.length - 1}
+            className="absolute right-2 top-1/2 -translate-y-1/2 flex justify-center items-center bg-white w-10 h-10 rounded-full shadow"
+          >
+            <Image src="/Arrow-rightB.svg" alt="" width={16} height={16} />
+          </button>
+        </div>
+      </section>
+    </div>
   );
 }
