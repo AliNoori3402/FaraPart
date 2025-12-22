@@ -158,9 +158,23 @@ const CommentCard: React.FC<{
   comment: CommentData;
   level?: number;
   onReply: (id: number) => void;
-}> = ({ comment, level = 0, onReply }) => {
-  const [showReplies, setShowReplies] = useState(false);
+  currentUser: any;
+}> = ({ comment, level = 0, onReply, currentUser }) => {
 
+  const [showReplies, setShowReplies] = useState(false);
+const [user, setUser] = useState(null);
+
+useEffect(() => {
+  const token = localStorage.getItem("accessToken");
+  if (!token) return;
+
+  axios
+    .get("/api/profile", {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .then((res) => setUser(res.data))
+    .catch(() => setUser(null));
+}, []);
   return (
     <div
       className={`border rounded-2xl p-5 shadow-md transition-shadow mb-4 ${
@@ -184,12 +198,18 @@ const CommentCard: React.FC<{
                 : `نمایش ${comment.replies.length} پاسخ`}
             </button>
           )}
-          <button
-            className="text-sm text-green-600 hover:text-green-800 hover:bg-green-50 px-2 py-1 rounded transition-all"
-            onClick={() => onReply(comment.id)}
-          >
-            پاسخ
-          </button>
+{currentUser &&
+  !(
+    currentUser.first_name === comment.first_name &&
+    currentUser.last_name === comment.last_name
+  ) && (
+    <button
+      className="text-sm text-green-600 hover:text-green-800 hover:bg-green-50 px-2 py-1 rounded transition-all"
+      onClick={() => onReply(comment.id)}
+    >
+      پاسخ
+    </button>
+)}
         </div>
       </div>
       <p className="text-[#1C2024] leading-relaxed">{comment.text}</p>
@@ -208,6 +228,7 @@ const CommentCard: React.FC<{
               transition={{ duration: 0.3 }}
             >
               <CommentCard
+                currentUser={user}
                 comment={reply}
                 level={level + 1}
                 onReply={onReply}
@@ -234,6 +255,19 @@ const ProductDetailPage: React.FC = () => {
   const [comments, setComments] = useState<CommentData[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [replyTo, setReplyTo] = useState<number | null>(null);
+const [user, setUser] = useState(null);
+
+useEffect(() => {
+  const token = localStorage.getItem("accessToken");
+  if (!token) return;
+
+  axios
+    .get("/api/profile", {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .then((res) => setUser(res.data))
+    .catch(() => setUser(null));
+}, []);
 
   const fetchProductAndInventory = async () => {
     if (!id) return;
@@ -324,7 +358,8 @@ const ProductDetailPage: React.FC = () => {
           <Link href={"/product"}>
             {" "}
             <div className="text-[14px] text-[#1C2024] font-yekanDemiBold">
-              {product.category.name}
+          {product.category?.name || "دسته‌بندی نامشخص"}
+
             </div>
           </Link>
 
@@ -391,7 +426,8 @@ const ProductDetailPage: React.FC = () => {
                   دسته بندی
                 </div>
                 <h2 className="text-[#1C2024] text-[14px] font-yekanDemiBold">
-                  {product.category.name}
+              {product.category?.name || "دسته‌بندی نامشخص"}
+
                 </h2>
               </div>
               <div className="flex-1 flex flex-col gap-[16px] justify-center p-4">
@@ -560,7 +596,8 @@ const ProductDetailPage: React.FC = () => {
                   <span className="font-yekanDemiBold text-[#004D7A]">
                     دسته بندی
                   </span>
-                  <span>{product.category.name}</span>
+                  <span>{product.category?.name || "دسته‌بندی نامشخص"}
+</span>
                 </div>
                 <div className="flex justify-between border-b pb-2">
                   <span className="font-yekanDemiBold text-[#004D7A]">
@@ -595,14 +632,16 @@ const ProductDetailPage: React.FC = () => {
               </button>
               <div className="flex flex-col gap-4">
                 {comments.map((c) => (
-                  <CommentCard
-                    key={c.id}
-                    comment={c}
-                    onReply={(id) => {
-                      setReplyTo(id);
-                      setIsModalOpen(true);
-                    }}
-                  />
+     <CommentCard
+  key={c.id}
+  comment={c}
+  currentUser={user}
+  onReply={(id) => {
+    setReplyTo(id);
+    setIsModalOpen(true);
+  }}
+/>
+
                 ))}
               </div>
               <CommentModal

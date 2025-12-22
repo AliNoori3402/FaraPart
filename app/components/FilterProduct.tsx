@@ -55,6 +55,17 @@ export default function FilterProduct() {
 
     router.push(`/product?${params.toString()}`);
   };
+useEffect(() => {
+  if (!selectedCar) return;
+
+  const foundBrand = brands.find((brand) =>
+    brand.cars.some((car) => car.id.toString() === selectedCar)
+  );
+
+  if (foundBrand) {
+    setSelectedBrand(foundBrand.id.toString());
+  }
+}, [selectedCar, brands]);
 
   return (
     <div

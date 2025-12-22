@@ -5,8 +5,8 @@ import FilterProduct from "./components/FilterProduct";
 import BrandGrid from "./components/BrandGrid";
 import NewsSlider from "./components/BlogSlider";
 import Link from "next/link";
-
-import CombinedSlider from "./components/RecSlider";
+import PackSlider from "./components/Packslider";
+import OfferSlider from "./components/Offerslider";
 
 export default function Home() {
   return (
@@ -15,7 +15,7 @@ export default function Home() {
       <Slider />
 
       {/* 🔹 اسلایدر پیشنهاد شگفت‌انگیز */}
-      <CombinedSlider />
+      <OfferSlider />
 
       {/* 🔹 فیلتر محصولات */}
       <div className="w-full flex justify-center items-center">
@@ -25,7 +25,7 @@ export default function Home() {
       {/* 🔹 گرید برندها */}
 
       <BrandGrid />
-
+      <PackSlider />
       {/* 🔹 باکس بررسی تخصصی قطعات */}
       <div className="relative w-full flex justify-center items-center">
         <div className="relative w-full max-w-[1280px] h-[352px] md:h-[205px] sm:h-[205px]">
