@@ -8,7 +8,7 @@ type Product = {
   id: number;
   name: string;
   price: number;
-  image_urls: string[];
+  image_url: string[];
 };
 
 type ProductListProps = {
@@ -69,7 +69,7 @@ export default function ProductList({
             <div className="w-full relative h-[180px] flex justify-center items-center">
               <Image
                 fill
-                src={product.image_urls?.[0] ?? "/Light.svg"}
+                src={product.image_url?.[0] ?? "/Light.svg"}
                 className="w-[200px] h-full object-contain"
                 alt={product.name}
               />

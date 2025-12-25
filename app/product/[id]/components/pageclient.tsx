@@ -15,7 +15,7 @@ export interface Product {
   commercial_code: string;
   price: number;
   description: string;
-  image_urls: string[];
+  image_url: string[];
   part_type: string;
   car_names: string[];
   category: { name: string };

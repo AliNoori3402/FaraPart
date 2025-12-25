@@ -47,7 +47,7 @@ const AllProductList: React.FC<ProductListProps> = ({
         id: item.id,
         name: item.name,
         price: item.price,
-        image_urls: item.image_urls || [],
+        image_url: item.image_url || [],
         internal_code: item.internal_code || "",
         commercial_code: item.commercial_code || "",
         description: item.description || "",
@@ -82,9 +82,9 @@ const AllProductList: React.FC<ProductListProps> = ({
             id: item.id,
             name: item.name,
             price: item.price.toLocaleString("fa-IR"),
-            image_urls:
-              item.image_urls && item.image_urls.length > 0
-                ? item.image_urls
+            image_url:
+              item.image_url && item.image_url.length > 0
+                ? item.image_url
                 : ["/Light.svg"],
           }));
 
@@ -128,6 +128,18 @@ const AllProductList: React.FC<ProductListProps> = ({
     );
 
   if (error) return <div>{error}</div>;
+  const fixImageUrl = (path?: string) => {
+    if (!path) return "/Light.svg";
+
+    // اگر قبلاً URL کامل بود
+    if (path.startsWith("http")) return path;
+
+    // تبدیل مسیر لوکال Django به URL سایت
+    return path.replace(
+      "/home/backend/Backend/isaco-shop/media",
+      "https://farapartco.com/media"
+    );
+  };
 
   return (
     <div>
@@ -155,11 +167,7 @@ const AllProductList: React.FC<ProductListProps> = ({
               >
                 <div className="w-full h-[180px] flex justify-center items-center">
                   <Image
-                    src={
-                      product.image_urls && product.image_urls.length > 0
-                        ? product.image_urls[0]
-                        : "/Light.svg"
-                    }
+                    src={fixImageUrl(product.image_url?.[0])}
                     width={200}
                     height={180}
                     className="w-[200px] h-full object-contain"

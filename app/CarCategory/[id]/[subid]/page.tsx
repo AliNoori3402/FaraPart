@@ -47,7 +47,7 @@ function Page() {
           id: item.id,
           name: item.name,
           price: Number(item.price).toLocaleString("fa-IR"),
-          image_urls: item.image_urls,
+          image_url: item.image_url,
         }));
 
         setProducts(mappedProducts);

@@ -78,7 +78,7 @@ export default function BrandGrid() {
             : brands.map((brand, index) => (
                 <motion.button
                   key={brand.id}
-                  onClick={() => router.push(`/brands/${brand.id}`)}
+                  onClick={() => router.push(`/CarCategory/${brand.id}`)}
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: index * 0.04, duration: 0.3 }}
