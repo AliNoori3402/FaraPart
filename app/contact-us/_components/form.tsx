@@ -70,7 +70,7 @@ const ContactPage = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-12 py-16 font-yekanRegular">
+    <div className="container mt-20 sm:mt-30 lg:mt-45  mx-auto px-4 sm:px-6 lg:px-12 py-16 font-yekanRegular">
       <h1 className="text-3xl sm:text-4xl font-yekanBold text-center text-[#1C2024] mb-12">
         تماس با ما
       </h1>

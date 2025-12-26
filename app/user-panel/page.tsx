@@ -82,7 +82,7 @@ export default function UserPanelPage() {
     );
 
   return (
-    <div className="min-h-screen bg-gray-50 font-yekanDemiBold p-6 lg:p-16">
+    <div className="min-h-screen mt-20 sm:mt-30 lg:mt-45  bg-gray-50 font-yekanDemiBold p-6 lg:p-16">
       <h1 className="text-4xl font-bold text-center text-[#004D7A] mb-10">
         پنل کاربری
       </h1>
@@ -104,7 +104,7 @@ export default function UserPanelPage() {
       </AnimatePresence>
 
       {/* User Info */}
-      <div className="max-w-2xl mx-auto space-y-6">
+      <div className="max-w-2xl  mx-auto space-y-6">
         {!editMode ? (
           <>
             <div className="flex items-center gap-3 bg-white p-4 rounded-xl shadow hover:shadow-md transition">

@@ -3,7 +3,7 @@ import CarCardList from "../components/ListBlogs";
 
 function page() {
   return (
-    <div className="w-full bg-[#fcfcfc] container flex flex-col gap-[40px] justify-center items-center mx-auto pt-[56px] pb-[110px] px-4 md:px-[80px]">
+    <div className="w-full mt-20 sm:mt-30 lg:mt-45  bg-[#fcfcfc] container flex flex-col gap-[40px] justify-center items-center mx-auto pt-[56px] pb-[110px] px-4 md:px-[80px]">
       <div className="text-[24px] md:text-[32px] text-[#006FB4] font-yekanBold text-center md:text-right w-full max-w-[186px]">
         اخبار و مقالات
       </div>

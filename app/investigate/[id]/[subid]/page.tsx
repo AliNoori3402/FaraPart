@@ -64,7 +64,7 @@ const Page = () => {
   }, [car_name, part_category]);
 
   return (
-    <div className="w-full  container mx-auto flex flex-col gap-12  px-4 pb-16">
+    <div className="w-full mt-20 sm:mt-30 lg:mt-45   container mx-auto flex flex-col gap-12  px-4 pb-16">
       {/* عنوان صفحه */}
       <div className="text-[28px] text-[#1C2024] font-yekanBold text-center mt-8">
         قطعات {part_category} {car_name}

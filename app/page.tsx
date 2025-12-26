@@ -6,16 +6,17 @@ import BrandGrid from "./components/BrandGrid";
 import NewsSlider from "./components/BlogSlider";
 import Link from "next/link";
 import PackSlider from "./components/Packslider";
+import OfferSlider from "./components/Offerslider";
 // import OfferSlider from "./components/Offerslider";
 
 export default function Home() {
   return (
-    <div className="w-full  flex flex-col gap-[96px] px-4 sm:px-6 lg:px-0 container` mx-auto">
+    <div className="w-full  flex flex-col gap-2 lg:gap-[96px] px-4 sm:px-6 lg:px-0 container` mx-auto">
       {/* 🔹 اسلایدر اصلی */}
       <Slider />
 
       {/* 🔹 اسلایدر پیشنهاد شگفت‌انگیز */}
-      {/* <OfferSlider /> */}
+      <OfferSlider />
 
       {/* 🔹 فیلتر محصولات */}
       <div className="w-full flex justify-center items-center">

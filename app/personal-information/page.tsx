@@ -145,7 +145,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen w-full flex justify-center items-start sm:items-center bg-white px-4 py-8 overflow-y-auto">
+    <div className="min-h-screen mt-20 sm:mt-30 lg:mt-45  w-full flex justify-center items-start sm:items-center bg-white px-4 py-8 overflow-y-auto">
       <div className="w-full max-w-md flex flex-col items-center gap-8">
         {/* لوگو */}
         <div className="flex flex-col items-center gap-6 w-full">

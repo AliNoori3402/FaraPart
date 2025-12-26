@@ -2,7 +2,7 @@ import React from "react";
 
 function page() {
   return (
-    <div className="container mx-auto p-6 md:p-12">
+    <div className="container mt-20 sm:mt-30 lg:mt-45  mx-auto p-6 md:p-12">
       {/* عنوان صفحه */}
       <h1 className="text-3xl md:text-4xl font-yekanDemiBold text-[#004D7A] text-center mb-8">
         قوانین و مقررات سایت فراپارت

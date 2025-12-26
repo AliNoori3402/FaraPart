@@ -69,10 +69,10 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="w-full  container  mx-auto px-4 md:px-8">
+    <div className="w-full  container  mt-20 sm:mt-30 lg:mt-45  mx-auto px-4 md:px-8">
       <div className="w-full max-w-[1280px] flex flex-col gap-[40px] justify-center items-center px-4">
         {/* breadcrumb */}
-        <div className="flex flex-wrap gap-[4px] w-full justify-center">
+        {/* <div className="flex flex-wrap gap-[4px] w-full justify-center">
           <div className="text-[14px] text-[#1C2024] font-yekanDemiBold">
             لوازم یدکی
           </div>
@@ -96,7 +96,7 @@ export default function Page() {
           <div className="text-[14px] text-[#1C2024] font-yekanDemiBold">
             لوازم یدکی سراتو
           </div>
-        </div>
+        </div> */}
 
         {/* عنوان و تایمر */}
         <div className="w-full sm:w-[377px] flex flex-col gap-[24px] justify-center items-center">

@@ -114,7 +114,7 @@ export default function Slider() {
 
   return (
     <div
-      className="w-full h-[380px] sm:h-[440px] md:h-[440px] container mx-auto rounded-[32px] overflow-hidden relative"
+      className="w-full  mt-20 sm:mt-30 lg:mt-45 h-[380px] sm:h-[440px] md:h-[440px] container mx-auto rounded-[32px] overflow-hidden relative"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
@@ -150,7 +150,7 @@ export default function Slider() {
         </AnimatePresence>
       </motion.div>
 
-      <div className="absolute bottom-6 left-0 right-0 flex items-center justify-center px-6 pointer-events-none">
+      <div className="absolute bottom-3  sm:bottom-6 left-0 right-0 flex items-center justify-center px-6 pointer-events-none">
         <ul className="flex gap-2 items-center pointer-events-auto">
           {slides.map((_, index) => (
             <button

@@ -43,7 +43,7 @@ export default function BrandGrid() {
   }, []);
 
   return (
-    <div className="w-full container mx-auto py-10">
+    <div className="w-full container mx-auto py-0 lg:py-10">
       {/* Blue Wrapper */}
       <div className="w-full bg-[#005E95] rounded-3xl p-7 md:p-10 shadow-[0_10px_30px_rgba(0,0,0,0.25)]">
         {/* Header */}

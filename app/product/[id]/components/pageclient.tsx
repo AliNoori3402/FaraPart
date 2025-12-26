@@ -73,7 +73,7 @@ export default function ProductPageClient() {
   const resetPage = () => setCurrentPage(1);
 
   return (
-    <div className="w-full px-4 md:px-8 lg:px-0 container  mx-auto">
+    <div className="w-full mt-20 sm:mt-30 lg:mt-45  px-4 md:px-8 lg:px-0 container  mx-auto">
       <div className="w-full flex flex-col justify-center items-center gap-6 md:gap-[58px] pt-8 pb-20 ">
         <div className="w-full flex flex-col items-center gap-10">
           <div className="text-[16px] text-[#8B8D98] font-yekanBold">

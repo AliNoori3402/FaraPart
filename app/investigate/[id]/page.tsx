@@ -72,7 +72,7 @@ export default function CarSectionsPage() {
   };
 
   return (
-    <div className="w-full max-w-[1280px] mx-auto px-4 md:px-[40px] py-[20px]">
+    <div className="w-full mt-20 sm:mt-30 lg:mt-45  max-w-[1280px] mx-auto px-4 md:px-[40px] py-[20px]">
       {/* عنوان صفحه */}
       <h1 className="text-center text-[22px] md:text-[26px] font-yekanDemiBold text-[#004D7A] mb-[30px]">
         بررسی قطعات خودرو {decodeURIComponent(String(id))}

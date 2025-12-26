@@ -90,7 +90,7 @@ function Page() {
   }
 
   return (
-    <div className="w-full flex justify-center px-4 py-8">
+    <div className="w-full mt-20 sm:mt-30 lg:mt-45  flex justify-center px-4 py-8">
       <div className="w-full container mx-auto flex flex-col lg:flex-row gap-10 lg:gap-[87px]">
         {/* سبد خرید */}
         <div className="w-full max-w-[1000px] flex flex-col gap-6">

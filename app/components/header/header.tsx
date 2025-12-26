@@ -103,7 +103,7 @@ export default function Header() {
   };
 
   return (
-    <header className="w-full  mx-auto container flex flex-col items-center justify-between py-4 px-4 md:px-8 font-yekanDemiBold relative bg-white ">
+    <header className="w-full fixed  flex flex-col items-center justify-between py-0 md:py-4 px-4 md:px-8 font-yekanDemiBold z-50 bg-white ">
       {/* ===== LOGO ===== */}
       <div className=" hidden lg:flex justify-center items-center w-full ">
         <Link href={"/"} className="flex justify-center md:justify-start">
@@ -234,7 +234,10 @@ export default function Header() {
           </div>
 
           {/* لینک‌ها */}
-          <Link href={"/product"} className="text-[14px] text-[#1C2024]">
+          <Link
+            href={"/product"}
+            className="text-[14px] border-r border-r-[#B9BBC6] px-2 text-[#1C2024]"
+          >
             محصولات
           </Link>
           <Link href={"/blogs"} className="text-[14px] text-[#1C2024]">
@@ -243,6 +246,15 @@ export default function Header() {
           <Link href={"/investigate"} className="text-[14px] text-[#1C2024]">
             بررسی تخصصی
           </Link>
+          <Link
+            href={"/pack-list"}
+            className="text-[14px] border-l border-l-[#B9BBC6] px-2 text-[#1C2024]"
+          >
+            پک‌های تخفیفی
+          </Link>
+          {/* <Link href={"/offers"} className="text-[14px] text-[#1C2024]">
+            پیشنهاد ویژه
+          </Link> */}
         </div>
 
         {/* ===== SEARCH BAR ===== */}
@@ -310,60 +322,28 @@ export default function Header() {
           )}
         </div>
       </div>
-      <div className="flex mt-2 justify-between items-center w-full">
-        <div className="flex lg:hidden justify-center items-center gap-3">
-          {/* USER SECTION */}
-          {loadingUser ? (
-            <div className="w-[42px] h-[42px] rounded-[16px] bg-gray-200 animate-pulse" />
-          ) : user ? (
-            <Link href={"/user-panel"}>
-              <button className="w-[42px] h-[42px] rounded-[16px] bg-[#004D7A] flex items-center justify-center">
-                <svg
-                  width="20"
-                  height="20"
-                  fill="none"
-                  stroke="white"
-                  strokeWidth="2"
-                >
-                  <circle cx="10" cy="6" r="3" />
-                  <path d="M2 18c0-4 3-6 8-6s8 2 8 6" />
-                </svg>
-              </button>
-            </Link>
-          ) : (
-            <Link href={"/login-rigister"}>
-              <button className="w-[42px] h-[42px] rounded-[16px] bg-[#004D7A] flex items-center justify-center">
-                <LogIn className="text-white" />
-              </button>
-            </Link>
-          )}
-          <Link href={"/basket"}>
-            <div className="flex items-center gap-2">
-              <svg width="24" height="24" fill="none">
-                <path
-                  d="M7.5 8V6.36364C7.5 3.95367 9.51472 2 12 2C14.4853 2 16.5 3.95367 16.5 6.36364V8"
-                  stroke="#80838D"
-                  strokeWidth="1.5"
-                />
-                <path
-                  d="M13.8816 7.5H10.1184C6.22973 7.5 4.7255 8.48796 3.6501 12.2373C2.68147 15.6144 2.19716 17.3029 2.70352 18.6124C3.01361 19.4143 3.56418 20.1097 4.28549 20.6104C6.8944 22.4216 16.9865 22.5043 19.7145 20.6104C20.4358 20.1097 20.9864 19.4143 21.2965 18.6124C21.8028 17.3029 21.3185 15.6144 20.3499 12.2373C19.3173 8.63723 17.9313 7.5 13.8816 7.5Z"
-                  stroke="#80838D"
-                  strokeWidth="1.5"
-                />
-              </svg>
-            </div>
-          </Link>
-        </div>{" "}
-        <div className="lg:hidden flex justify-center items-center w-full ">
-          <Link href={"/"} className="flex justify-center md:justify-start">
-            <div className="relative w-[152px] h-[64px] ">
-              <Image fill src={"/banner/logo-mobile.svg"} alt="logo" />
-            </div>
-          </Link>
-
-          {/* BURGER (MOBILE) */}
-        </div>
+      <div className="flex  justify-between items-center w-full">
         <div className="flex justify-center items-center gap-3">
+          <div className="flex items-end lg:hidden">
+            <button
+              onClick={() => setIsBurgerOpen(true)}
+              className="w-[42px] h-[42px] flex items-center justify-center border border-[#E0E1E6] rounded-md"
+            >
+              <svg
+                width="24"
+                height="24"
+                fill="none"
+                stroke="#1C2024"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <line x1="3" y1="12" x2="21" y2="12" />
+                <line x1="3" y1="18" x2="21" y2="18" />
+              </svg>
+            </button>
+          </div>
           <div className="flex lg:hidden">
             <button
               onClick={() => setIsModalOpen(true)}
@@ -406,26 +386,59 @@ export default function Header() {
               </div>
             )}
           </div>
-          <div className="flex items-end lg:hidden">
-            <button
-              onClick={() => setIsBurgerOpen(true)}
-              className="w-[42px] h-[42px] flex items-center justify-center border border-[#E0E1E6] rounded-md"
-            >
-              <svg
-                width="24"
-                height="24"
-                fill="none"
-                stroke="#1C2024"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <line x1="3" y1="6" x2="21" y2="6" />
-                <line x1="3" y1="12" x2="21" y2="12" />
-                <line x1="3" y1="18" x2="21" y2="18" />
+        </div>
+        <div className="lg:hidden  flex justify-center items-center w-full ">
+          <Link href={"/"} className="flex justify-center md:justify-start">
+            <div className="relative left-1 w-[152px] h-[64px] ">
+              <Image fill src={"/banner/logo-mobile.svg"} alt="logo" />
+            </div>
+          </Link>
+
+          {/* BURGER (MOBILE) */}
+        </div>
+
+        <div className="flex lg:hidden justify-center items-center gap-3">
+          {/* USER SECTION */}
+          <Link href={"/basket"}>
+            <div className="flex items-center gap-2">
+              <svg width="24" height="24" fill="none">
+                <path
+                  d="M7.5 8V6.36364C7.5 3.95367 9.51472 2 12 2C14.4853 2 16.5 3.95367 16.5 6.36364V8"
+                  stroke="#80838D"
+                  strokeWidth="1.5"
+                />
+                <path
+                  d="M13.8816 7.5H10.1184C6.22973 7.5 4.7255 8.48796 3.6501 12.2373C2.68147 15.6144 2.19716 17.3029 2.70352 18.6124C3.01361 19.4143 3.56418 20.1097 4.28549 20.6104C6.8944 22.4216 16.9865 22.5043 19.7145 20.6104C20.4358 20.1097 20.9864 19.4143 21.2965 18.6124C21.8028 17.3029 21.3185 15.6144 20.3499 12.2373C19.3173 8.63723 17.9313 7.5 13.8816 7.5Z"
+                  stroke="#80838D"
+                  strokeWidth="1.5"
+                />
               </svg>
-            </button>
-          </div>
+            </div>
+          </Link>
+          {loadingUser ? (
+            <div className="w-[42px] h-[42px] rounded-[16px] bg-gray-200 animate-pulse" />
+          ) : user ? (
+            <Link href={"/user-panel"}>
+              <button className="w-[42px] h-[42px] rounded-[16px] bg-[#004D7A] flex items-center justify-center">
+                <svg
+                  width="20"
+                  height="20"
+                  fill="none"
+                  stroke="white"
+                  strokeWidth="2"
+                >
+                  <circle cx="10" cy="6" r="3" />
+                  <path d="M2 18c0-4 3-6 8-6s8 2 8 6" />
+                </svg>
+              </button>
+            </Link>
+          ) : (
+            <Link href={"/login-rigister"}>
+              <button className="w-[42px] h-[42px] rounded-[16px] bg-[#004D7A] flex items-center justify-center">
+                <LogIn className="text-white" />
+              </button>
+            </Link>
+          )}
         </div>
       </div>
       {/* ===== MOBILE BURGER MENU ===== */}
@@ -588,7 +601,9 @@ export default function Header() {
             >
               بررسی تخصصی
             </Link>
-
+            <Link href={"/pack-list"} className="text-right block">
+              پک‌های تخفیفی
+            </Link>
             {/* ===== RIGHT SECTION ===== */}
           </motion.div>
         )}

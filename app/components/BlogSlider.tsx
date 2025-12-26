@@ -84,7 +84,7 @@ export default function NewsSlider() {
   }, []);
 
   return (
-    <div className="md:w-full md:h-auto sm:w-[770px] sm:h-[600px] w-[406px] flex flex-col gap-[35px]">
+    <div className="md:w-full  md:h-auto lg:w-[770px] pb-10   sm:h-[600px] w-full  flex flex-col gap-4 lg:gap-[35px]">
       <div className="text-base lg:text-[20px] text-[#1C2024] font-yekanDemiBold">
         اخبار و مقالات
       </div>
@@ -92,7 +92,7 @@ export default function NewsSlider() {
       {/* اسلایدر */}
       <div
         ref={sliderRef}
-        className="flex gap-[28px] md:h-[421px] px-0 lg:px-10 sm:h-[834px] h-[421px]
+        className="flex gap-[28px] md:h-[421px] px-0 lg:px-10 sm:h-[834px] h-auto 
         overflow-x-auto scroll-smooth no-scrollbar items-start"
         style={{ scrollSnapType: "x mandatory" }}
       >
@@ -114,7 +114,7 @@ export default function NewsSlider() {
               </div>
             ))
         ) : posts.length === 0 ? (
-          <div className="w-full flex items-center justify-center h-[257px] text-gray-500 text-lg font-yekanDemiBold">
+          <div className="w-full flex items-center justify-center  text-gray-500 text-lg font-yekanDemiBold">
             اخباری برای نمایش وجود ندارد
           </div>
         ) : (
