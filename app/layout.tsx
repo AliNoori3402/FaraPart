@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     "فراپارت؛ مرجع تخصصی خرید آنلاین لوازم یدکی خودرو با ضمانت اصل بودن کالا و ارسال سریع. قطعات موتور، بدنه، جلوبندی، فیلترها، روغن و انواع برندهای معتبر.",
   icons: {
     icon: [
-      { url: "/favicon.png", sizes: "48x48", type: "image/png" }, // گوگل
+      { url: "/banner/222-01-01.png", sizes: "48x48", type: "image/png" }, // گوگل
       { url: "/banner/222-01.svg", type: "image/svg+xml" }, // سایت
     ],
   },
