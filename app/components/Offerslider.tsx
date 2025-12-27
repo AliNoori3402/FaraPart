@@ -105,7 +105,7 @@ export default function OfferSlider() {
 
   return (
     <div className="container mx-auto p-3">
-      <h2 className="text-xl sm:text-2xl mb-6 text-[#008BDF] font-yekanExtraBold">
+      <h2 className="text-xl sm:text-2xl mb-3 sm:mb-6 text-[#008BDF] font-yekanExtraBold">
         پیشنهاد ویژه
       </h2>
 
@@ -118,7 +118,7 @@ export default function OfferSlider() {
           {timeLeft} :زمان باقیمانده
         </div>
 
-        <div className="relative overflow-hidden px-4">
+        <div className="relative   overflow-hidden px-3 sm:px-4">
           <motion.div
             ref={trackRef}
             className="flex gap-6 overflow-x-hidden cursor-grab hide-scrollbar"
@@ -135,7 +135,7 @@ export default function OfferSlider() {
             {products.map((product) => (
               <div
                 key={product.id}
-                className="w-[260px] bg-white rounded-3xl p-2 shadow-xl flex flex-col"
+                className="w-[260px]  bg-white rounded-3xl p-2 shadow-xl flex flex-col"
               >
                 <Image
                   src={product.image_url?.[0] || "/placeholder.png"}
@@ -145,15 +145,15 @@ export default function OfferSlider() {
                   className="mx-auto object-contain"
                 />
 
-                <div className="mt-4 text-black font-yekanDemiBold text-sm line-clamp-2">
+                <div className="mt-4 text-black font-yekanDemiBold text-sm line-clamp-2 truncate">
                   {product.name}
                 </div>
                 <div className="flex flex-row gap-[4px] items-center">
-                  <p className="text-[16px] text-[#B9BBC6] font-yekanDemiBold line-through">
+                  <p className="text-sm sm:text-[16px] text-[#B9BBC6] font-yekanDemiBold line-through">
                     {(product.price * 1.1).toLocaleString()}
                   </p>
                   <div className="flex flex-row gap-[4px] items-center">
-                    <div className="text-[20px] text-[#004D7A] font-yekanDemiBold">
+                    <div className="text-base sm:text-[20px] text-[#004D7A] font-yekanDemiBold">
                       {product.price.toLocaleString()}
                     </div>
                     <div className="text-[12px] text-[#004D7A] font-yekanDemiBold">
@@ -164,7 +164,7 @@ export default function OfferSlider() {
 
                 <button
                   onClick={() => router.push(`/product/${product.id}`)}
-                  className="mt-auto cursor-pointer  flex items-center  text-right text-[#008BDF] rounded-xl py-2 text-sm font-yekanExtraBold"
+                  className="mt-auto cursor-pointer  flex items-center  text-xs sm:text-sm  text-right text-[#008BDF] rounded-xl py-2  font-yekanExtraBold"
                 >
                   مشاهده جزئیات و خرید
                   <Image src="/Arrow-leftB.svg" alt="" width={16} height={16} />
