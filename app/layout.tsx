@@ -11,12 +11,12 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: "/222-01-01.png",
+        url: "/favicon.ico",
         sizes: "48x48",
         type: "image/png",
       },
     ],
-    apple: "/222-01-01.png",
+    apple: "/favicon.ico",
   },
 
   openGraph: {
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     description: "خرید مطمئن لوازم یدکی خودرو با ضمانت اصالت و ارسال سریع",
     images: [
       {
-        url: "/og-image.png",
+        url: "/favicon.ico",
         width: 1200,
         height: 630,
       },
