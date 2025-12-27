@@ -8,23 +8,12 @@ export const metadata: Metadata = {
   description:
     "فراپارت؛ مرجع تخصصی خرید آنلاین لوازم یدکی خودرو با ضمانت اصل بودن کالا و ارسال سریع.",
 
-  icons: {
-    icon: [
-      {
-        url: "/favicon.ico",
-        sizes: "48x48",
-        type: "image/png",
-      },
-    ],
-    apple: "/favicon.ico",
-  },
-
   openGraph: {
     title: "فراپارت | فروشگاه آنلاین لوازم یدکی خودرو",
     description: "خرید مطمئن لوازم یدکی خودرو با ضمانت اصالت و ارسال سریع",
     images: [
       {
-        url: "/favicon.ico",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
       },
