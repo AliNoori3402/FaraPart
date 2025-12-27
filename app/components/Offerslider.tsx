@@ -41,13 +41,11 @@ export default function OfferSlider() {
   const router = useRouter();
   const [offer, setOffer] = useState<Offer | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
-  const [index, setIndex] = useState(0);
+
   const [timeLeft, setTimeLeft] = useState("");
 
   const trackRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [cw, setCw] = useState(0);
-  const [tw, setTw] = useState(0);
 
   /* ---------- دریافت پیشنهاد فعال ---------- */
   useEffect(() => {
@@ -95,22 +93,15 @@ export default function OfferSlider() {
     return () => clearInterval(interval);
   }, [offer]);
 
-  /* ---------- محاسبه عرض ---------- */
-  useEffect(() => {
-    const update = () => {
-      if (containerRef.current) setCw(containerRef.current.offsetWidth);
-      if (trackRef.current) setTw(trackRef.current.scrollWidth);
-    };
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
-  }, [products]);
-
   if (!offer || !products.length) return null;
+  const scroll = (dir: "left" | "right") => {
+    if (!trackRef.current) return;
 
-  const maxTranslate = Math.max(tw - cw, 0);
-  const nextSlide = () => setIndex((i) => Math.min(i + 1, products.length - 1));
-  const prevSlide = () => setIndex((i) => Math.max(i - 1, 0));
+    trackRef.current.scrollBy({
+      left: dir === "left" ? -300 : 300,
+      behavior: "smooth",
+    });
+  };
 
   return (
     <div className="container mx-auto p-3">
@@ -130,15 +121,14 @@ export default function OfferSlider() {
         <div className="relative overflow-hidden px-4">
           <motion.div
             ref={trackRef}
-            className="flex gap-6 cursor-grab"
-            animate={{ x: index * cw * 0.9 }}
-            transition={{ type: "spring", stiffness: 220, damping: 28 }}
+            className="flex gap-6 overflow-x-hidden cursor-grab hide-scrollbar"
             drag="x"
-            dragConstraints={{ left: -maxTranslate, right: 0 }}
-            dragElastic={0.15}
-            onDragEnd={(_, info) => {
-              if (info.offset.x > 100) prevSlide();
-              if (info.offset.x < -100) nextSlide();
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.2}
+            onDrag={(e, info) => {
+              if (trackRef.current) {
+                trackRef.current.scrollLeft -= info.delta.x;
+              }
             }}
           >
             {/* هر محصول = یک کارت */}
@@ -185,16 +175,14 @@ export default function OfferSlider() {
 
           {/* دکمه‌ها */}
           <button
-            onClick={prevSlide}
-            disabled={index === 0}
+            onClick={() => scroll("left")}
             className="absolute left-2 top-1/2 -translate-y-1/2 bg-white w-10 h-10 rounded-full shadow flex items-center justify-center"
           >
             <Image src="/Arrow-leftB.svg" alt="" width={16} height={16} />
           </button>
 
           <button
-            onClick={nextSlide}
-            disabled={index >= products.length}
+            onClick={() => scroll("right")}
             className="absolute right-2 top-1/2 -translate-y-1/2 bg-white w-10 h-10 rounded-full shadow flex items-center justify-center"
           >
             <Image src="/Arrow-rightB.svg" alt="" width={16} height={16} />
