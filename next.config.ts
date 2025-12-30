@@ -14,6 +14,11 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
+        hostname: "farapartco.ir", // ← اضافه شد (مهم)
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
         hostname: "farapartco.com",
         pathname: "/**",
       },
@@ -38,9 +43,6 @@ const nextConfig = {
         pathname: "/**",
       },
     ],
-    deviceSizes: [360, 640, 768, 1024, 1280, 1536],
-    imageSizes: [16, 32, 48, 64, 96],
-    formats: ["image/avif", "image/webp"],
   },
 
   experimental: {

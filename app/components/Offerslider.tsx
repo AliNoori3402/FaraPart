@@ -121,7 +121,7 @@ export default function OfferSlider() {
         <div className="relative   overflow-hidden px-3 sm:px-4">
           <motion.div
             ref={trackRef}
-            className="flex gap-6 overflow-x-hidden cursor-grab hide-scrollbar"
+            className="flex gap-2 lg:gap-6 overflow-x-hidden cursor-grab hide-scrollbar"
             drag="x"
             dragConstraints={{ left: 0, right: 0 }}
             dragElastic={0.2}
@@ -135,15 +135,27 @@ export default function OfferSlider() {
             {products.map((product) => (
               <div
                 key={product.id}
-                className="w-[260px]  bg-white rounded-3xl p-2 shadow-xl flex flex-col"
+                className="
+    flex-shrink-0
+    w-[160px]
+    sm:w-[190px]
+    lg:w-[260px]
+    bg-white
+    rounded-3xl
+    p-2
+    shadow-xl
+    flex
+    flex-col
+  "
               >
-                <Image
-                  src={product.image_url?.[0] || "/placeholder.png"}
-                  alt={product.name}
-                  width={220}
-                  height={160}
-                  className="mx-auto object-contain"
-                />
+                <div className="relative w-full h-40 sm:h-56 ">
+                  <Image
+                    src={product.image_url?.[0] || "/placeholder.png"}
+                    alt={product.name}
+                    fill
+                    className="mx-auto object-cover"
+                  />
+                </div>
 
                 <div className="mt-4 text-black font-yekanDemiBold text-sm line-clamp-2 truncate">
                   {product.name}

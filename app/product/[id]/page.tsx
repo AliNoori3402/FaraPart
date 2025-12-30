@@ -17,7 +17,7 @@ type ProductDetail = {
   commercial_code: string;
   price: number;
   description: string;
-  image_urls: string[];
+  image_url: string[];
   part_type: string;
   car_names: string[];
   category: { name: string };
@@ -369,7 +369,7 @@ const ProductDetailPage: React.FC = () => {
 
         {/* تصاویر و جزئیات */}
         <div className="w-full flex flex-col lg:flex-row gap-[32px] sm:gap-[32px] md:gap-[67px] items-center lg:items-start">
-          <ProductImages images={product.image_urls} />
+          <ProductImages images={product.image_url} />
 
           <div className="w-full max-w-[591px] flex flex-col gap-[40px]">
             <div className="text-[28px] text-[#1C2024] font-yekanBold text-center sm:text-center md:text-right">
