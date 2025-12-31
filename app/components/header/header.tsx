@@ -345,7 +345,7 @@ export default function Header() {
           )}
         </div>
       </div>
-      <div className="flex border  justify-between items-center w-full">
+      <div className="flex   justify-between items-center w-full">
         <div className="flex items-center gap-3">
           {" "}
           <div className="flex items-end lg:hidden">
