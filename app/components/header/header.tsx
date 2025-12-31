@@ -23,7 +23,10 @@ export default function Header() {
   const [user, setUser] = useState<any>(null);
   const [loadingUser, setLoadingUser] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [hideLogo, setHideLogo] = useState(false);
+
   const router = useRouter();
+
   useEffect(() => {
     const token =
       typeof window !== "undefined"
@@ -101,19 +104,39 @@ export default function Header() {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") handleSearch();
   };
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 10) {
+        setHideLogo(true);
+      } else {
+        setHideLogo(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <header className="w-full fixed  flex flex-col items-center justify-between py-0 md:py-4 px-4 md:px-8 font-yekanDemiBold z-50 bg-white ">
       {/* ===== LOGO ===== */}
-      <div className=" hidden lg:flex justify-center items-center w-full ">
-        <Link href={"/"} className="flex justify-center md:justify-start">
-          <div className="relative w-[152px] h-[64px] ">
-            <Image fill src={"/banner/header-logo.svg"} alt="logo" />
-          </div>
-        </Link>
-
-        {/* BURGER (MOBILE) */}
-      </div>
+      <AnimatePresence>
+        {!hideLogo && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.25 }}
+            className="hidden lg:flex justify-center items-center w-full"
+          >
+            <Link href={"/"} className="flex justify-center md:justify-start">
+              <div className="relative w-[152px] h-[64px]">
+                <Image fill src={"/banner/header-logo.svg"} alt="logo" />
+              </div>
+            </Link>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* ===== MAIN ROW ===== */}
       <div className="w-full  flex flex-col sm:flex-row items-center justify-center lg:justify-between  mt-4 md:mt-6">
@@ -322,8 +345,9 @@ export default function Header() {
           )}
         </div>
       </div>
-      <div className="flex  justify-between items-center w-full">
-        <div className="flex justify-center items-center gap-3">
+      <div className="flex border  justify-between items-center w-full">
+        <div className="flex items-center gap-3">
+          {" "}
           <div className="flex items-end lg:hidden">
             <button
               onClick={() => setIsBurgerOpen(true)}
@@ -351,42 +375,42 @@ export default function Header() {
             >
               <BiSearch className="w-6 h-6 text-gray-500" />
             </button>
-
-            {/* MODAL */}
-            {isModalOpen && (
-              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-                <div className="bg-white rounded-lg w-11/12 max-w-md p-4 relative">
+          </div>
+          {/* MODAL */}
+          {isModalOpen && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+              <div className="bg-white rounded-lg w-11/12 max-w-md p-4 relative">
+                <button
+                  className="absolute top-3 right-3 text-gray-500 text-xl"
+                  onClick={() => setIsModalOpen(false)}
+                >
+                  ✕
+                </button>
+                <div className="flex items-center mt-8 border border-gray-300 rounded-full px-3 py-2">
+                  <input
+                    type="text"
+                    placeholder="جستجو در فراپارت..."
+                    className="flex-grow text-right px-2 placeholder:text-gray-400 outline-none font-yekanDemiBold bg-transparent"
+                    value={searchText}
+                    onChange={(e) => setSearchText(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    autoFocus
+                  />
                   <button
-                    className="absolute top-3 right-3 text-gray-500 text-xl"
-                    onClick={() => setIsModalOpen(false)}
+                    onClick={() => {
+                      handleSearch();
+                      setIsModalOpen(false);
+                    }}
+                    className="p-1 flex items-center justify-center text-gray-500 hover:text-gray-700"
                   >
-                    ✕
+                    <BiSearch className="w-6 h-6" />
                   </button>
-                  <div className="flex items-center mt-8 border border-gray-300 rounded-full px-3 py-2">
-                    <input
-                      type="text"
-                      placeholder="جستجو در فراپارت..."
-                      className="flex-grow text-right px-2 placeholder:text-gray-400 outline-none font-yekanDemiBold bg-transparent"
-                      value={searchText}
-                      onChange={(e) => setSearchText(e.target.value)}
-                      onKeyDown={handleKeyDown}
-                      autoFocus
-                    />
-                    <button
-                      onClick={() => {
-                        handleSearch();
-                        setIsModalOpen(false);
-                      }}
-                      className="p-1 flex items-center justify-center text-gray-500 hover:text-gray-700"
-                    >
-                      <BiSearch className="w-6 h-6" />
-                    </button>
-                  </div>
                 </div>
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
+
         <div className="lg:hidden  flex justify-center items-center w-full ">
           <Link href={"/"} className="flex justify-center md:justify-start">
             <div className="relative left-1 w-[152px] h-[64px] ">

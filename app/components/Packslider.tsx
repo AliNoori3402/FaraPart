@@ -99,7 +99,7 @@ export default function PackSlider() {
         <div className="relative overflow-hidden">
           <motion.div
             ref={trackRef}
-            className="flex gap-6 overflow-x-hidden cursor-grab hide-scrollbar"
+            className="flex gap-2 sm:gap-6 overflow-x-hidden cursor-grab hide-scrollbar"
             drag="x"
             dragConstraints={{ left: 0, right: 0 }}
             dragElastic={0.2}
@@ -114,24 +114,28 @@ export default function PackSlider() {
               <div
                 key={p.id}
                 onClick={() => router.push(`/pack/${p.id}`)}
-                className="cursor-pointer relative min-w-[260px] bg-white rounded-3xl p-3 shadow-xl"
+                className="cursor-pointer relative w-52  sm:min-w-[260px] bg-white rounded-3xl  p-2 sm:p-3 shadow-xl"
               >
-                <div className="font-yekanExtraBold text-center text-[#004D7A]">
+                <div className="font-yekanExtraBold text-sm sm:text-base  text-center text-[#004D7A]">
                   {p.title}
                 </div>
-
                 <Image
-                  src="/car-blog.svg"
+                  src="/banner/pack-mobile.jpg"
                   alt={p.title}
-                  width={220}
-                  height={150}
-                  className="mx-auto my-4"
+                  width={136}
+                  height={109}
+                  className="mx-auto rounded-xl block sm:hidden"
+                />{" "}
+                <Image
+                  src="/banner/pack-desktop.jpg"
+                  alt={p.title}
+                  width={221}
+                  height={178}
+                  className="mx-auto rounded-xl hidden sm:block"
                 />
-
-                <div className="absolute top-10 left-5 w-10 text-center text-white bg-red-500 rounded-3xl">
+                <div className="absolute top-8 sm:top-10 left-8 sm:left-5 w-10 text-center text-white font-yekanRegular bg-red-500 rounded-3xl">
                   {p.discount_percent}%
                 </div>
-
                 <PackTimer endTime={p.end_time} />
               </div>
             ))}

@@ -27,6 +27,11 @@ const slidesMobile = [
     alt: "موبایل 4",
     link: "/investigate",
   },
+  {
+    src: "/banner/mobile/mobile-banner5.jpg",
+    alt: "موبایل 5",
+    link: "/pack-list",
+  },
 ];
 
 const slidesTablet = [
@@ -50,9 +55,15 @@ const slidesTablet = [
     alt: "تبلت 4",
     link: "/investigate",
   },
+  {
+    src: "/banner/tablet/tablet-banner5.jpg",
+    alt: "تبلت 5",
+    link: "/pack-list",
+  },
 ];
 
 const slidesDesktop = [
+  { src: "/banner/banner5.jpg", alt: "دسکتاپ 5", link: "/pack-list" },
   { src: "/banner/banner4.jpeg", alt: "دسکتاپ 1", link: "/" },
   { src: "/banner/banner3.jpeg", alt: "دسکتاپ 2", link: "/offers" },
   { src: "/banner/banner2.jpeg", alt: "دسکتاپ 3", link: "/blogs" },
