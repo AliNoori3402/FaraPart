@@ -9,7 +9,23 @@ import Image from "next/image";
 import "../font.css";
 import { BiSearch } from "react-icons/bi";
 import { LogIn } from "lucide-react";
-
+const socialLinks = [
+  {
+    href: "https://t.me/FarapartSupport",
+    icon: "/tel.svg",
+    alt: "تلگرام",
+  },
+  {
+    href: "https://wa.me/message/F5TZLNS2VGLQG1",
+    icon: "/whats.svg",
+    alt: "واتساپ",
+  },
+  {
+    href: "https://www.instagram.com/farapartcom?igsh=NXVneWFrNGF4eWt4",
+    icon: "/insta.svg",
+    alt: "اینستاگرام",
+  },
+];
 export default function Header() {
   const [brands, setBrands] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
@@ -413,8 +429,8 @@ export default function Header() {
 
         <div className="lg:hidden  flex justify-center items-center w-full ">
           <Link href={"/"} className="flex justify-center md:justify-start">
-            <div className="relative left-1 w-[152px] h-[64px] ">
-              <Image fill src={"/banner/logo-mobile.svg"} alt="logo" />
+            <div className="relative left-1 w-[152px] h-[50px] ">
+              <Image fill src={"/banner/444-01.svg"} alt="logo" />
             </div>
           </Link>
 
@@ -628,7 +644,27 @@ export default function Header() {
             <Link href={"/pack-list"} className="text-right block">
               پک‌های تخفیفی
             </Link>
-            {/* ===== RIGHT SECTION ===== */}
+            <div className="flex  justify-center gap-3 items-center">
+              {/* <h3 className=" text-[16px] font-yekanDemiBold ">
+                شبکه‌های اجتماعی
+              </h3> */}
+              {socialLinks.map((link, index) => (
+                <a
+                  key={index}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-transform bg-[#005E95] transform hover:scale-110 hover:shadow-lg rounded-full p-2"
+                >
+                  <Image
+                    src={link.icon}
+                    width={18}
+                    height={18}
+                    alt={link.alt}
+                  />
+                </a>
+              ))}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

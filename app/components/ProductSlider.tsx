@@ -67,13 +67,14 @@ export default function ProductSlider({ onCategoryClick }: ProductSliderProps) {
     <div className="relative container flex flex-col items-center px-4 gap-4 w-full">
       <motion.div
         ref={containerRef}
-        className="w-full flex gap-4 justify-center items-center overflow-x-hidden overflow-y-hidden scroll-smooth hide-scrollbar"
+        className="w-full flex gap-4 overflow-hidden hide-scrollbar"
         drag="x"
         dragConstraints={{ left: 0, right: 0 }}
-        dragElastic={0.2}
+        dragElastic={0.05}
+        dragMomentum={true}
         onDrag={(e, info) => {
           if (containerRef.current) {
-            containerRef.current.scrollLeft -= info.delta.x; // حرکت طبیعی اسکرول
+            containerRef.current.scrollLeft -= info.delta.x * 1.8;
           }
         }}
       >

@@ -52,19 +52,23 @@ function PackCard({ pack }: { pack: Pack }) {
       <div className="font-yekanExtraBold text-lg text-[#004D7A] text-center">
         {pack.title}
       </div>
-
       <Image
-        src="/car-blog.svg"
+        src="/banner/pack-mobile.jpg"
         alt={pack.title}
-        width={220}
-        height={150}
-        className="mx-auto my-4"
+        width={136}
+        height={109}
+        className="mx-auto rounded-xl block sm:hidden"
+      />{" "}
+      <Image
+        src="/banner/pack-desktop.jpg"
+        alt={pack.title}
+        width={221}
+        height={178}
+        className="mx-auto rounded-xl hidden sm:block"
       />
-
       <div className="absolute top-4 left-4 w-12 text-center text-white bg-red-500 rounded-3xl text-sm font-yekanBold">
         {pack.discount_percent}%
       </div>
-
       <div className="flex justify-between text-xs text-[#004D7A] font-yekanExtraBold mt-3">
         <span>زمان باقیمانده</span>
         <span dir="ltr">{timeLeft}</span>
