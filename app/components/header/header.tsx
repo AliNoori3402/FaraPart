@@ -134,7 +134,7 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="w-full fixed  flex flex-col items-center justify-between py-0 md:py-4 px-4 md:px-8 font-yekanDemiBold z-50 bg-white ">
+    <header className="w-full fixed  flex flex-col items-center justify-between py-0 md:py-4 px-4  font-yekanDemiBold z-50 bg-white ">
       {/* ===== LOGO ===== */}
       <AnimatePresence>
         {!hideLogo && (
@@ -155,9 +155,9 @@ export default function Header() {
       </AnimatePresence>
 
       {/* ===== MAIN ROW ===== */}
-      <div className="w-full  flex flex-col sm:flex-row items-center justify-center lg:justify-between  mt-4 md:mt-6">
+      <div className="w-full   flex flex-col sm:flex-row items-center justify-center lg:justify-between  mt-4 md:mt-6">
         {/* ===== LEFT MENU (DESKTOP) ===== */}
-        <div className="hidden lg:flex items-center  gap-4 xl:gap-[28px]">
+        <div className="hidden  lg:flex items-center  gap-4 xl:gap-[28px]">
           {/* دسته بندی */}
           <div className="relative">
             <div
@@ -297,7 +297,7 @@ export default function Header() {
         </div>
 
         {/* ===== SEARCH BAR ===== */}
-        <div className="w-[323px] border border-[#E0E1E6] rounded-full h-[42px] px-4 hidden lg:flex justify-center items-center bg-white order-3 sm:order-none ">
+        <div className="w-[450px] relative left-[60px] border border-[#E0E1E6] rounded-full h-[42px] px-4 hidden lg:flex justify-center items-center bg-white order-3 sm:order-none ">
           <input
             type="text"
             placeholder="جستجو در فراپارت..."
@@ -315,7 +315,7 @@ export default function Header() {
         </div>
 
         {/* ===== RIGHT SECTION ===== */}
-        <div className="hidden  lg:flex items-center gap-3">
+        <div className="hidden  lg:flex   items-center gap-3">
           <Link href={"/basket"}>
             <div className="flex items-center gap-2">
               <svg width="24" height="24" fill="none">

@@ -7,6 +7,8 @@ import NewsSlider from "./components/BlogSlider";
 import Link from "next/link";
 import PackSlider from "./components/Packslider";
 import OfferSlider from "./components/Offerslider";
+import BestSellerSlider from "./components/BestSellerBoxes";
+import FeatureSlider from "./components/FeturedBox";
 // import OfferSlider from "./components/Offerslider";
 
 export default function Home() {
@@ -22,7 +24,7 @@ export default function Home() {
       <div className="w-full flex justify-center items-center">
         <FilterProduct />
       </div>
-
+      <BestSellerSlider />
       {/* 🔹 گرید برندها */}
 
       <BrandGrid />
@@ -80,7 +82,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-
+      <FeatureSlider />
       {/* 🔹 اسلایدر اخبار و مقالات */}
       <div className="w-full container mx-auto">
         <NewsSlider />
