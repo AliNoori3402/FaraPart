@@ -32,7 +32,7 @@ const ProductDetailPage: React.FC = () => {
 
   const productId = params?.productId;
   const [activeTab, setActiveTab] = useState<"description" | "specs">(
-    "description"
+    "description",
   );
   const [product, setProduct] = useState<ProductDetail | null>(null);
   const [hasInventory, setHasInventory] = useState<boolean | null>(null);
@@ -57,7 +57,7 @@ const ProductDetailPage: React.FC = () => {
           const inventoryRes = await axios.post(
             "/api/inventory",
             { id: Number(productId) },
-            { headers: { "Content-Type": "application/json" } }
+            { headers: { "Content-Type": "application/json" } },
           );
           setHasInventory(inventoryRes.data?.has_inventory ?? false);
         } catch (invErr) {
@@ -87,7 +87,7 @@ const ProductDetailPage: React.FC = () => {
       await axios.post(
         "/api/Addcart",
         { part_id: Number(productId), quantity: quantityToAdd },
-        { headers: { Authorization: `Bearer ${accessToken}` } }
+        { headers: { Authorization: `Bearer ${accessToken}` } },
       );
       toast.success("محصول با موفقیت به سبد خرید اضافه شد ✅");
     } catch (err) {
@@ -115,7 +115,7 @@ const ProductDetailPage: React.FC = () => {
           <Link href={"/product"}>
             {" "}
             <div className="text-[14px] text-[#1C2024] font-yekanDemiBold">
-              {product.category.name}
+              {product.category}
             </div>
           </Link>
 
@@ -172,8 +172,8 @@ const ProductDetailPage: React.FC = () => {
                   {hasInventory === null
                     ? "در حال دریافت..."
                     : hasInventory
-                    ? "دارد"
-                    : "ندارد"}
+                      ? "دارد"
+                      : "ندارد"}
                 </div>
               </div>
 
@@ -182,7 +182,7 @@ const ProductDetailPage: React.FC = () => {
                   دسته بندی
                 </div>
                 <h2 className="text-[#1C2024] text-[14px] font-yekanDemiBold">
-                  {product.category.name}
+                  {product.category}
                 </h2>
               </div>
               <div className="flex-1 flex flex-col gap-[16px] justify-center p-4">
@@ -190,7 +190,7 @@ const ProductDetailPage: React.FC = () => {
                   خودروهای سازگار
                 </div>
                 <div
-                  className="text-[#1C2024] truncate
+                  className="text-[#1C2024] max-w-40 truncate
                  text-[14px] font-yekanDemiBold"
                 >
                   {product.car_names.join(", ")}
@@ -226,7 +226,7 @@ const ProductDetailPage: React.FC = () => {
                           quantity >= product.inventory
                         ) {
                           toast.error(
-                            `حداکثر موجودی ${product.inventory} عدد است`
+                            `حداکثر موجودی ${product.inventory} عدد است`,
                           );
                           return;
                         }
@@ -338,7 +338,7 @@ const ProductDetailPage: React.FC = () => {
                 <span className="font-yekanDemiBold text-[#004D7A]">
                   دسته بندی
                 </span>
-                <span>{product.category.name}</span>
+                <span>{product.category}</span>
               </div>
               <div className="flex justify-between border-b pb-2">
                 <span className="font-yekanDemiBold text-[#004D7A]">

@@ -101,7 +101,7 @@ const CommentModal: React.FC<{
           parent: parentId,
           text,
         },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       );
       toast.success("کامنت شما ثبت شد");
       setText("");
@@ -282,7 +282,7 @@ const ProductDetailPage: React.FC = () => {
         const inventoryRes = await axios.post(
           "/api/inventory",
           { id: Number(id) },
-          { headers: { "Content-Type": "application/json" } }
+          { headers: { "Content-Type": "application/json" } },
         );
         setHasInventory(inventoryRes.data?.has_inventory ?? false);
       } catch (invErr) {
@@ -329,7 +329,7 @@ const ProductDetailPage: React.FC = () => {
       await axios.post(
         "/api/Addcart",
         { part_id: Number(id), quantity: quantityToAdd },
-        { headers: { Authorization: `Bearer ${accessToken}` } }
+        { headers: { Authorization: `Bearer ${accessToken}` } },
       );
       toast.success("محصول با موفقیت به سبد خرید اضافه شد ✅");
     } catch (err) {
@@ -414,8 +414,8 @@ const ProductDetailPage: React.FC = () => {
                   {hasInventory === null
                     ? "در حال دریافت..."
                     : hasInventory
-                    ? "دارد"
-                    : "ندارد"}
+                      ? "دارد"
+                      : "ندارد"}
                 </div>
               </div>
 
@@ -432,7 +432,7 @@ const ProductDetailPage: React.FC = () => {
                   خودروهای سازگار
                 </div>
                 <div
-                  className="text-[#1C2024] truncate
+                  className="text-[#1C2024] max-w-40  truncate
                  text-[14px] font-yekanDemiBold"
                 >
                   {product.car_names.join(", ")}
@@ -468,7 +468,7 @@ const ProductDetailPage: React.FC = () => {
                           quantity >= product.inventory
                         ) {
                           toast.error(
-                            `حداکثر موجودی ${product.inventory} عدد است`
+                            `حداکثر موجودی ${product.inventory} عدد است`,
                           );
                           return;
                         }
